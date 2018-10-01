@@ -1,0 +1,6 @@
+﻿  controller.cpp
+d:\graphics new\graphics\controller.cpp(515): warning C4018: '<': signed/unsigned mismatch
+d:\graphics new\graphics\controller.cpp(537): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+  Generating Code...
+  Graphics.vcxproj -> D:\Graphics new\Debug\Graphics.exe
