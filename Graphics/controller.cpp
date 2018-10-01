@@ -516,7 +516,7 @@ Controller::Controller() {
 		cubeModel.push_back(CModel(squares[i], squares[i].size() * 4));
 	// shit
 	Right = CModel(vect, vect.size() * 4);
-	Right.setPosition(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+	Right.setPosition(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));/*
 	Right.AddChild(std::move(cubeModel[1]));
 	Right.AddChild(std::move(cubeModel[2]));
 	Right.AddChild(std::move(cubeModel[5]));
@@ -525,7 +525,7 @@ Controller::Controller() {
 	Right.AddChild(std::move(cubeModel[13]));
 	Right.AddChild(std::move(cubeModel[17]));
 	Right.AddChild(std::move(cubeModel[19]));
-	Right.AddChild(std::move(cubeModel[22]));
+	Right.AddChild(std::move(cubeModel[22]));*/
 };
 
 void Controller::Update(double dt) {
