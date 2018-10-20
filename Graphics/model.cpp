@@ -82,7 +82,7 @@ void CModel::DrawModel (CShader& shader, glm::mat4 parent) const
 	}
 }
 
-size_t CModel::AddChild (CModel&& child)
+size_t CModel::AddChild (CModel& child)
 {
 	m_childs.emplace_back (std::move (child));
 	return m_childs.size () - 1;

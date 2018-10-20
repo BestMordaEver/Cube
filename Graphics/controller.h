@@ -18,11 +18,13 @@ public:
 	Controller();
 	void Update(double dt);
 	void Draw(CViewPoint mainCam);
+	void Assemble();
+	void Disassemble(int i);
 private:
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
 	std::vector<CModel> cubeModel;
 	Cube cubeMatrix;
-	double animationLock;
+	CModel cuuube;
 	void RU(), RD(), LU(), LD(), UR(), UL(), DR(), DL(), FR(), FL(), BR(), BL(), MR(), ML(), CU(), CR(), CD(), CL();
 };
 

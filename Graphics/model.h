@@ -26,7 +26,7 @@ public:
     void move(glm::vec3 direction);
     void rotate(glm::vec3 direction);
     void DrawModel(CShader& shader) const;
-	size_t AddChild (CModel&& child);
+	size_t AddChild (CModel& child);
 	CModel& getChild (size_t id);
 
 private:

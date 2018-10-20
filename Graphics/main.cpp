@@ -24,8 +24,6 @@ const GLuint WIDTH = 800, HEIGHT = 600;
 
 GLFWwindow* window;
 
-void update(double dt);
-
 int main() {
 	window = initializeInterface(WIDTH, HEIGHT);
 	CShader mainShader("vertex-shader.vs",
