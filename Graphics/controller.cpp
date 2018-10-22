@@ -514,37 +514,45 @@ void Controller::Action(std::string s, bool rotate) {
 }
 
 void Controller::Update(double dt) {
-	timer += dt;
-	switch (state)
-	{
-	case 0:
-		Assemble(false);
-		state = 1;
-		return;
-	case 1:
-		dT = dt;
-		Assemble(true);
-		if (timer > glm::pi<double>()/2)
-		{
-			state = 2;
-			for (int i = 0; i < cubeModel.size(); i++)
-				cubeModel[i].clearChilds();
-			//way.pop_back();
-		}
-		return;
-	case 2:
-		if (timer > glm::pi<double>())
-		{
-			state = 0;
-			timer = 0;
-		}
-		return;
-	}
+//	timer += dt;
+//	switch (state)
+//	{
+//	case 0:
+//		Assemble(false);
+//		state = 1;
+//		return;
+//	case 1:
+//		dT = dt;
+//		Assemble(true);
+//		if (timer > glm::pi<double>()/2)
+//		{
+//			state = 2;
+//			for (int i = 0; i < cubeModel.size(); i++)
+//				cubeModel[i].clearChilds();
+//			//way.pop_back();
+//		}
+//		return;
+//	case 2:
+//		if (timer > glm::pi<double>())
+//		{
+//			state = 0;
+//			timer = 0;
+//		}
+//		return;
+//	}
 }
 
 void Controller::Draw(CViewPoint mainCam) {
-	for (auto i = 0u; i < cubeModel.size(); i++)
-		mainCam.drawModel(cubeModel[i]);
+	//for (auto i = 0u; i < cubeModel.size(); i++)
+		//mainCam.drawModel(cubeModel[i]);
+	mainCam.drawModel(cubeModel[indices[0][2]]);
+	mainCam.drawModel(cubeModel[indices[0][5]]);
+	mainCam.drawModel(cubeModel[indices[0][8]]);
+	mainCam.drawModel(cubeModel[indices[1][2]]);
+	mainCam.drawModel(cubeModel[indices[1][8]]);
+	mainCam.drawModel(cubeModel[indices[2][2]]);
+	mainCam.drawModel(cubeModel[indices[2][5]]);
+	mainCam.drawModel(cubeModel[indices[2][8]]);
 }
 
 void Controller::Assemble(bool rotate) {
@@ -605,7 +613,7 @@ void Controller::Disassemble(int i) {
 
 void Controller::RD(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][5]].rotate(glm::vec3(0, 0, (float)dT));
+		cubeModel[indices[1][5]].rotate(glm::vec3(-(float)dT, 0, 0));
 	}
 	else {
 		cubeMatrix.RD();
