@@ -13,7 +13,6 @@
 #include "viewpoint.h"
 #include "model.h"
 #include "interface.h"
-#include "cube.h"
 #include "controller.h"
 
 #include <glm/glm.hpp>
@@ -29,13 +28,10 @@ int main() {
 	CShader mainShader("vertex-shader.vs",
 		"fragment-shader.frag");
 	CViewPoint mainCam(std::move(mainShader), WIDTH, HEIGHT);
-	mainCam.SetCamera(glm::vec3(0, 0, -5), glm::vec3(0, 0, 0));
-	//CModel testChild;
+	mainCam.SetCamera(glm::vec3(5, 5, -5), glm::vec3(0.7, -0.7, 0));
 	
 	Controller controller;
 	
-	//testChild.setPosition (glm::vec3 (2, 0, 0), glm::vec3 (0, 0, 0));
-	//CModel& child = cube.getChild(cube.AddChild (std::move (testChild)));
 	double dt = 0;
 	//main loop
 	double prevTime = glfwGetTime();
@@ -45,7 +41,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		double currTime = glfwGetTime();
 		//game logic
-		controller.Update(-prevTime + currTime); // for now...
+		controller.Update(-prevTime + currTime);
 		mainCam.UseCamera();
 		dt = glfwGetTime();
 		//drawing

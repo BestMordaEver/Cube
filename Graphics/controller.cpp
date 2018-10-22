@@ -5,7 +5,7 @@
 
 std::vector<std::vector<GLfloat>> squares = {
 	// Corners
-	{	// 1
+	{	// 0
 		//blue 9
 		0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 		1.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
@@ -30,7 +30,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		0.0f, 0.0f, 1.0f,  0.8f, 0.5f, 0.0f,
 		0.0f, 1.0f, 1.0f,  0.8f, 0.5f, 0.0f
 	},
-	{	// 2
+	{	// 1
 		//blue 3
 		0.0f, 2.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 		1.0f, 2.0f, 0.0f,  0.0f, 0.0f, 1.0f,
@@ -55,7 +55,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		0.0f, 2.0f, 1.0f,  0.8f, 0.5f, 0.0f,
 		0.0f, 3.0f, 1.0f,  0.8f, 0.5f, 0.0f
 	},
-	{	// 3
+	{	// 2
 		//blue 1
 		2.0f, 2.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 		2.0f, 3.0f, 0.0f,  0.0f, 0.0f, 1.0f,
@@ -80,7 +80,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		3.0f, 2.0f, 1.0f,  1.0f, 0.0f, 0.0f,
 		3.0f, 3.0f, 1.0f,  1.0f, 0.0f, 0.0f
 	},
-	{	// 4
+	{	// 3
 		//blue 7
 		2.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 		2.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
@@ -105,7 +105,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		3.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,
 		3.0f, 1.0f, 1.0f,  1.0f, 0.0f, 0.0f
 	},
-	{	// 5
+	{	// 4
 		//Green 9
 		0.0f, 0.0f, 3.0f,  0.0f, 1.0f, 0.0f,
 		1.0f, 0.0f, 3.0f,  0.0f, 1.0f, 0.0f,
@@ -130,7 +130,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		0.0f, 0.0f, 3.0f,  0.8f, 0.5f, 0.0f,
 		0.0f, 1.0f, 3.0f,  0.8f, 0.5f, 0.0f
 	},
-	{	// 6
+	{	// 5
 		//green 3
 		0.0f, 2.0f, 3.0f,  0.0f, 1.0f, 0.0f,
 		1.0f, 2.0f, 3.0f,  0.0f, 1.0f, 0.0f,
@@ -155,7 +155,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		0.0f, 2.0f, 3.0f,  0.8f, 0.5f, 0.0f,
 		0.0f, 3.0f, 3.0f,  0.8f, 0.5f, 0.0f
 	},
-	{	// 7
+	{	// 6
 		//green 1
 		2.0f, 2.0f, 3.0f,  0.0f, 1.0f, 0.0f,
 		2.0f, 3.0f, 3.0f,  0.0f, 1.0f, 0.0f,
@@ -180,7 +180,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		3.0f, 2.0f, 3.0f,  1.0f, 0.0f, 0.0f,
 		3.0f, 3.0f, 3.0f,  1.0f, 0.0f, 0.0f
 	},
-	{	// 8
+	{	// 7
 		//green 7
 		2.0f, 0.0f, 3.0f,  0.0f, 1.0f, 0.0f,
 		2.0f, 1.0f, 3.0f,  0.0f, 1.0f, 0.0f,
@@ -206,7 +206,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		3.0f, 1.0f, 3.0f,  1.0f, 0.0f, 0.0f
 	},
 	// Sides
-	{	// 9
+	{	// 8
 		//blue 6
 		0.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 		1.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
@@ -223,7 +223,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		0.0f, 1.0f, 1.0f,  0.8f, 0.5f, 0.0f,
 		0.0f, 2.0f, 1.0f,  0.8f, 0.5f, 0.0f
 	},
-	{	// 10
+	{	// 9
 		//blue 2
 		1.0f, 2.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 		1.0f, 3.0f, 0.0f,  0.0f, 0.0f, 1.0f,
@@ -240,7 +240,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		1.0f, 3.0f, 1.0f,  1.0f, 1.0f, 1.0f,
 		2.0f, 3.0f, 1.0f,  1.0f, 1.0f, 1.0f
 	},
-	{	// 11
+	{	// 10
 		//blue 4
 		2.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 		3.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
@@ -257,7 +257,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		3.0f, 1.0f, 1.0f,  1.0f, 0.0f, 0.0f,
 		3.0f, 2.0f, 1.0f,  1.0f, 0.0f, 0.0f
 	},
-	{	// 12
+	{	// 11
 		//blue 8
 		1.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 		1.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
@@ -274,7 +274,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		1.0f, 0.0f, 1.0f,  1.0f, 1.0f, 0.2f,
 		2.0f, 0.0f, 1.0f,  1.0f, 1.0f, 0.2f
 	},
-	{	// 13
+	{	// 12
 		//green 6
 		0.0f, 1.0f, 3.0f, 0.0f, 1.0f, 0.0f,
 		1.0f, 1.0f, 3.0f, 0.0f, 1.0f, 0.0f,
@@ -291,7 +291,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		0.0f, 1.0f, 3.0f, 0.8f, 0.5f, 0.0f,
 		0.0f, 2.0f, 3.0f, 0.8f, 0.5f, 0.0f
 	},
-	{	// 14
+	{	// 13
 		//green 2
 		1.0f, 2.0f, 3.0f,  0.0f, 1.0f, 0.0f,
 		1.0f, 3.0f, 3.0f,  0.0f, 1.0f, 0.0f,
@@ -308,7 +308,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		1.0f, 3.0f, 3.0f,  1.0f, 1.0f, 1.0f,
 		2.0f, 3.0f, 3.0f,  1.0f, 1.0f, 1.0f
 	},
-	{	// 15
+	{	// 14
 		//green 4
 		2.0f, 1.0f, 3.0f,  0.0f, 1.0f, 0.0f,
 		3.0f, 1.0f, 3.0f,  0.0f, 1.0f, 0.0f,
@@ -325,7 +325,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		3.0f, 1.0f, 3.0f,  1.0f, 0.0f, 0.0f,
 		3.0f, 2.0f, 3.0f,  1.0f, 0.0f, 0.0f
 	},
-	{	// 16
+	{	// 15
 		//green 8
 		1.0f, 0.0f, 3.0f,  0.0f, 1.0f, 0.0f,
 		1.0f, 1.0f, 3.0f,  0.0f, 1.0f, 0.0f,
@@ -342,7 +342,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		1.0f, 0.0f, 3.0f,  1.0f, 1.0f, 0.2f,
 		2.0f, 0.0f, 3.0f,  1.0f, 1.0f, 0.2f
 	},
-	{	// 17
+	{	// 16
 		//yellow 6
 		0.0f, 0.0f, 1.0f,  1.0f, 1.0f, 0.2f,
 		1.0f, 0.0f, 1.0f,  1.0f, 1.0f, 0.2f,
@@ -359,7 +359,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		0.0f, 0.0f, 2.0f,  0.8f, 0.5f, 0.0f,
 		0.0f, 1.0f, 2.0f,  0.8f, 0.5f, 0.0f
 	},
-	{	// 18
+	{	// 17
 		//yellow 4
 		2.0f, 0.0f, 1.0f,  1.0f, 1.0f, 0.2f,
 		3.0f, 0.0f, 1.0f,  1.0f, 1.0f, 0.2f,
@@ -376,7 +376,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		3.0f, 0.0f, 2.0f,  1.0f, 0.0f, 0.0f,
 		3.0f, 1.0f, 2.0f,  1.0f, 0.0f, 0.0f
 	},
-	{	// 19
+	{	// 18
 		//white 6
 		0.0f, 3.0f, 1.0f,  1.0f, 1.0f, 1.0f,
 		1.0f, 3.0f, 1.0f,  1.0f, 1.0f, 1.0f,
@@ -393,7 +393,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		0.0f, 2.0f, 2.0f,  0.8f, 0.5f, 0.0f,
 		0.0f, 3.0f, 2.0f,  0.8f, 0.5f, 0.0f
 	},
-	{	// 20
+	{	// 19
 		//white 4
 		2.0f, 3.0f, 1.0f,  1.0f, 1.0f, 1.0f,
 		3.0f, 3.0f, 1.0f,  1.0f, 1.0f, 1.0f,
@@ -411,7 +411,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		3.0f, 3.0f, 2.0f,  1.0f, 0.0f, 0.0f
 	},
 	// Centers
-	{	// 21
+	{	// 20
 		//blue 5
 		1.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
 		1.0f, 2.0f, 0.0f,  0.0f, 0.0f, 1.0f,
@@ -421,7 +421,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		2.0f, 2.0f, 0.0f,  0.0f, 0.0f, 1.0f
 	},
 	{
-		// 22
+		// 21
 		//orange 5
 		0.0f, 1.0f, 1.0f,  0.8f, 0.5f, 0.0f,
 		0.0f, 2.0f, 1.0f,  0.8f, 0.5f, 0.0f,
@@ -430,7 +430,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		0.0f, 1.0f, 2.0f,  0.8f, 0.5f, 0.0f,
 		0.0f, 2.0f, 2.0f,  0.8f, 0.5f, 0.0f
 	},
-	{	// 23
+	{	// 22
 		//green 5
 		1.0f, 1.0f, 3.0f,  0.0f, 1.0f, 0.0f,
 		1.0f, 2.0f, 3.0f,  0.0f, 1.0f, 0.0f,
@@ -440,7 +440,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		2.0f, 2.0f, 3.0f,  0.0f, 1.0f, 0.0f
 	},
 	{
-		// 24
+		// 23
 		//red 5
 		3.0f, 1.0f, 1.0f,  1.0f, 0.0f, 0.0f,
 		3.0f, 2.0f, 1.0f,  1.0f, 0.0f, 0.0f,
@@ -450,7 +450,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		3.0f, 2.0f, 2.0f,  1.0f, 0.0f, 0.0f
 	},
 	{
-		// 25
+		// 24
 		//white 5
 		1.0f, 3.0f, 1.0f,  1.0f, 1.0f, 1.0f,
 		2.0f, 3.0f, 1.0f,  1.0f, 1.0f, 1.0f,
@@ -460,7 +460,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		2.0f, 3.0f, 2.0f,  1.0f, 1.0f, 1.0f
 	},
 	{
-		// 26
+		// 25
 		//yellow 5
 		1.0f, 0.0f, 1.0f,  1.0f, 1.0f, 0.2f,
 		2.0f, 0.0f, 1.0f,  1.0f, 1.0f, 0.2f,
@@ -470,7 +470,7 @@ std::vector<std::vector<GLfloat>> squares = {
 		2.0f, 0.0f, 2.0f,  1.0f, 1.0f, 0.2f
 	}, 
 	{
-		// 27
+		// 26
 		// middle
 		// no need to draw him
 	}
@@ -479,144 +479,137 @@ std::vector<std::vector<GLfloat>> squares = {
 std::vector<int> way;
 std::vector<std::vector<int>> indices = {
 	{2, 9, 1, 10, 20, 8, 3, 11, 0},
-	{18, 24, 19, 23, 26, 21, 17, 25, 16},
+	{19, 24, 18, 23, 26, 21, 17, 25, 16},
 	{6, 13, 5, 14, 22, 12, 7, 15, 4}
 };
-int state = 0;
-double dT = 0, timer = 0;;
+static int state = 0;
+static double dT = 0, timer = 0;;
 
 Controller::Controller() {
 	for (unsigned int i = 0; i < squares.size(); i++)
 		cubeModel.emplace_back(squares[i]);
-	cubeModel.emplace_back(squares[20]);
-	way = { 1};
+	//way = { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
+	//way = { 1, 5, 1, 5, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0};
+	//way = { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
 };
 
 void Controller::Action(std::string s, bool rotate) {
-	if (s == "RU") RU(rotate);
-	if (s == "RD") RD(rotate);
-	if (s == "LU") LU(rotate);
-	if (s == "LD") LD(rotate);
-	if (s == "UR") UR(rotate);
-	if (s == "UL") UL(rotate);
-	if (s == "DR") DR(rotate);
-	if (s == "DL") DL(rotate);
-	if (s == "FR") FR(rotate);
-	if (s == "FL") FL(rotate);
-	if (s == "BR") BR(rotate);
-	if (s == "BL") BL(rotate);
-	if (s == "MR") MR(rotate);
-	if (s == "ML") ML(rotate);
-	if (s == "CU") CU(rotate);
-	if (s == "CR") CR(rotate);
-	if (s == "CD") CD(rotate);
-	if (s == "CL") CL(rotate);
+	if (s == "RU") { RU(rotate); return; }
+	if (s == "RD") { RD(rotate); return; }
+	if (s == "LU") { LU(rotate); return; }
+	if (s == "LD") { LD(rotate); return; }
+	if (s == "UR") { UR(rotate); return; }
+	if (s == "UL") { UL(rotate); return; }
+	if (s == "DR") { DR(rotate); return; }
+	if (s == "DL") { DL(rotate); return; }
+	if (s == "FR") { FR(rotate); return; }
+	if (s == "FL") { FL(rotate); return; }
+	if (s == "BR") { BR(rotate); return; }
+	if (s == "BL") { BL(rotate); return; }
+	if (s == "MR") { MR(rotate); return; }
+	if (s == "ML") { ML(rotate); return; }
+	if (s == "CU") { CU(rotate); return; }
+	if (s == "CR") { CR(rotate); return; }
+	if (s == "CD") { CD(rotate); return; }
+	if (s == "CL") { CL(rotate); return; }
 }
 
 void Controller::Update(double dt) {
-//	timer += dt;
-//	switch (state)
-//	{
-//	case 0:
-//		Assemble(false);
-//		state = 1;
-//		return;
-//	case 1:
-//		dT = dt;
-//		Assemble(true);
-//		if (timer > glm::pi<double>()/2)
-//		{
-//			state = 2;
-//			for (int i = 0; i < cubeModel.size(); i++)
-//				cubeModel[i].clearChilds();
-//			//way.pop_back();
-//		}
-//		return;
-//	case 2:
-//		if (timer > glm::pi<double>())
-//		{
-//			state = 0;
-//			timer = 0;
-//		}
-//		return;
-//	}
+	/*timer += dt;
+	switch (state)
+	{
+	case 0:
+		Assemble(false);
+		state = 1;
+		timer -= dt;
+		return;
+	case 1:
+		if (timer > 1)
+		{
+			dT = dt;
+			Assemble(true);
+			state = 0;
+			timer = 0;
+			for (int i = 0; i < cubeModel.size(); i++)
+				cubeModel[i].clearChilds();
+			way.pop_back();
+		}
+		return;
+	}*/
+	/*std::string act;
+	std::cin >> act; std::cout << std::endl;
+	Action(act, false); Action(act, true);
+	for (int j = 0; j < cubeModel.size(); j++)
+		cubeModel[j].clearChilds();*/
 }
 
 void Controller::Draw(CViewPoint mainCam) {
-	//for (auto i = 0u; i < cubeModel.size(); i++)
-		//mainCam.drawModel(cubeModel[i]);
-	mainCam.drawModel(cubeModel[indices[0][2]]);
-	mainCam.drawModel(cubeModel[indices[0][5]]);
-	mainCam.drawModel(cubeModel[indices[0][8]]);
-	mainCam.drawModel(cubeModel[indices[1][2]]);
-	mainCam.drawModel(cubeModel[indices[1][8]]);
-	mainCam.drawModel(cubeModel[indices[2][2]]);
-	mainCam.drawModel(cubeModel[indices[2][5]]);
-	mainCam.drawModel(cubeModel[indices[2][8]]);
+	for (auto i = 0u; i < cubeModel.size(); i++)
+		mainCam.drawModel(cubeModel[i]);
+	//mainCam.drawModel(cubeModel[indices[1][1]]);
+	//mainCam.drawModel(cubeModel[indices[1][5]]);
 }
 
 void Controller::Assemble(bool rotate) {
 	switch (way.back())
 	{
-	case 1: Action("RD", rotate); break;
-	case 0: Action("RU", rotate); break;
-	case 3: Action("LU", rotate); break;
-	case 2: Action("LD", rotate); break;
-	case 5: Action("UR", rotate); break;
-	case 4: Action("UL", rotate); break;
-	case 7: Action("DR", rotate); break;
-	case 6: Action("DL", rotate); break;
-	case 9: Action("FR", rotate); break;
-	case 8: Action("FL", rotate); break;
-	case 11: Action("BR", rotate); break;
-	case 10: Action("BL", rotate); break;
-	case 13: Action("MR", rotate); break;
-	case 12: Action("ML", rotate); break;
-	case 16: Action("CU", rotate); break;
-	case 17: Action("CR", rotate); break;
-	case 14: Action("CD", rotate); break;
-	case 15: Action("CL", rotate); break;
+	case 1: Action("RD", rotate); return;
+	case 0: Action("RU", rotate); return;
+	case 3: Action("LU", rotate); return;
+	case 2: Action("LD", rotate); return;
+	case 5: Action("UR", rotate); return;
+	case 4: Action("UL", rotate); return;
+	case 7: Action("DR", rotate); return;
+	case 6: Action("DL", rotate); return;
+	case 9: Action("FR", rotate); return;
+	case 8: Action("FL", rotate); return;
+	case 11: Action("BR", rotate); return;
+	case 10: Action("BL", rotate); return;
+	case 13: Action("MR", rotate); return;
+	case 12: Action("ML", rotate); return;
+	case 16: Action("CU", rotate); return;
+	case 17: Action("CR", rotate); return;
+	case 14: Action("CD", rotate); return;
+	case 15: Action("CL", rotate); return;
 	}
 }
 
 void Controller::Disassemble(int i) {
 	way.clear();
-	cubeMatrix.cubeReset();
 	srand(time(NULL));
 	for (; i > 0; i--) {
 		way.push_back(rand() % 18);
-		//std::cout << way.back() << " ";
 		switch (way.back())
 		{
-		case 0: Action("RD", false); break;
-		case 1: Action("RU", false); break;
-		case 2: Action("LU", false); break;
-		case 3: Action("LD", false); break;
-		case 4: Action("UR", false); break;
-		case 5: Action("UL", false); break;
-		case 6: Action("DR", false); break;
-		case 7: Action("DL", false); break;
-		case 8: Action("FR", false); break;
-		case 9: Action("FL", false); break;
-		case 10: Action("BR", false); break;
-		case 11: Action("BL", false); break;
-		case 12: Action("MR", false); break;
-		case 13: Action("ML", false); break;
-		case 14: Action("CU", false); break;
-		case 15: Action("CR", false); break;
-		case 16: Action("CD", false); break;
-		case 17: Action("CL", false); break;
+		case 0: Action("RD", false); Action("RD", true); break;
+		case 1: Action("RU", false); Action("RU", true); break;
+		case 2: Action("LU", false); Action("LU", true); break;
+		case 3: Action("LD", false); Action("LD", true); break;
+		case 4: Action("UR", false); Action("UR", true); break;
+		case 5: Action("UL", false); Action("UL", true); break;
+		case 6: Action("DR", false); Action("DR", true); break;
+		case 7: Action("DL", false); Action("DL", true); break;
+		case 8: Action("FR", false); Action("FR", true); break;
+		case 9: Action("FL", false); Action("FL", true); break;
+		case 10: Action("BR", false); Action("BR", true); break;
+		case 11: Action("BL", false); Action("BL", true); break;
+		case 12: Action("MR", false); Action("MR", true); break;
+		case 13: Action("ML", false); Action("ML", true); break;
+		case 14: Action("CU", false); Action("CU", true); break;
+		case 15: Action("CR", false); Action("CR", true); break;
+		case 16: Action("CD", false); Action("CD", true); break;
+		case 17: Action("CL", false); Action("CL", true); break;
 		}
+		for (int j = 0; j < cubeModel.size(); j++)
+			cubeModel[j].clearChilds();
 	}
-	std::cout << std::endl;
 }
 
 void Controller::RD(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][5]].rotate(glm::vec3(-(float)dT, 0, 0));
+		cubeModel[indices[1][5]].rotate(glm::vec3(-glm::pi<double>() / 2, 0, 0));
 	}
 	else {
-		cubeMatrix.RD();
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][2]]);
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][5]]);
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][8]]);
@@ -625,73 +618,457 @@ void Controller::RD(bool rotate) {
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][2]]);
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][5]]);
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][8]]);
+		int temp = indices[0][2];
+		indices[0][2] = indices[2][2]; 
+		indices[2][2] = indices[2][8];
+		indices[2][8] = indices[0][8];
+		indices[0][8] = temp;
+		temp = indices[0][5];
+		indices[0][5] = indices[1][2];
+		indices[1][2] = indices[2][5];
+		indices[2][5] = indices[1][8];
+		indices[1][8] = temp;
 	}
 }
 
 void Controller::RU(bool rotate) {
-	cubeMatrix.RU();
+	if (rotate) {
+		cubeModel[indices[1][5]].rotate(glm::vec3(glm::pi<double>() / 2, 0, 0));
+	}
+	else {
+		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][2]]);
+		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][5]]);
+		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][8]]);
+		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[1][2]]);
+		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[1][8]]);
+		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][2]]);
+		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][5]]);
+		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][8]]);
+		int temp = indices[0][2];
+		indices[0][2] = indices[0][8];
+		indices[0][8] = indices[2][8];
+		indices[2][8] = indices[2][2];
+		indices[2][2] = temp;
+		temp = indices[0][5];
+		indices[0][5] = indices[1][8];
+		indices[1][8] = indices[2][5];
+		indices[2][5] = indices[1][2];
+		indices[1][2] = temp;
+	}
 }
 
 void Controller::LD(bool rotate) {
-	cubeMatrix.LD();
+	if (rotate) {
+		cubeModel[indices[1][3]].rotate(glm::vec3(-glm::pi<double>() / 2, 0, 0));
+	}
+	else {
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[0][0]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[0][3]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[0][6]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[1][0]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[1][6]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[2][0]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[2][3]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[2][6]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[2][0];
+		indices[2][0] = indices[2][6];
+		indices[2][6] = indices[0][6];
+		indices[0][6] = temp;
+		temp = indices[0][3];
+		indices[0][3] = indices[1][0];
+		indices[1][0] = indices[2][3];
+		indices[2][3] = indices[1][6];
+		indices[1][6] = temp;
+	}
 }
 
 void Controller::LU(bool rotate) {
-	cubeMatrix.LU();
+	if (rotate) {
+		cubeModel[indices[1][3]].rotate(glm::vec3(glm::pi<double>() / 2, 0, 0));
+	}
+	else {
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[0][0]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[0][3]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[0][6]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[1][0]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[1][6]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[2][0]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[2][3]]);
+		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[2][6]]);
+		int temp = indices[0][2];
+		indices[0][0] = indices[0][6];
+		indices[0][6] = indices[2][6];
+		indices[2][6] = indices[2][0];
+		indices[2][0] = temp;
+		temp = indices[0][3];
+		indices[0][3] = indices[1][6];
+		indices[1][6] = indices[2][3];
+		indices[2][3] = indices[1][0];
+		indices[1][0] = temp;
+	}
 }
 
 void Controller::UR(bool rotate) {
-	cubeMatrix.UR();
+	if (rotate) {
+		cubeModel[indices[1][1]].rotate(glm::vec3(0, glm::pi<double>() / 2, 0));
+	}
+	else {
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][0]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][1]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][2]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[1][2]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[2][2]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[2][1]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[2][0]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[1][0]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[2][0];
+		indices[2][0] = indices[2][2];
+		indices[2][2] = indices[0][2];
+		indices[0][2] = temp;
+		temp = indices[0][1];
+		indices[0][1] = indices[1][0];
+		indices[1][0] = indices[2][1];
+		indices[2][1] = indices[1][2];
+		indices[1][2] = temp;
+	}
 }
 
 void Controller::UL(bool rotate) {
-	cubeMatrix.UL();
+	if (rotate) {
+		cubeModel[indices[1][1]].rotate(glm::vec3(0, -glm::pi<double>() / 2, 0));
+	}
+	else {
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][0]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][1]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][2]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[1][2]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[2][2]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[2][1]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[2][0]]);
+		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[1][0]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[0][2];
+		indices[0][2] = indices[2][2];
+		indices[2][2] = indices[2][0];
+		indices[2][0] = temp;
+		temp = indices[0][1];
+		indices[0][1] = indices[1][2];
+		indices[1][2] = indices[2][1];
+		indices[2][1] = indices[1][0];
+		indices[1][0] = temp;
+	}
 }
 
 void Controller::DR(bool rotate) {
-	cubeMatrix.DR();
+	if (rotate) {
+		cubeModel[indices[1][7]].rotate(glm::vec3(0, glm::pi<double>() / 2, 0));
+	}
+	else {
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[0][6]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[0][7]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[0][8]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[1][8]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[2][8]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[2][7]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[2][6]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[1][6]]);
+		int temp = indices[0][6];
+		indices[0][6] = indices[2][6];
+		indices[2][6] = indices[2][8];
+		indices[2][8] = indices[0][8];
+		indices[0][8] = temp;
+		temp = indices[0][7];
+		indices[0][7] = indices[1][6];
+		indices[1][6] = indices[2][7];
+		indices[2][7] = indices[1][8];
+		indices[1][8] = temp;
+	}
 }
 
 void Controller::DL(bool rotate) {
-	cubeMatrix.DL();
+	if (rotate) {
+		cubeModel[indices[1][7]].rotate(glm::vec3(0, -glm::pi<double>() / 2, 0));
+	}
+	else {
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[0][6]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[0][7]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[0][8]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[1][8]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[2][8]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[2][7]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[2][6]]);
+		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[1][6]]);
+		int temp = indices[0][6];
+		indices[0][6] = indices[0][8];
+		indices[0][8] = indices[2][8];
+		indices[2][8] = indices[2][6];
+		indices[2][6] = temp;
+		temp = indices[0][7];
+		indices[0][7] = indices[1][8];
+		indices[1][8] = indices[2][7];
+		indices[2][7] = indices[1][6];
+		indices[1][6] = temp;
+	}
 }
 
 void Controller::FR(bool rotate) {
-	cubeMatrix.FR();
+	if (rotate) {
+		cubeModel[indices[0][4]].rotate(glm::vec3(0, 0, glm::pi<double>() / 2));
+	}
+	else {
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][1]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][2]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][3]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][5]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][6]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][7]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][8]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][0]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[0][6];
+		indices[0][6] = indices[0][8];
+		indices[0][8] = indices[0][2];
+		indices[0][2] = temp;
+		temp = indices[0][1];
+		indices[0][1] = indices[0][3];
+		indices[0][3] = indices[0][7];
+		indices[0][7] = indices[0][5];
+		indices[0][5] = temp;
+	}
 }
 
 void Controller::FL(bool rotate) {
-	cubeMatrix.FL();
+	if (rotate) {
+		cubeModel[indices[0][4]].rotate(glm::vec3(0, 0, -glm::pi<double>() / 2));
+	}
+	else {
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][1]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][2]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][3]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][5]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][6]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][7]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][8]]);
+		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][0]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[0][2];
+		indices[0][2] = indices[0][8];
+		indices[0][8] = indices[0][6];
+		indices[0][6] = temp;
+		temp = indices[0][1];
+		indices[0][1] = indices[0][5];
+		indices[0][5] = indices[0][7];
+		indices[0][7] = indices[0][3];
+		indices[0][3] = temp;
+	}
 }
 
 void Controller::BR(bool rotate) {
-	cubeMatrix.BR();
+	if (rotate) {
+		cubeModel[indices[2][4]].rotate(glm::vec3(0, 0, glm::pi<double>() / 2));
+	}
+	else {
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][1]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][2]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][3]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][5]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][6]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][7]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][8]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][0]]);
+		int temp = indices[2][0];
+		indices[2][0] = indices[2][6];
+		indices[2][6] = indices[2][8];
+		indices[2][8] = indices[2][2];
+		indices[2][2] = temp;
+		temp = indices[2][1];
+		indices[2][1] = indices[2][3];
+		indices[2][3] = indices[2][7];
+		indices[2][7] = indices[2][5];
+		indices[2][5] = temp;
+	}
 }
 
 void Controller::BL(bool rotate) {
-	cubeMatrix.BL();
+	if (rotate) {
+		cubeModel[indices[2][4]].rotate(glm::vec3(0, 0, -glm::pi<double>() / 2));
+	}
+	else {
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][1]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][2]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][3]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][5]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][6]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][7]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][8]]);
+		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][0]]);
+		int temp = indices[2][0];
+		indices[2][0] = indices[2][2];
+		indices[2][2] = indices[2][8];
+		indices[2][8] = indices[2][6];
+		indices[2][6] = temp;
+		temp = indices[2][1];
+		indices[2][1] = indices[2][3];
+		indices[2][3] = indices[2][7];
+		indices[2][7] = indices[2][5];
+		indices[2][5] = temp;
+	}
 }
 
 void Controller::CR(bool rotate) {
-	cubeMatrix.CR();
+	if (rotate) {
+		cubeModel[indices[1][4]].rotate(glm::vec3(0, glm::pi<double>() / 2, 0));
+	}
+	else {
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][3]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][4]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][5]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][3]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][5]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][3]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][4]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][5]]);
+		int temp = indices[0][3];
+		indices[0][3] = indices[2][3];
+		indices[2][3] = indices[2][5];
+		indices[2][5] = indices[0][5];
+		indices[0][5] = temp;
+		temp = indices[0][4];
+		indices[0][4] = indices[1][3];
+		indices[1][3] = indices[2][4];
+		indices[2][4] = indices[1][5];
+		indices[1][5] = temp;
+	}
 }
 
 void Controller::CL(bool rotate) {
-	cubeMatrix.CL();
+		if (rotate) {
+		cubeModel[indices[1][4]].rotate(glm::vec3(0, -glm::pi<double>() / 2, 0));
+	}
+	else {
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][3]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][4]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][5]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][3]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][5]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][3]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][4]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][5]]);
+		int temp = indices[0][3];
+		indices[0][3] = indices[0][5];
+		indices[0][5] = indices[2][5];
+		indices[2][5] = indices[2][3];
+		indices[2][3] = temp;
+		temp = indices[0][4];
+		indices[0][4] = indices[1][5];
+		indices[1][5] = indices[2][4];
+		indices[2][4] = indices[1][3];
+		indices[1][3] = temp;
+	}
 }
 
 void Controller::CU(bool rotate) {
-	cubeMatrix.CU();
+	if (rotate) {
+		cubeModel[indices[1][4]].rotate(glm::vec3(glm::pi<double>() / 2, 0, 0));
+	}
+	else {
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][1]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][4]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][7]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][1]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][7]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][1]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][4]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][7]]);
+		int temp = indices[0][1];
+		indices[0][1] = indices[0][7];
+		indices[0][7] = indices[2][7];
+		indices[2][7] = indices[2][1];
+		indices[2][1] = temp;
+		temp = indices[0][4];
+		indices[0][4] = indices[1][7];
+		indices[1][7] = indices[2][4];
+		indices[2][4] = indices[1][1];
+		indices[1][1] = temp;
+	}
 }
 
 void Controller::CD(bool rotate) {
-	cubeMatrix.CD();
+	if (rotate) {
+		cubeModel[indices[1][4]].rotate(glm::vec3(-glm::pi<double>() / 2, 0, 0));
+	}
+	else {
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][1]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][4]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][7]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][1]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][7]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][1]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][4]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[2][7]]);
+		int temp = indices[0][1];
+		indices[0][1] = indices[2][1];
+		indices[2][1] = indices[2][7];
+		indices[2][7] = indices[0][7];
+		indices[0][7] = temp;
+		temp = indices[0][4];
+		indices[0][4] = indices[1][1];
+		indices[1][1] = indices[2][4];
+		indices[2][4] = indices[1][7];
+		indices[1][7] = temp;
+	}
 }
 
 void Controller::ML(bool rotate) {
-	cubeMatrix.ML();
+	if (rotate) {
+		cubeModel[indices[1][4]].rotate(glm::vec3(0, 0, -glm::pi<double>() / 2));
+	}
+	else {
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][1]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][2]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][3]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][5]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][6]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][7]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][8]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][0]]);
+		int temp = indices[1][0];
+		indices[1][0] = indices[1][2];
+		indices[1][2] = indices[1][8];
+		indices[1][8] = indices[1][6];
+		indices[1][6] = temp;
+		temp = indices[1][1];
+		indices[1][1] = indices[1][5];
+		indices[1][5] = indices[1][7];
+		indices[1][7] = indices[1][3];
+		indices[1][3] = temp;
+	}
 }
 
 void Controller::MR(bool rotate) {
-	cubeMatrix.MR();
+	if (rotate) {
+		cubeModel[indices[1][4]].rotate(glm::vec3(0, 0, glm::pi<double>() / 2));
+	}
+	else {
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][1]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][2]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][3]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][5]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][6]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][7]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][8]]);
+		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][0]]);
+		int temp = indices[1][0];
+		indices[1][0] = indices[1][6];
+		indices[1][6] = indices[1][8];
+		indices[1][8] = indices[1][2];
+		indices[1][2] = temp;
+		temp = indices[1][1];
+		indices[1][1] = indices[1][3];
+		indices[1][3] = indices[1][7];
+		indices[1][7] = indices[1][5];
+		indices[1][5] = temp;
+	}
 }
