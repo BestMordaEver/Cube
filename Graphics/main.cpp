@@ -38,18 +38,20 @@ int main() {
 	//CModel& child = cube.getChild(cube.AddChild (std::move (testChild)));
 	double dt = 0;
 	//main loop
+	double prevTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		doMovement(&mainCam);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		double currTime = glfwGetTime();
 		//game logic
-		controller.Update(glfwGetTime()); // for now...
+		controller.Update(-prevTime + currTime); // for now...
 		mainCam.UseCamera();
 		dt = glfwGetTime();
 		//drawing
 		controller.Draw(mainCam);
 		glfwSwapBuffers(window);
+		prevTime = currTime;
 	}
 	glfwTerminate();
 	return 0;

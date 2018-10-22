@@ -18,14 +18,15 @@ public:
 	Controller();
 	void Update(double dt);
 	void Draw(CViewPoint mainCam);
-	void Assemble();
+	void Assemble(bool rotate);
 	void Disassemble(int i);
+	void Action(std::string s, bool rotate);
 private:
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
 	std::vector<CModel> cubeModel;
 	Cube cubeMatrix;
 	CModel cuuube;
-	void RU(), RD(), LU(), LD(), UR(), UL(), DR(), DL(), FR(), FL(), BR(), BL(), MR(), ML(), CU(), CR(), CD(), CL();
+	void RU(bool rotate), RD(bool rotate), LU(bool rotate), LD(bool rotate), UR(bool rotate), UL(bool rotate), DR(bool rotate), DL(bool rotate), FR(bool rotate), FL(bool rotate), BR(bool rotate), BL(bool rotate), MR(bool rotate), ML(bool rotate), CU(bool rotate), CR(bool rotate), CD(bool rotate), CL(bool rotate);
 };
 
 #endif

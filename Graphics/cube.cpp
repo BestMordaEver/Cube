@@ -156,10 +156,10 @@ void Cube::DL() {
 
 void Cube::FR() {
 	Section temp1 = cube[9], temp2 = cube[12], temp3 = cube[15];
-	cube[9] = cube[36]; cube[12] = cube[36]; cube[15] = cube[42];
-	cube[36] = cube[27]; cube[39] = cube[30]; cube[42] = cube[33];
-	cube[27] = cube[45]; cube[30] = cube[48]; cube[33] = cube[51];
-	cube[45] = temp1; cube[48] = temp2; cube[51] = temp3;
+	cube[9] = cube[42]; cube[12] = cube[43]; cube[15] = cube[44];
+	cube[42] = cube[35]; cube[43] = cube[32]; cube[44] = cube[29];
+	cube[35] = cube[47]; cube[32] = cube[46]; cube[29] = cube[45];
+	cube[47] = temp1; cube[46] = temp2; cube[45] = temp3;
 
 	temp1 = cube[0]; temp2 = cube[1];
 	cube[1] = cube[3]; cube[0] = cube[6]; cube[3] = cube[7]; cube[6] = cube[8]; cube[7] = cube[5]; cube[8] = cube[2]; cube[5] = temp2; cube[2] = temp1;
@@ -168,10 +168,10 @@ void Cube::FR() {
 
 void Cube::FL() {
 	Section temp1 = cube[9], temp2 = cube[12], temp3 = cube[15];
-	cube[9] = cube[45]; cube[12] = cube[39]; cube[15] = cube[42];
-	cube[45] = cube[27]; cube[48] = cube[30]; cube[51] = cube[33];
-	cube[27] = cube[36]; cube[30] = cube[39]; cube[33] = cube[42];
-	cube[36] = temp1; cube[39] = temp2; cube[42] = temp3;
+	cube[9] = cube[47]; cube[12] = cube[46]; cube[15] = cube[45];
+	cube[47] = cube[35]; cube[46] = cube[32]; cube[45] = cube[29];
+	cube[35] = cube[42]; cube[32] = cube[43]; cube[29] = cube[44];
+	cube[42] = temp1; cube[43] = temp2; cube[44] = temp3;
 
 	temp1 = cube[0]; temp2 = cube[1];
 	cube[0] = cube[2]; cube[1] = cube[5]; cube[2] = cube[8]; cube[5] = cube[7]; cube[8] = cube[6]; cube[7] = cube[3]; cube[6] = temp1; cube[3] = temp2;
@@ -186,7 +186,7 @@ void Cube::BR() {
 	cube[36] = temp1; cube[37] = temp2; cube[38] = temp3;
 
 	temp1 = cube[18]; temp2 = cube[19];
-	cube[18] = cube[24]; cube[19] = cube[21]; cube[24] = cube[26]; cube[21] = cube[25]; cube[25] = cube[23]; cube[26] = cube[20]; cube[23] = temp1; cube[20] = temp2;
+	cube[18] = cube[24]; cube[19] = cube[21]; cube[24] = cube[26]; cube[21] = cube[25]; cube[25] = cube[23]; cube[26] = cube[20]; cube[23] = temp2; cube[20] = temp1;
 	
 }
 
@@ -203,7 +203,7 @@ void Cube::BL() {
 }
 
 void Cube::CR() {
-	Section temp1 = cube[3], temp2 = cube[4], temp3 = cube[17];
+	Section temp1 = cube[3], temp2 = cube[4], temp3 = cube[5];
 	cube[3] = cube[30]; cube[4] = cube[31]; cube[5] = cube[32];
 	cube[30] = cube[21]; cube[31] = cube[22]; cube[32] = cube[23];
 	cube[21] = cube[12]; cube[22] = cube[13]; cube[23] = cube[14];
