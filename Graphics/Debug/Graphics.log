@@ -1,5 +1,5 @@
 ﻿  controller.cpp
-d:\cube\graphics\controller.cpp(537): warning C4018: '<': signed/unsigned mismatch
-d:\cube\graphics\controller.cpp(583): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-d:\cube\graphics\controller.cpp(607): warning C4018: '<': signed/unsigned mismatch
+d:\cube\graphics\controller.cpp(522): warning C4018: '<': signed/unsigned mismatch
+d:\cube\graphics\controller.cpp(590): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\cube\graphics\controller.cpp(614): warning C4018: '<': signed/unsigned mismatch
   Graphics.vcxproj -> D:\cube\Debug\Graphics.exe

@@ -477,25 +477,72 @@ std::vector<std::vector<GLfloat>> squares = {
 };
 
 std::vector<int> way;
-std::vector<std::vector<int>> indices = {
-	{2, 9, 1, 10, 20, 8, 3, 11, 0},
-	{19, 24, 18, 23, 26, 21, 17, 25, 16},
-	{6, 13, 5, 14, 22, 12, 7, 15, 4}
+std::vector<std::vector<int>> indices = { // Don't ask why, it was carefully handpicked...
+	{2, 9, 1, 10, 20, 8, 3, 11, 0},       // Blue face and adjacents
+	{19, 24, 18, 23, 26, 21, 17, 25, 16}, // Everything between, includes white, orange, yellow and red centers
+	{6, 13, 5, 14, 22, 12, 7, 15, 4}      // Green face and adjacents
 };
-static int state = 0;
-static double timer = 0;
+
+static int state = 0, animstate = 0;
+static double timer = 0, count = 0;
+double step = glm::pi<double>()/100;
 
 Controller::Controller() {
 	for (unsigned int i = 0; i < squares.size(); i++)
 		cubeModel.emplace_back(squares[i]);
-	//way = { 1};
-	way = { 1, 5, 1, 5, 1, 5, 1, 0, 0, 0, 0, 0};
-	//way = { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
+	//way = { 1 };
+	way = { 1, 5, 1, 5, 1, 5, 1, 0};  // Order of actions, read from right to left
+
+	//Disassemble(100);
 };
 
-void Controller::Action(std::string s, bool rotate) {
-	if (s == "RU") { RU(rotate); return; }
-	if (s == "RD") { RD(rotate); return; }
+void Controller::Update(double dt) {
+	timer += dt;
+	if (way.size() == 0)
+		state = 2; // Assembled
+	switch (state)
+	{
+	case 0:
+		Assemble(false);
+		state = 1;
+		timer -= dt;
+		return;
+	case 1:
+		if (timer > count) {
+			Assemble(true);
+			count += step/2;  // Tweak this to control animation speed. 
+			animstate++;
+		}
+		if (animstate == 50)
+		{
+			state = 0;
+			timer = 0;
+			count = 0;
+			animstate = 0;
+			for (int i = 0; i < cubeModel.size(); i++)
+				cubeModel[i].clearChilds();
+			//way.insert(way.begin(), way.back());       // This line loops course of actions, remove once done debugging
+			way.pop_back();
+		}
+		return;
+	}/*                         // This is only for manual inputs
+	std::string act;            // To activate this mode, comment current Update func and uncomment here
+	std::cin >> act;            // Valid inputs are listed below, MUST BE UPPERCASE, invalid are ignored
+	Action(act, false); Action(act, true);
+	for (int j = 0; j < cubeModel.size(); j++)
+		cubeModel[j].clearChilds();*/
+}
+
+void Controller::Draw(CViewPoint mainCam) {
+	for (auto i = 0u; i < cubeModel.size(); i++)
+		mainCam.drawModel(cubeModel[i]);          // Only parts that move
+	//mainCam.drawModel(cubeModel[indices[1][1]]);        
+	//mainCam.drawModel(cubeModel[indices[1][5]]);
+}
+
+void Controller::Action(std::string s, bool rotate) {   // Rotate false is for preparation, assigns children to centers
+	if (s == "RU") { RU(rotate); return; }              // True makes actual rotation
+	if (s == "RD") { RD(rotate); return; }              // rn rotation is fixed in int step, change on your own risk
 	if (s == "LU") { LU(rotate); return; }
 	if (s == "LD") { LD(rotate); return; }
 	if (s == "UR") { UR(rotate); return; }
@@ -513,48 +560,8 @@ void Controller::Action(std::string s, bool rotate) {
 	if (s == "CD") { CD(rotate); return; }
 	if (s == "CL") { CL(rotate); return; }
 }
-static double count = 0;
-void Controller::Update(double dt) {
-	timer += dt;
-	switch (state)
-	{
-	case 0:
-		Assemble(false);
-		state = 1;
-		timer -= dt;
-		return;
-	case 1:
-		if (timer > count) {
-			Assemble(true);
-			count += glm::pi<double>() / 20;
-		}
-		else if (count == glm::pi<double>() / 2)
-		{
-			//Assemble(true);
-			state = 0;
-			timer = 0;
-			count = 0;
-			for (int i = 0; i < cubeModel.size(); i++)
-				cubeModel[i].clearChilds();
-			way.pop_back();
-		}
-		return;
-	}/*
-	std::string act;
-	std::cin >> act; std::cout << std::endl;
-	Action(act, false); Action(act, true);
-	for (int j = 0; j < cubeModel.size(); j++)
-		cubeModel[j].clearChilds();*/
-}
 
-void Controller::Draw(CViewPoint mainCam) {
-	//for (auto i = 0u; i < cubeModel.size(); i++)
-		//mainCam.drawModel(cubeModel[i]);
-	mainCam.drawModel(cubeModel[indices[1][1]]);
-	mainCam.drawModel(cubeModel[indices[1][5]]);
-}
-
-void Controller::Assemble(bool rotate) {
+void Controller::Assemble(bool rotate) {              // EVERYTHING BELOW IS WORKING OK
 	switch (way.back())
 	{
 	case 1: Action("RD", rotate); return;
@@ -611,7 +618,7 @@ void Controller::Disassemble(int i) {
 
 void Controller::RD(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][5]].rotate(glm::vec3(-glm::pi<double>() / 20, 0, 0));
+		cubeModel[indices[1][5]].rotate(glm::vec3(-step, 0, 0));
 	}
 	else {
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][2]]);
@@ -637,7 +644,7 @@ void Controller::RD(bool rotate) {
 
 void Controller::RU(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][5]].rotate(glm::vec3(glm::pi<double>() / 20, 0, 0));
+		cubeModel[indices[1][5]].rotate(glm::vec3(step, 0, 0));
 	}
 	else {
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][2]]);
@@ -663,7 +670,7 @@ void Controller::RU(bool rotate) {
 
 void Controller::LD(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][3]].rotate(glm::vec3(-glm::pi<double>() / 20, 0, 0));
+		cubeModel[indices[1][3]].rotate(glm::vec3(-step, 0, 0));
 	}
 	else {
 		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[0][0]]);
@@ -689,7 +696,7 @@ void Controller::LD(bool rotate) {
 
 void Controller::LU(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][3]].rotate(glm::vec3(glm::pi<double>() / 20, 0, 0));
+		cubeModel[indices[1][3]].rotate(glm::vec3(step, 0, 0));
 	}
 	else {
 		cubeModel[indices[1][3]].AddChild(&cubeModel[indices[0][0]]);
@@ -715,7 +722,7 @@ void Controller::LU(bool rotate) {
 
 void Controller::UR(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][1]].rotate(glm::vec3(0, glm::pi<double>() / 20, 0));
+		cubeModel[indices[1][1]].rotate(glm::vec3(0, step, 0));
 	}
 	else {
 		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][0]]);
@@ -741,7 +748,7 @@ void Controller::UR(bool rotate) {
 
 void Controller::UL(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][1]].rotate(glm::vec3(0, -glm::pi<double>() / 20, 0));
+		cubeModel[indices[1][1]].rotate(glm::vec3(0, -step, 0));
 	}
 	else {
 		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][0]]);
@@ -767,7 +774,7 @@ void Controller::UL(bool rotate) {
 
 void Controller::DR(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][7]].rotate(glm::vec3(0, glm::pi<double>() / 20, 0));
+		cubeModel[indices[1][7]].rotate(glm::vec3(0, step, 0));
 	}
 	else {
 		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[0][6]]);
@@ -793,7 +800,7 @@ void Controller::DR(bool rotate) {
 
 void Controller::DL(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][7]].rotate(glm::vec3(0, -glm::pi<double>() / 20, 0));
+		cubeModel[indices[1][7]].rotate(glm::vec3(0, -step, 0));
 	}
 	else {
 		cubeModel[indices[1][7]].AddChild(&cubeModel[indices[0][6]]);
@@ -819,7 +826,7 @@ void Controller::DL(bool rotate) {
 
 void Controller::FR(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[0][4]].rotate(glm::vec3(0, 0, glm::pi<double>() / 20));
+		cubeModel[indices[0][4]].rotate(glm::vec3(0, 0, step));
 	}
 	else {
 		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][1]]);
@@ -845,7 +852,7 @@ void Controller::FR(bool rotate) {
 
 void Controller::FL(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[0][4]].rotate(glm::vec3(0, 0, -glm::pi<double>() / 20));
+		cubeModel[indices[0][4]].rotate(glm::vec3(0, 0, -step));
 	}
 	else {
 		cubeModel[indices[0][4]].AddChild(&cubeModel[indices[0][1]]);
@@ -871,7 +878,7 @@ void Controller::FL(bool rotate) {
 
 void Controller::BR(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[2][4]].rotate(glm::vec3(0, 0, glm::pi<double>() / 20));
+		cubeModel[indices[2][4]].rotate(glm::vec3(0, 0, step));
 	}
 	else {
 		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][1]]);
@@ -897,7 +904,7 @@ void Controller::BR(bool rotate) {
 
 void Controller::BL(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[2][4]].rotate(glm::vec3(0, 0, -glm::pi<double>() / 20));
+		cubeModel[indices[2][4]].rotate(glm::vec3(0, 0, -step));
 	}
 	else {
 		cubeModel[indices[2][4]].AddChild(&cubeModel[indices[2][1]]);
@@ -923,7 +930,7 @@ void Controller::BL(bool rotate) {
 
 void Controller::CR(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][4]].rotate(glm::vec3(0, glm::pi<double>() / 20, 0));
+		cubeModel[indices[1][4]].rotate(glm::vec3(0, step, 0));
 	}
 	else {
 		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][3]]);
@@ -949,7 +956,7 @@ void Controller::CR(bool rotate) {
 
 void Controller::CL(bool rotate) {
 		if (rotate) {
-		cubeModel[indices[1][4]].rotate(glm::vec3(0, -glm::pi<double>() / 20, 0));
+		cubeModel[indices[1][4]].rotate(glm::vec3(0, -step, 0));
 	}
 	else {
 		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][3]]);
@@ -975,7 +982,7 @@ void Controller::CL(bool rotate) {
 
 void Controller::CU(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][4]].rotate(glm::vec3(glm::pi<double>() / 20, 0, 0));
+		cubeModel[indices[1][4]].rotate(glm::vec3(step, 0, 0));
 	}
 	else {
 		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][1]]);
@@ -1001,7 +1008,7 @@ void Controller::CU(bool rotate) {
 
 void Controller::CD(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][4]].rotate(glm::vec3(-glm::pi<double>() / 20, 0, 0));
+		cubeModel[indices[1][4]].rotate(glm::vec3(-step, 0, 0));
 	}
 	else {
 		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[0][1]]);
@@ -1027,7 +1034,7 @@ void Controller::CD(bool rotate) {
 
 void Controller::ML(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][4]].rotate(glm::vec3(0, 0, -glm::pi<double>() / 20));
+		cubeModel[indices[1][4]].rotate(glm::vec3(0, 0, -step));
 	}
 	else {
 		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][1]]);
@@ -1053,7 +1060,7 @@ void Controller::ML(bool rotate) {
 
 void Controller::MR(bool rotate) {
 	if (rotate) {
-		cubeModel[indices[1][4]].rotate(glm::vec3(0, 0, glm::pi<double>() / 20));
+		cubeModel[indices[1][4]].rotate(glm::vec3(0, 0, step));
 	}
 	else {
 		cubeModel[indices[1][4]].AddChild(&cubeModel[indices[1][1]]);
