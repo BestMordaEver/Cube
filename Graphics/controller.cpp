@@ -80,7 +80,7 @@ Controller::Controller()
             for (int k = 0; k < 3; k++)
             {
                 cubeModel.emplace_back(square);
-                cubeModel.back().setPosition(glm::vec3(-1.0f + k, -1.0f + j, -1.0f + i), cubeModel.back().getEulers());
+                cubeModel.back().setPosition(glm::vec3(-1.0f + k, -1.0f + j, -1.0f + i) * 1.05f, cubeModel.back().getEulers());
 
             }
         }
