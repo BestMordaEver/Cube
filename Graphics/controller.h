@@ -21,6 +21,7 @@ public:
 	void Disassemble(int i);
 	void Action(std::string s, bool rotate);
 private:
+    void Addchilds(CModel* parent);
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
 	std::vector<CModel> cubeModel;
     std::vector<CModel*> childs;
