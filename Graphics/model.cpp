@@ -27,12 +27,12 @@ CModel::CModel(std::vector<GLfloat> vertices)
 
 const glm::vec3 CModel::getPosition () const
 {
-	return m_eulers;
+    return m_modelMatrix[3];
 }
 
 const glm::vec3 CModel::getEulers () const
 {
-	return m_position;
+    return m_eulers;
 }
 
 void CModel::setPosition (glm::vec3 position, glm::vec3 eulers)
@@ -89,7 +89,7 @@ void CModel::DrawModel (CShader& shader, glm::mat4 parent) const
 size_t CModel::AddChild (CModel* child)
 {
 	m_childs.emplace_back (std::move (child));
-	m_childs.back()->m_modelMatrix *= glm::inverse(m_modelMatrix);
+	m_childs.back()->m_modelMatrix = glm::inverse(m_modelMatrix) * m_childs.back()->m_modelMatrix;
 	m_childs.back()->hasParent = true;
 	return m_childs.size () - 1;
 }

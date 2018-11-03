@@ -2,6 +2,7 @@
 #include <iostream>
 #include <time.h>
 #include <map>
+#include <algorithm>
 
 std::vector<GLfloat> square = {
 	// Blue
@@ -65,19 +66,31 @@ static int state = 0, animstate = 0;
 static double timer = 0, count = 0;
 double step = glm::pi<double>()/100;
 
+float getDistance(CModel const* lhs, CModel const* rhs)
+{
+    return glm::distance(lhs->getPosition(), rhs->getPosition());
+}
+
 Controller::Controller() {
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			for (int k = 0; k < 3; k++) {
 				cubeModel.emplace_back(square);
 				cubeModel.back().setPosition(glm::vec3(-1.0f + k, -1.0f + j, -1.0f + i), cubeModel.back().getEulers());
+
 			}
 		}
-	}
+    }
+    std::vector<CModel*> copy;
+    std::transform(cubeModel.begin(), cubeModel.end(), std::back_inserter(copy), [](CModel& model) { return &model; });
+    std::sort(copy.begin(), copy.end(), [model = &cubeModel[indices[1][4]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
+    childs.resize(20);
+    std::copy(copy.begin() + 7, copy.end(), childs.begin());
 		
 	//way = { 1 };
 	//way = { 1, 5, 1, 5, 1, 5, 1};  // Order of actions, read from right to left
 	way = { 1, 1, 1, 5, 5, 5, 1, 1};
+    //way = { 5,5,5,5,1,1,1,1 };
 
 	//Disassemble(100);
 };
@@ -88,10 +101,15 @@ void Controller::Update(double dt) {
 		state = 2; // Assembled
 	switch (state)
 	{
-	case 0:
-		Assemble(false);
-		state = 1;
-		timer -= dt;
+        case 0:
+            animstate++;
+            if (animstate == 50)
+            {
+                Assemble(false);
+                state = 1;
+                timer -= dt;
+                animstate = 0;
+            }
 		return;
 	case 1:
 		if (timer > count) {
@@ -208,8 +226,18 @@ void Controller::RD(bool rotate) {
 	if (rotate) {
 		cubeModel[indices[1][5]].rotate(glm::vec3(-step, 0, 0));
 	}
-	else {
-		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][2]]);
+    else
+    {
+        std::sort(childs.begin(), childs.end(), [model = &cubeModel[indices[1][5]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
+        cubeModel[indices[1][5]].AddChild(childs[0]);
+        cubeModel[indices[1][5]].AddChild(childs[1]);
+        cubeModel[indices[1][5]].AddChild(childs[2]);
+        cubeModel[indices[1][5]].AddChild(childs[3]);
+        cubeModel[indices[1][5]].AddChild(childs[4]);
+        cubeModel[indices[1][5]].AddChild(childs[5]);
+        cubeModel[indices[1][5]].AddChild(childs[6]);
+        cubeModel[indices[1][5]].AddChild(childs[7]);
+		/*cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][2]]);
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][5]]);
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][8]]);
 		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[1][2]]);
@@ -226,7 +254,7 @@ void Controller::RD(bool rotate) {
 		indices[0][5] = indices[1][2];
 		indices[1][2] = indices[2][5];
 		indices[2][5] = indices[1][8];
-		indices[1][8] = temp;
+		indices[1][8] = temp;*/
 	}
 }
 
@@ -234,25 +262,35 @@ void Controller::RU(bool rotate) {
 	if (rotate) {
 		cubeModel[indices[1][5]].rotate(glm::vec3(step, 0, 0));
 	}
-	else {
-		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][2]]);
-		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][5]]);
-		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][8]]);
-		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[1][2]]);
-		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[1][8]]);
-		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][2]]);
-		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][5]]);
-		cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][8]]);
-		int temp = indices[0][2];
-		indices[0][2] = indices[0][8];
-		indices[0][8] = indices[2][8];
-		indices[2][8] = indices[2][2];
-		indices[2][2] = temp;
-		temp = indices[0][5];
-		indices[0][5] = indices[1][8];
-		indices[1][8] = indices[2][5];
-		indices[2][5] = indices[1][2];
-		indices[1][2] = temp;
+    else
+    {
+        std::sort(childs.begin(), childs.end(), [model = &cubeModel[indices[1][5]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
+        cubeModel[indices[1][5]].AddChild(childs[0]);
+        cubeModel[indices[1][5]].AddChild(childs[1]);
+        cubeModel[indices[1][5]].AddChild(childs[2]);
+        cubeModel[indices[1][5]].AddChild(childs[3]);
+        cubeModel[indices[1][5]].AddChild(childs[4]);
+        cubeModel[indices[1][5]].AddChild(childs[5]);
+        cubeModel[indices[1][5]].AddChild(childs[6]);
+        cubeModel[indices[1][5]].AddChild(childs[7]);
+        /*cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][2]]);
+        cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][5]]);
+        cubeModel[indices[1][5]].AddChild(&cubeModel[indices[0][8]]);
+        cubeModel[indices[1][5]].AddChild(&cubeModel[indices[1][2]]);
+        cubeModel[indices[1][5]].AddChild(&cubeModel[indices[1][8]]);
+        cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][2]]);
+        cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][5]]);
+        cubeModel[indices[1][5]].AddChild(&cubeModel[indices[2][8]]);
+        int temp = indices[0][2];
+        indices[0][2] = indices[0][8];
+        indices[0][8] = indices[2][8];
+        indices[2][8] = indices[2][2];
+        indices[2][2] = temp;
+        temp = indices[0][5];
+        indices[0][5] = indices[1][8];
+        indices[1][8] = indices[2][5];
+        indices[2][5] = indices[1][2];
+        indices[1][2] = temp;*/
 	}
 }
 
@@ -312,8 +350,18 @@ void Controller::UR(bool rotate) {
 	if (rotate) {
 		cubeModel[indices[1][1]].rotate(glm::vec3(0, step, 0));
 	}
-	else {
-		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][0]]);
+    else
+    {
+        std::sort(childs.begin(), childs.end(), [model = &cubeModel[indices[1][1]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
+        cubeModel[indices[1][1]].AddChild(childs[0]);
+        cubeModel[indices[1][1]].AddChild(childs[1]);
+        cubeModel[indices[1][1]].AddChild(childs[2]);
+        cubeModel[indices[1][1]].AddChild(childs[3]);
+        cubeModel[indices[1][1]].AddChild(childs[4]);
+        cubeModel[indices[1][1]].AddChild(childs[5]);
+        cubeModel[indices[1][1]].AddChild(childs[6]);
+        cubeModel[indices[1][1]].AddChild(childs[7]);
+		/*cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][0]]);
 		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][1]]);
 		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[0][2]]);
 		cubeModel[indices[1][1]].AddChild(&cubeModel[indices[1][2]]);
@@ -330,7 +378,7 @@ void Controller::UR(bool rotate) {
 		indices[0][1] = indices[1][0];
 		indices[1][0] = indices[2][1];
 		indices[2][1] = indices[1][2];
-		indices[1][2] = temp;
+		indices[1][2] = temp;*/
 	}
 }
 

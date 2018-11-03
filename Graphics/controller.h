@@ -23,6 +23,7 @@ public:
 private:
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
 	std::vector<CModel> cubeModel;
+    std::vector<CModel*> childs;
 	CModel cuuube;
 	void RU(bool rotate), RD(bool rotate), LU(bool rotate), LD(bool rotate), UR(bool rotate), UL(bool rotate), DR(bool rotate), DL(bool rotate), FR(bool rotate), FL(bool rotate), BR(bool rotate), BL(bool rotate), MR(bool rotate), ML(bool rotate), CU(bool rotate), CR(bool rotate), CD(bool rotate), CL(bool rotate);
 };
