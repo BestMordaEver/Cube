@@ -122,6 +122,7 @@
     <ClCompile Include="model.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="viewpoint.cpp" />
+    <ClCompile Include="WayNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controller.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="model.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="viewpoint.h" />
+    <ClInclude Include="WayNode.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment-shader.frag" />
