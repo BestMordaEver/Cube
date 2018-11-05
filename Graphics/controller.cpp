@@ -1,7 +1,6 @@
 #include "controller.h"
-#include <iostream>
+#include "way.h"
 #include <time.h>
-#include <map>
 #include <algorithm>
 
 std::vector<GLfloat> square = {
@@ -57,13 +56,13 @@ std::vector<GLfloat> square = {
 std::vector<int> way;
 
 std::vector<std::vector<int>> indices = {
-    {26, 25, 24, 23, 22, 21, 20, 19, 18},
-    {17, 16, 15, 14, 13, 12, 11, 10, 9},
-    {8, 7, 6, 5, 4, 3, 2, 1, 0}
+	{8, 7, 6, 5, 4, 3, 2, 1, 0},
+	{17, 16, 15, 14, 13, 12, 11, 10, 9},
+    {26, 25, 24, 23, 22, 21, 20, 19, 18}
 };
 
 static int state = 0, animstate = 0;
-static double timer = 0, count = 0;
+static double timer = 0, counter = 0;
 double step = glm::pi<double>() / 100;
 
 float getDistance(CModel const* lhs, CModel const* rhs)
@@ -90,12 +89,9 @@ Controller::Controller()
     childs.resize(20);
     std::copy(copy.begin() + 7, copy.end(), childs.begin());
 
-    //way = { 1, 5, 1, 5, 1, 5, 1};  // Order of actions, read from right to left
-	way = { 17, 16};
+	Way hell = Way(true);
 
-    //Disassemble(20);
-	for (int i : way)
-		std::cout << i << " ";
+    Disassemble(20);
 };
 
 void Controller::Update(double dt)
@@ -111,17 +107,17 @@ void Controller::Update(double dt)
             timer -= dt;
 			return;
         case 1:
-            if (timer > count)
+            if (timer > counter)
             {
                 Assemble(true);
-                count += step / 2;  // Tweak this to control animation speed. 
+                counter += step / 2;  // Tweak this to control animation speed. 
                 animstate++;
             }
             if (animstate == 50)
             {
                 state = 0;
                 timer = 0;
-                count = 0;
+                counter = 0;
                 animstate = 0;
                 for (int i = 0; i < cubeModel.size(); i++)
                     cubeModel[i].clearChilds();
@@ -187,7 +183,10 @@ void Controller::Disassemble(int i)
 	srand(time(NULL));
 	for (; i > 0; i--)
 	{
-		way.push_back(rand() % 12);
+		if (i % 2 == 0)
+			way.push_back(rand() % 6);
+		else
+			way.push_back(rand() % 6 + 6);
 		switch (way.back())
 		{
 		case 0: Action("RD", false); Action("RD", true); break;
@@ -231,6 +230,16 @@ void Controller::RD(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[1][5]]);
+		int temp = indices[0][2];
+		indices[0][2] = indices[2][2]; 
+		indices[2][2] = indices[2][8];
+		indices[2][8] = indices[0][8];
+		indices[0][8] = temp;
+		temp = indices[0][5];
+		indices[0][5] = indices[1][2];
+		indices[1][2] = indices[2][5];
+		indices[2][5] = indices[1][8];
+		indices[1][8] = temp;
     }
 }
 
@@ -243,6 +252,16 @@ void Controller::RU(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[1][5]]);
+		int temp = indices[0][2];
+		indices[0][2] = indices[0][8];
+		indices[0][8] = indices[2][8];
+		indices[2][8] = indices[2][2];
+		indices[2][2] = temp;
+		temp = indices[0][5];
+		indices[0][5] = indices[1][8];
+		indices[1][8] = indices[2][5];
+		indices[2][5] = indices[1][2];
+		indices[1][2] = temp;
     }
 }
 
@@ -255,6 +274,16 @@ void Controller::LD(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[1][3]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[2][0];
+		indices[2][0] = indices[2][6];
+		indices[2][6] = indices[0][6];
+		indices[0][6] = temp;
+		temp = indices[0][3];
+		indices[0][3] = indices[1][0];
+		indices[1][0] = indices[2][3];
+		indices[2][3] = indices[1][6];
+		indices[1][6] = temp;
     }
 }
 
@@ -267,6 +296,16 @@ void Controller::LU(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[1][3]]);
+		int temp = indices[0][2];
+		indices[0][0] = indices[0][6];
+		indices[0][6] = indices[2][6];
+		indices[2][6] = indices[2][0];
+		indices[2][0] = temp;
+		temp = indices[0][3];
+		indices[0][3] = indices[1][6];
+		indices[1][6] = indices[2][3];
+		indices[2][3] = indices[1][0];
+		indices[1][0] = temp;
     }
 }
 
@@ -279,6 +318,16 @@ void Controller::UR(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[1][1]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[2][0];
+		indices[2][0] = indices[2][2];
+		indices[2][2] = indices[0][2];
+		indices[0][2] = temp;
+		temp = indices[0][1];
+		indices[0][1] = indices[1][0];
+		indices[1][0] = indices[2][1];
+		indices[2][1] = indices[1][2];
+		indices[1][2] = temp;
     }
 }
 
@@ -291,6 +340,16 @@ void Controller::UL(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[1][1]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[0][2];
+		indices[0][2] = indices[2][2];
+		indices[2][2] = indices[2][0];
+		indices[2][0] = temp;
+		temp = indices[0][1];
+		indices[0][1] = indices[1][2];
+		indices[1][2] = indices[2][1];
+		indices[2][1] = indices[1][0];
+		indices[1][0] = temp;
     }
 }
 
@@ -303,6 +362,16 @@ void Controller::DR(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[1][7]]);
+		int temp = indices[0][6];
+		indices[0][6] = indices[2][6];
+		indices[2][6] = indices[2][8];
+		indices[2][8] = indices[0][8];
+		indices[0][8] = temp;
+		temp = indices[0][7];
+		indices[0][7] = indices[1][6];
+		indices[1][6] = indices[2][7];
+		indices[2][7] = indices[1][8];
+		indices[1][8] = temp;
     }
 }
 
@@ -315,6 +384,16 @@ void Controller::DL(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[1][7]]);
+		int temp = indices[0][6];
+		indices[0][6] = indices[0][8];
+		indices[0][8] = indices[2][8];
+		indices[2][8] = indices[2][6];
+		indices[2][6] = temp;
+		temp = indices[0][7];
+		indices[0][7] = indices[1][8];
+		indices[1][8] = indices[2][7];
+		indices[2][7] = indices[1][6];
+		indices[1][6] = temp;
     }
 }
 
@@ -327,6 +406,16 @@ void Controller::FR(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[0][4]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[0][6];
+		indices[0][6] = indices[0][8];
+		indices[0][8] = indices[0][2];
+		indices[0][2] = temp;
+		temp = indices[0][1];
+		indices[0][1] = indices[0][3];
+		indices[0][3] = indices[0][7];
+		indices[0][7] = indices[0][5];
+		indices[0][5] = temp;
     }
 }
 
@@ -339,6 +428,16 @@ void Controller::FL(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[0][4]]);
+		int temp = indices[0][0];
+		indices[0][0] = indices[0][2];
+		indices[0][2] = indices[0][8];
+		indices[0][8] = indices[0][6];
+		indices[0][6] = temp;
+		temp = indices[0][1];
+		indices[0][1] = indices[0][5];
+		indices[0][5] = indices[0][7];
+		indices[0][7] = indices[0][3];
+		indices[0][3] = temp;
     }
 }
 
@@ -351,6 +450,16 @@ void Controller::BR(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[2][4]]);
+		int temp = indices[2][0];
+		indices[2][0] = indices[2][6];
+		indices[2][6] = indices[2][8];
+		indices[2][8] = indices[2][2];
+		indices[2][2] = temp;
+		temp = indices[2][1];
+		indices[2][1] = indices[2][3];
+		indices[2][3] = indices[2][7];
+		indices[2][7] = indices[2][5];
+		indices[2][5] = temp;
     }
 }
 
@@ -363,5 +472,15 @@ void Controller::BL(bool rotate)
 	else
 	{
 		Addchilds(&cubeModel[indices[2][4]]);
+		int temp = indices[2][0];
+		indices[2][0] = indices[2][2];
+		indices[2][2] = indices[2][8];
+		indices[2][8] = indices[2][6];
+		indices[2][6] = temp;
+		temp = indices[2][1];
+		indices[2][1] = indices[2][3];
+		indices[2][3] = indices[2][7];
+		indices[2][7] = indices[2][5];
+		indices[2][5] = temp;
 	}
 }

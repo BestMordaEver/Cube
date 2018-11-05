@@ -33,7 +33,7 @@
     <ClCompile Include="controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WayNode.cpp">
+    <ClCompile Include="way.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,7 +56,7 @@
     <ClInclude Include="controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WayNode.h">
+    <ClInclude Include="way.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
