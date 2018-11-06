@@ -1,10 +1,11 @@
 ﻿  way.cpp
+d:\graphics new\graphics\way.cpp(59): warning C4018: '<': signed/unsigned mismatch
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  7 of 1173 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
-    5 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+  40 of 1257 functions ( 3.2%) were compiled, the rest were copied from previous compilation.
+    4 functions were new in current compilation
+    17 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'D:\cube\Release\vc120.pdb'; linking object as if no debug info
-  Graphics.vcxproj -> D:\cube\Release\Graphics.exe
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'D:\Graphics new\Release\vc120.pdb'; linking object as if no debug info
+  Graphics.vcxproj -> D:\Graphics new\Release\Graphics.exe

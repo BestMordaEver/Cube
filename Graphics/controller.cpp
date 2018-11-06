@@ -91,7 +91,7 @@ Controller::Controller()
 
 	Way hell = Way(true);
 
-    Disassemble(20);
+    //Disassemble(20);
 };
 
 void Controller::Update(double dt)
