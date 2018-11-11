@@ -3,6 +3,7 @@
 
 #include "viewpoint.h"
 #include "model.h"
+#include "way.h""
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -19,14 +20,25 @@ public:
 	void Draw(CViewPoint mainCam);
 	void Assemble(bool rotate);
 	void Disassemble(int i);
-	void Action(std::string s, bool rotate);
+	void Action(spin s, bool rotate);
 private:
     void Addchilds(CModel* parent);
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
 	std::vector<CModel> cubeModel;
     std::vector<CModel*> childs;
 	CModel cuuube;
-	void RU(bool rotate), RD(bool rotate), LU(bool rotate), LD(bool rotate), UR(bool rotate), UL(bool rotate), DR(bool rotate), DL(bool rotate), FR(bool rotate), FL(bool rotate), BR(bool rotate), BL(bool rotate);
+	void RightUp(bool rotate),
+		RightDown(bool rotate),
+		LeftUp(bool rotate),
+		LeftDown(bool rotate),
+		UpRight(bool rotate),
+		UpLeft(bool rotate),
+		DownRight(bool rotate),
+		DownLeft(bool rotate),
+		FrontRight(bool rotate),
+		FrontLeft(bool rotate),
+		BackRight(bool rotate),
+		BackLeft(bool rotate);
 };
 
 #endif

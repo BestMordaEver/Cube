@@ -3,14 +3,15 @@
 
 #include <vector>
 #include <map>
-#include <string>
 
 using namespace std; 
 
+enum spin { RD, RU, LD, LU, UR, UL, DR, DL, FR, FL, BR, BL };
+
 struct CubeState {
 	CubeState(int d);
-	vector<vector<int>> state;
-	map<string, CubeState*> neighbours;
+	vector<int> state;
+	map<spin, CubeState*> neighbours;
 	int depth;
 };
 
@@ -18,12 +19,24 @@ class Way
 {
 public:
 	Way(bool force = false);
-	map<string, CubeState*> map;
+	map<int, CubeState*> map;
+
 private:
-	string doStateName(CubeState cs);
-	void Act(string act, CubeState* cs);
-	string Invert(string act);
-	void RU(CubeState* cs), RD(CubeState* cs), LU(CubeState* cs), LD(CubeState* cs), UR(CubeState* cs), UL(CubeState* cs), DR(CubeState* cs), DL(CubeState* cs), FR(CubeState* cs), FL(CubeState* cs), BR(CubeState* cs), BL(CubeState* cs);
+	int doStateName(CubeState cs);
+	void Act(spin act, CubeState* cs);
+	spin Invert(spin act);
+	void RightUp(CubeState* cs), 
+		RightDown(CubeState* cs), 
+		LeftUp(CubeState* cs), 
+		LeftDown(CubeState* cs), 
+		UpRight(CubeState* cs), 
+		UpLeft(CubeState* cs), 
+		DownRight(CubeState* cs), 
+		DownLeft(CubeState* cs), 
+		FrontRight(CubeState* cs),
+		FrontLeft(CubeState* cs),
+		BackRight(CubeState* cs), 
+		BackLeft(CubeState* cs);
 };
 
 #endif // WAY_H

@@ -28,7 +28,7 @@ int main() {
 	CShader mainShader("vertex-shader.vs",
 		"fragment-shader.frag");
 	CViewPoint mainCam(std::move(mainShader), WIDTH, HEIGHT);
-	mainCam.SetCamera(glm::vec3(5, 5, -5), glm::vec3(0.7, -0.7, 0));
+	mainCam.SetCamera(glm::vec3(-5, 5, -5), glm::vec3(-0.7, -0.7, 0));
 	
 	Controller controller;
 	

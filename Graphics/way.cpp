@@ -2,41 +2,45 @@
 #include <iostream>
 #include <fstream>
 #include <thread>
+#include <string>
 
-vector<string> spins = { "RD", "RU", "LD", "LU", "UR", "UL", "DR", "DL", "FR", "FL", "BR", "BL" };
+vector<spin> spins = { RD, RU, LD, LU, UR, UL, DR, DL, FR, FL, BR, BL };
 
 Way::Way(bool force)
 {
 	ifstream stream("map.dat");
 	if (force || !stream.good()) { // Generate map
 		
-		CubeState root(0);
+		CubeState root(0);			// A solved cube
 		root.state = {
-			{26, 25, 24, 23, 22, 21, 20, 19, 18},
-			{17, 16, 15, 14, 13, 12, 11, 10, 9},
-			{8, 7, 6, 5, 4, 3, 2, 1, 0}
+			26, 25, 24, 23, 22, 21, 20, 19, 18,
+			17, 16, 15, 14, 13, 12, 11, 10, 9,
+			8, 7, 6, 5, 4, 3, 2, 1, 0
 		};
-		vector<CubeState*> parents, children;
+		vector<CubeState*> parents, children;	
 		parents.push_back(&root);
+		map[doStateName(root)] = &root;
 
-		for (int i = 1; i < 27; i++) {
+		for (int i = 1; i < 6; i++) { // God's number with restricted central spins and 180 degree spins is 26
 			for (CubeState* parent : parents) {
-				for (string act : spins) {
-					children.push_back(new CubeState(i));
-					Act(act, children.back());
-					if (map[doStateName(*children.back())]) {
-
-					}
-					else {
+				for (spin act : spins) {
+					children.push_back(new CubeState(i));			// Create new state
+					children.back()->state = parent->state;			// Copy it from parent
+					Act(act, children.back());						// Perform action
+					if (map[doStateName(*children.back())]) {		// Observe
+						parent->neighbours.insert(pair<spin, CubeState*>(act, map[doStateName(*children.back())]));
+						map[doStateName(*children.back())]->neighbours.insert(pair<spin, CubeState*>(Invert(act), parent));
+						children.pop_back();			// If exists - it was written earlier on the same depth,
+					}									// so just inject it in existing tree
+					else {								// If not - create new branch
 						map[doStateName(*children.back())] = children.back();
-						parent->neighbours.insert(pair<string, CubeState*>(act, children.back()));
-						children.back()->state = parent->state;
-						children.back()->neighbours.insert(pair<string, CubeState*>(Invert(act), parent));
+						parent->neighbours.insert(pair<spin, CubeState*>(act, children.back()));
+						children.back()->neighbours.insert(pair<spin, CubeState*>(Invert(act), parent));
 					}
 				}
 			}
-			parents = children;
-			children.clear();
+			parents = children;		// Working with next line of branches
+			children.clear();		// Algorythm is breadth-first
 		}
 	}
 	else { // Read map
@@ -44,211 +48,210 @@ Way::Way(bool force)
 	}
 }
 
-string Way::doStateName(CubeState cs)
+int Way::doStateName(CubeState cs)
 {
 	string temp = "";
-	for (vector<int> line : cs.state)
-		for (int index : line)
-			temp += to_string(index) + " ";
-	return temp;
+	for (int index : cs.state)
+		temp += to_string(index) + " ";
+	return hash<string>{} (temp);
 }
 
-void Way::Act(string act, CubeState* cs) {
-	if (act == "RU") { RU(cs); return; }
-	if (act == "RD") { RD(cs); return; }
-	if (act == "LU") { LU(cs); return; }
-	if (act == "LD") { LD(cs); return; }
-	if (act == "UR") { UR(cs); return; }
-	if (act == "UL") { UL(cs); return; }
-	if (act == "DR") { DR(cs); return; }
-	if (act == "DL") { DL(cs); return; }
-	if (act == "FR") { FR(cs); return; }
-	if (act == "FL") { FL(cs); return; }
-	if (act == "BR") { BR(cs); return; }
-	if (act == "BL") { BL(cs); return; }
+void Way::Act(spin act, CubeState* cs) {
+	if (act == RU) { RightUp(cs); return; }
+	if (act == RD) { RightDown(cs); return; }
+	if (act == LU) { LeftUp(cs); return; }
+	if (act == LD) { LeftDown(cs); return; }
+	if (act == UR) { UpRight(cs); return; }
+	if (act == UL) { UpLeft(cs); return; }
+	if (act == DR) { DownRight(cs); return; }
+	if (act == DL) { DownLeft(cs); return; }
+	if (act == FR) { FrontRight(cs); return; }
+	if (act == FL) { FrontLeft(cs); return; }
+	if (act == BR) { BackRight(cs); return; }
+	if (act == BL) { BackLeft(cs); return; }
 }
 
-string Way::Invert(string act) {
-	if (act == "RU") return "RD";
-	if (act == "RD") return "RU";
-	if (act == "LU") return "LD";
-	if (act == "LD") return "LU";
-	if (act == "UR") return "UL";
-	if (act == "UL") return "UR";
-	if (act == "DR") return "DL";
-	if (act == "DL") return "DR";
-	if (act == "FR") return "FL";
-	if (act == "FL") return "FR";
-	if (act == "BR") return "BL";
-	if (act == "BL") return "BR";
+spin Way::Invert(spin act) {
+	if (act == RU) return RD;
+	if (act == RD) return RU;
+	if (act == LU) return LD;
+	if (act == LD) return LU;
+	if (act == UR) return UL;
+	if (act == UL) return UR;
+	if (act == DR) return DL;
+	if (act == DL) return DR;
+	if (act == FR) return FL;
+	if (act == FL) return FR;
+	if (act == BR) return BL;
+	if (act == BL) return BR;
 }
 
-void Way::RD(CubeState* cs)
+void Way::RightDown(CubeState* cs)
 {
-	int temp = cs->state[0][2];
-	cs->state[0][2] = cs->state[2][2];
-	cs->state[2][2] = cs->state[2][8];
-	cs->state[2][8] = cs->state[0][8];
-	cs->state[0][8] = temp;
-	temp = cs->state[0][5];
-	cs->state[0][5] = cs->state[1][2];
-	cs->state[1][2] = cs->state[2][5];
-	cs->state[2][5] = cs->state[1][8];
-	cs->state[1][8] = temp;
+	int temp = cs->state[2];
+	cs->state[2] = cs->state[20];
+	cs->state[20] = cs->state[26];
+	cs->state[26] = cs->state[8];
+	cs->state[8] = temp;
+	temp = cs->state[5];
+	cs->state[5] = cs->state[11];
+	cs->state[11] = cs->state[23];
+	cs->state[23] = cs->state[17];
+	cs->state[17] = temp;
 }
 
-void Way::RU(CubeState* cs)
+void Way::RightUp(CubeState* cs)
 {
-	int temp = cs->state[0][2];
-	cs->state[0][2] = cs->state[0][8];
-	cs->state[0][8] = cs->state[2][8];
-	cs->state[2][8] = cs->state[2][2];
-	cs->state[2][2] = temp;
-	temp = cs->state[0][5];
-	cs->state[0][5] = cs->state[1][8];
-	cs->state[1][8] = cs->state[2][5];
-	cs->state[2][5] = cs->state[1][2];
-	cs->state[1][2] = temp;
+	int temp = cs->state[2];
+	cs->state[2] = cs->state[8];
+	cs->state[8] = cs->state[26];
+	cs->state[26] = cs->state[20];
+	cs->state[20] = temp;
+	temp = cs->state[5];
+	cs->state[5] = cs->state[17];
+	cs->state[17] = cs->state[23];
+	cs->state[23] = cs->state[11];
+	cs->state[11] = temp;
 }
 
-void Way::LD(CubeState* cs)
+void Way::LeftDown(CubeState* cs)
 {
-	int temp = cs->state[0][0];
-	cs->state[0][0] = cs->state[2][0];
-	cs->state[2][0] = cs->state[2][6];
-	cs->state[2][6] = cs->state[0][6];
-	cs->state[0][6] = temp;
-	temp = cs->state[0][3];
-	cs->state[0][3] = cs->state[1][0];
-	cs->state[1][0] = cs->state[2][3];
-	cs->state[2][3] = cs->state[1][6];
-	cs->state[1][6] = temp;
+	int temp = cs->state[0];
+	cs->state[0] = cs->state[18];
+	cs->state[18] = cs->state[24];
+	cs->state[24] = cs->state[6];
+	cs->state[6] = temp;
+	temp = cs->state[3];
+	cs->state[3] = cs->state[9];
+	cs->state[9] = cs->state[21];
+	cs->state[21] = cs->state[15];
+	cs->state[15] = temp;
 }
 
-void Way::LU(CubeState* cs)
+void Way::LeftUp(CubeState* cs)
 {
-	int temp = cs->state[0][2];
-	cs->state[0][0] = cs->state[0][6];
-	cs->state[0][6] = cs->state[2][6];
-	cs->state[2][6] = cs->state[2][0];
-	cs->state[2][0] = temp;
-	temp = cs->state[0][3];
-	cs->state[0][3] = cs->state[1][6];
-	cs->state[1][6] = cs->state[2][3];
-	cs->state[2][3] = cs->state[1][0];
-	cs->state[1][0] = temp;
+	int temp = cs->state[2];
+	cs->state[0] = cs->state[6];
+	cs->state[6] = cs->state[24];
+	cs->state[24] = cs->state[18];
+	cs->state[18] = temp;
+	temp = cs->state[3];
+	cs->state[3] = cs->state[15];
+	cs->state[15] = cs->state[21];
+	cs->state[21] = cs->state[9];
+	cs->state[9] = temp;
 }
 
-void Way::UR(CubeState* cs)
+void Way::UpRight(CubeState* cs)
 {
-	int temp = cs->state[0][0];
-	cs->state[0][0] = cs->state[2][0];
-	cs->state[2][0] = cs->state[2][2];
-	cs->state[2][2] = cs->state[0][2];
-	cs->state[0][2] = temp;
-	temp = cs->state[0][1];
-	cs->state[0][1] = cs->state[1][0];
-	cs->state[1][0] = cs->state[2][1];
-	cs->state[2][1] = cs->state[1][2];
-	cs->state[1][2] = temp;
+	int temp = cs->state[0];
+	cs->state[0] = cs->state[18];
+	cs->state[18] = cs->state[20];
+	cs->state[20] = cs->state[2];
+	cs->state[2] = temp;
+	temp = cs->state[1];
+	cs->state[1] = cs->state[9];
+	cs->state[9] = cs->state[19];
+	cs->state[19] = cs->state[11];
+	cs->state[11] = temp;
 }
 
-void Way::UL(CubeState* cs)
+void Way::UpLeft(CubeState* cs)
 {
-	int temp = cs->state[0][0];
-	cs->state[0][0] = cs->state[0][2];
-	cs->state[0][2] = cs->state[2][2];
-	cs->state[2][2] = cs->state[2][0];
-	cs->state[2][0] = temp;
-	temp = cs->state[0][1];
-	cs->state[0][1] = cs->state[1][2];
-	cs->state[1][2] = cs->state[2][1];
-	cs->state[2][1] = cs->state[1][0];
-	cs->state[1][0] = temp;
+	int temp = cs->state[0];
+	cs->state[0] = cs->state[2];
+	cs->state[2] = cs->state[20];
+	cs->state[20] = cs->state[18];
+	cs->state[18] = temp;
+	temp = cs->state[1];
+	cs->state[1] = cs->state[11];
+	cs->state[11] = cs->state[19];
+	cs->state[19] = cs->state[9];
+	cs->state[9] = temp;
 }
 
-void Way::DR(CubeState* cs)
+void Way::DownRight(CubeState* cs)
 {
-	int temp = cs->state[0][6];
-	cs->state[0][6] = cs->state[2][6];
-	cs->state[2][6] = cs->state[2][8];
-	cs->state[2][8] = cs->state[0][8];
-	cs->state[0][8] = temp;
-	temp = cs->state[0][7];
-	cs->state[0][7] = cs->state[1][6];
-	cs->state[1][6] = cs->state[2][7];
-	cs->state[2][7] = cs->state[1][8];
-	cs->state[1][8] = temp;
+	int temp = cs->state[6];
+	cs->state[6] = cs->state[24];
+	cs->state[24] = cs->state[26];
+	cs->state[26] = cs->state[8];
+	cs->state[8] = temp;
+	temp = cs->state[7];
+	cs->state[7] = cs->state[15];
+	cs->state[15] = cs->state[25];
+	cs->state[25] = cs->state[17];
+	cs->state[17] = temp;
 }
 
-void Way::DL(CubeState* cs)
+void Way::DownLeft(CubeState* cs)
 {
-	int temp = cs->state[0][6];
-	cs->state[0][6] = cs->state[0][8];
-	cs->state[0][8] = cs->state[2][8];
-	cs->state[2][8] = cs->state[2][6];
-	cs->state[2][6] = temp;
-	temp = cs->state[0][7];
-	cs->state[0][7] = cs->state[1][8];
-	cs->state[1][8] = cs->state[2][7];
-	cs->state[2][7] = cs->state[1][6];
-	cs->state[1][6] = temp;
+	int temp = cs->state[6];
+	cs->state[6] = cs->state[8];
+	cs->state[8] = cs->state[26];
+	cs->state[26] = cs->state[24];
+	cs->state[24] = temp;
+	temp = cs->state[7];
+	cs->state[7] = cs->state[17];
+	cs->state[17] = cs->state[25];
+	cs->state[25] = cs->state[15];
+	cs->state[15] = temp;
 }
 
-void Way::FR(CubeState* cs)
+void Way::FrontRight(CubeState* cs)
 {
-	int temp = cs->state[0][0];
-	cs->state[0][0] = cs->state[0][6];
-	cs->state[0][6] = cs->state[0][8];
-	cs->state[0][8] = cs->state[0][2];
-	cs->state[0][2] = temp;
-	temp = cs->state[0][1];
-	cs->state[0][1] = cs->state[0][3];
-	cs->state[0][3] = cs->state[0][7];
-	cs->state[0][7] = cs->state[0][5];
-	cs->state[0][5] = temp;
+	int temp = cs->state[0];
+	cs->state[0] = cs->state[6];
+	cs->state[6] = cs->state[8];
+	cs->state[8] = cs->state[2];
+	cs->state[2] = temp;
+	temp = cs->state[1];
+	cs->state[1] = cs->state[3];
+	cs->state[3] = cs->state[7];
+	cs->state[7] = cs->state[5];
+	cs->state[5] = temp;
 }
 
-void Way::FL(CubeState* cs)
+void Way::FrontLeft(CubeState* cs)
 {
-	int temp = cs->state[0][0];
-	cs->state[0][0] = cs->state[0][2];
-	cs->state[0][2] = cs->state[0][8];
-	cs->state[0][8] = cs->state[0][6];
-	cs->state[0][6] = temp;
-	temp = cs->state[0][1];
-	cs->state[0][1] = cs->state[0][5];
-	cs->state[0][5] = cs->state[0][7];
-	cs->state[0][7] = cs->state[0][3];
-	cs->state[0][3] = temp;
+	int temp = cs->state[0];
+	cs->state[0] = cs->state[2];
+	cs->state[2] = cs->state[8];
+	cs->state[8] = cs->state[6];
+	cs->state[6] = temp;
+	temp = cs->state[1];
+	cs->state[1] = cs->state[5];
+	cs->state[5] = cs->state[7];
+	cs->state[7] = cs->state[3];
+	cs->state[3] = temp;
 }
 
-void Way::BR(CubeState* cs)
+void Way::BackRight(CubeState* cs)
 {
-	int temp = cs->state[2][0];
-	cs->state[2][0] = cs->state[2][6];
-	cs->state[2][6] = cs->state[2][8];
-	cs->state[2][8] = cs->state[2][2];
-	cs->state[2][2] = temp;
-	temp = cs->state[2][1];
-	cs->state[2][1] = cs->state[2][3];
-	cs->state[2][3] = cs->state[2][7];
-	cs->state[2][7] = cs->state[2][5];
-	cs->state[2][5] = temp;
+	int temp = cs->state[18];
+	cs->state[18] = cs->state[24];
+	cs->state[24] = cs->state[26];
+	cs->state[26] = cs->state[20];
+	cs->state[20] = temp;
+	temp = cs->state[19];
+	cs->state[19] = cs->state[21];
+	cs->state[21] = cs->state[25];
+	cs->state[25] = cs->state[23];
+	cs->state[23] = temp;
 }
 
-void Way::BL(CubeState* cs)
+void Way::BackLeft(CubeState* cs)
 {
-	int temp = cs->state[2][0];
-	cs->state[2][0] = cs->state[2][2];
-	cs->state[2][2] = cs->state[2][8];
-	cs->state[2][8] = cs->state[2][6];
-	cs->state[2][6] = temp;
-	temp = cs->state[2][1];
-	cs->state[2][1] = cs->state[2][3];
-	cs->state[2][3] = cs->state[2][7];
-	cs->state[2][7] = cs->state[2][5];
-	cs->state[2][5] = temp;
+	int temp = cs->state[18];
+	cs->state[18] = cs->state[20];
+	cs->state[20] = cs->state[26];
+	cs->state[26] = cs->state[24];
+	cs->state[24] = temp;
+	temp = cs->state[19];
+	cs->state[19] = cs->state[21];
+	cs->state[21] = cs->state[25];
+	cs->state[25] = cs->state[23];
+	cs->state[23] = temp;
 }
 
 CubeState::CubeState(int d)
