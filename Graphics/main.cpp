@@ -21,7 +21,7 @@
 
 #include "nuklear_glfw_gl3.h"
 
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH = 1366, HEIGHT = 768;
 #define MAX_VERTEX_BUFFER 512 * 1024
 #define MAX_ELEMENT_BUFFER 128 * 1024
 

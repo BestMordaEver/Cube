@@ -24,9 +24,33 @@ vector<spin> Way::Solve()
 	for (int i = 0; i < way.size() - 2; i++) {
 		if (way[i] == way[i + 1] && way[i] == way[i + 2]) {
 			++way[i];
-			way.erase(way.begin() + i + 2);
+			way.erase(way.begin() + i + 1);
 			way.erase(way.begin() + i + 1);
 		}
+	}
+	for (int i = 0; i < way.size() - 1; i++) {
+		if (way[i] == ++way[i + 1]) {
+			way.erase(way.begin() + i);
+			way.erase(way.begin() + i);
+		}
+		else
+			++way[i + 1];
+	}
+	// yup, just repeat it again
+	for (int i = 0; i < way.size() - 2; i++) {
+		if (way[i] == way[i + 1] && way[i] == way[i + 2]) {
+			++way[i];
+			way.erase(way.begin() + i + 1);
+			way.erase(way.begin() + i + 1);
+		}
+	}
+	for (int i = 0; i < way.size() - 1; i++) {
+		if (way[i] == ++way[i + 1]) {
+			way.erase(way.begin() + i);
+			way.erase(way.begin() + i);
+		}
+		else
+			++way[i + 1];
 	}
 
 	return way;

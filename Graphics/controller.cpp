@@ -67,48 +67,39 @@ float getDistance(CModel const* lhs, CModel const* rhs)
     return glm::distance(lhs->getPosition(), rhs->getPosition());
 }
 
-CModel Xaxis, Yaxis, Zaxis;
-
 Controller::Controller()
 {
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            for (int k = 0; k < 3; k++)
-            {
-                cubeModel.emplace_back(square);
-                cubeModel.back().setPosition(glm::vec3(-1.0f + i, 1.0f - j, -1.0f + k) * 1.05f, cubeModel.back().getEulers());
-            }
-        }
-    }
-    vector<CModel*> copy;
-    transform(cubeModel.begin(), cubeModel.end(), back_inserter(copy), [](CModel& model) { return &model; });
-    sort(copy.begin(), copy.end(), [model = &cubeModel[indices[13]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
-    childs.resize(20);
+	bool good = true;
+	do {
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				for (int k = 0; k < 3; k++)
+				{
+					cubeModel.emplace_back(square);
+					cubeModel.back().setPosition(glm::vec3(-1.0f + i, 1.0f - j, -1.0f + k) * 1.05f, cubeModel.back().getEulers());
+				}
+			}
+		}
+		vector<CModel*> copy;
+		transform(cubeModel.begin(), cubeModel.end(), back_inserter(copy), [](CModel& model) { return &model; });
+		sort(copy.begin(), copy.end(), [model = &cubeModel[indices[13]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
+		childs.resize(20);
+		std::copy(copy.begin() + 7, copy.end(), childs.begin());
 
-	Xaxis = CModel(vector<GLfloat>{ 
-		1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-		1.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
-	});
-	Yaxis = CModel(vector<GLfloat>{
-		0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 
-		0.5f, 1.0f, 0.5f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f
-	});
-	Zaxis = CModel(vector<GLfloat>{
-		0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
-	});
+		solver = Way();
 
-    std::copy(copy.begin() + 7, copy.end(), childs.begin());
-	
-	solver = Way();
-    Disassemble(20);
-	way = solver.Solve();
-	//way = { RD, RU, LD, LU, UR, UL, DR, DL, FR, FL, BR, BL, RD, RU, LD, LU, UR, UL, DR, DL, FR, FL, BR, BL };
+		Disassemble(20);
+		try {
+			way = solver.Solve();
+			good = true;
+		}
+		catch (const exception& e) {
+			good = false;
+		}
+	} while (!good);
+    
 };
 
 void Controller::Update(double dt)
