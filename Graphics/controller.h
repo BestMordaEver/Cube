@@ -18,15 +18,15 @@ public:
 	Controller();
 	void Update(double dt);
 	void Draw(CViewPoint mainCam);
-	void Assemble(bool rotate);
 	void Disassemble(int i);
 	void Action(spin s, bool rotate);
 private:
     void Addchilds(CModel* parent);
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
-	std::vector<CModel> cubeModel;
-    std::vector<CModel*> childs;
-	CModel cuuube;
+	vector<CModel> cubeModel;
+    vector<CModel*> childs;
+	vector<spin> way;
+	Way solver;
 	void RightUp(bool rotate),
 		RightDown(bool rotate),
 		LeftUp(bool rotate),

@@ -2,7 +2,7 @@
 #include <time.h>
 #include <algorithm>
 
-std::vector<GLfloat> square = {
+vector<GLfloat> square = {
     // Blue
     -0.5f, 0.5f, -0.5f,  0.0f, 0.0f, 1.0f,
     -0.5f, 0.5f, 0.5f,  0.0f, 0.0f, 1.0f,
@@ -52,15 +52,7 @@ std::vector<GLfloat> square = {
     -0.5f, -0.5f, 0.5f,  1.0f, 1.0f, 0.2f
 };
 
-std::vector<spin> way;
-
-//std::vector<int> indices = {
-//	8, 7, 6, 5, 4, 3, 2, 1, 0,
-//	17, 16, 15, 14, 13, 12, 11, 10, 9,
-//    26, 25, 24, 23, 22, 21, 20, 19, 18
-//};
-
-std::vector<int> indices = {
+vector<int> indices = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8,
 	9, 10, 11, 12, 13, 14, 15, 16, 17,
 	18, 19, 20, 21, 22, 23, 24, 25, 26
@@ -90,9 +82,9 @@ Controller::Controller()
             }
         }
     }
-    std::vector<CModel*> copy;
-    std::transform(cubeModel.begin(), cubeModel.end(), std::back_inserter(copy), [](CModel& model) { return &model; });
-    std::sort(copy.begin(), copy.end(), [model = &cubeModel[indices[13]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
+    vector<CModel*> copy;
+    transform(cubeModel.begin(), cubeModel.end(), back_inserter(copy), [](CModel& model) { return &model; });
+    sort(copy.begin(), copy.end(), [model = &cubeModel[indices[13]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
     childs.resize(20);
 
 	Xaxis = CModel(vector<GLfloat>{ 
@@ -112,11 +104,11 @@ Controller::Controller()
 	});
 
     std::copy(copy.begin() + 7, copy.end(), childs.begin());
-
-	way = {UR, UL, DR, DL};
-	//Way hell = Way(true);
-
-    //Disassemble(5);
+	
+	solver = Way();
+    Disassemble(20);
+	way = solver.Solve();
+	//way = { RD, RU, LD, LU, UR, UL, DR, DL, FR, FL, BR, BL, RD, RU, LD, LU, UR, UL, DR, DL, FR, FL, BR, BL };
 };
 
 void Controller::Update(double dt)
@@ -127,14 +119,14 @@ void Controller::Update(double dt)
     switch (state)
     {
         case 0:
-			Action(way.back(), false);
+			Action(way.front(), false);
             state = 1;
             timer -= dt;
 			return;
         case 1:
             if (timer > counter)
             {
-				Action(way.back(), true);
+				Action(way.front(), true);
                 counter += step / 2;  // Tweak this to control animation speed. 
                 animstate++;
             }
@@ -144,20 +136,12 @@ void Controller::Update(double dt)
                 timer = 0;
                 counter = 0;
                 animstate = 0;
-                for (int i = 0; i < cubeModel.size(); i++)
-                    cubeModel[i].clearChilds();
-
-                //way.insert(way.begin(), way.back());       // This line loops course of actions, remove once done debugging
-                way.pop_back();
+				for (int j = 0; j < cubeModel.size(); j++)
+					cubeModel[j].clearChilds();
+				way.erase(way.begin());
             }
             return;
-    }                             // This is only for manual inputs
-    //std::string act;            // To activate this mode, comment current Update func and uncomment here
-    //std::cin >> act;            // Valid inputs are listed below, MUST BE UPPERCASE, invalid are ignored
-    //Action(act, false); Action(act, true);
-    //for (int j = 0; j < cubeModel.size(); j++)
-    //	cubeModel[j].clearChilds();
-
+    }
 }
 
 void Controller::Draw(CViewPoint mainCam)
@@ -204,7 +188,7 @@ void Controller::Disassemble(int i)
 
 void Controller::Addchilds(CModel* parent)
 {
-    std::sort(childs.begin(), childs.end(), [model = parent](CModel const* lhs, CModel const* rhs) { return getDistance(lhs, model) < getDistance(rhs, model); });
+    sort(childs.begin(), childs.end(), [model = parent](CModel const* lhs, CModel const* rhs) { return getDistance(lhs, model) < getDistance(rhs, model); });
     parent->AddChild(childs[0]);
     parent->AddChild(childs[1]);
     parent->AddChild(childs[2]);
@@ -224,6 +208,7 @@ void Controller::RightDown(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[14]]);
+		solver.rotate_counter_clock('o');
 		int temp = indices[2];
 		indices[2] = indices[20]; 
 		indices[20] = indices[26];
@@ -246,6 +231,7 @@ void Controller::RightUp(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[14]]);
+		solver.rotate_clock('o');
 		int temp = indices[2];
 		indices[2] = indices[8];
 		indices[8] = indices[26];
@@ -268,6 +254,7 @@ void Controller::LeftDown(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[12]]);
+		solver.rotate_clock('r');
 		int temp = indices[0];
 		indices[0] = indices[18];
 		indices[18] = indices[24];
@@ -290,6 +277,7 @@ void Controller::LeftUp(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[12]]);
+		solver.rotate_counter_clock('r');
 		int temp = indices[2];
 		indices[0] = indices[6];
 		indices[6] = indices[24];
@@ -307,11 +295,12 @@ void Controller::UpRight(bool rotate)
 {
     if (rotate)
     {
-        cubeModel[indices[11]].rotate(glm::vec3(0, step, 0));
+        cubeModel[indices[10]].rotate(glm::vec3(0, step, 0));
     }
     else
     {
-        Addchilds(&cubeModel[indices[11]]);
+        Addchilds(&cubeModel[indices[10]]);
+		solver.rotate_counter_clock('w');
 		int temp = indices[0];
 		indices[0] = indices[18];
 		indices[18] = indices[20];
@@ -329,11 +318,12 @@ void Controller::UpLeft(bool rotate)
 {
     if (rotate)
     {
-        cubeModel[indices[11]].rotate(glm::vec3(0, -step, 0));
+        cubeModel[indices[10]].rotate(glm::vec3(0, -step, 0));
     }
     else
     {
-        Addchilds(&cubeModel[indices[11]]);
+        Addchilds(&cubeModel[indices[10]]);
+		solver.rotate_clock('w');
 		int temp = indices[0];
 		indices[0] = indices[2];
 		indices[2] = indices[20];
@@ -356,6 +346,7 @@ void Controller::DownRight(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[16]]);
+		solver.rotate_clock('y');
 		int temp = indices[6];
 		indices[6] = indices[24];
 		indices[24] = indices[26];
@@ -378,6 +369,7 @@ void Controller::DownLeft(bool rotate)
     else
     {
         Addchilds(&cubeModel[indices[16]]);
+		solver.rotate_counter_clock('y');
 		int temp = indices[6];
 		indices[6] = indices[8];
 		indices[8] = indices[26];
@@ -395,11 +387,12 @@ void Controller::FrontRight(bool rotate)
 {
     if (rotate)
     {
-        cubeModel[indices[4]].rotate(glm::vec3(0, 0, step));
+        cubeModel[indices[4]].rotate(glm::vec3(step, 0, 0));
     }
     else
     {
         Addchilds(&cubeModel[indices[4]]);
+		solver.rotate_clock('b');
 		int temp = indices[0];
 		indices[0] = indices[6];
 		indices[6] = indices[8];
@@ -417,11 +410,12 @@ void Controller::FrontLeft(bool rotate)
 {
     if (rotate)
     {
-        cubeModel[indices[4]].rotate(glm::vec3(0, 0, -step));
+        cubeModel[indices[4]].rotate(glm::vec3(-step, 0, 0));
     }
     else
     {
         Addchilds(&cubeModel[indices[4]]);
+		solver.rotate_counter_clock('b');
 		int temp = indices[0];
 		indices[0] = indices[2];
 		indices[2] = indices[8];
@@ -439,11 +433,12 @@ void Controller::BackRight(bool rotate)
 {
     if (rotate)
     {
-        cubeModel[indices[22]].rotate(glm::vec3(0, 0, step));
+        cubeModel[indices[22]].rotate(glm::vec3(step, 0, 0));
     }
     else
     {
         Addchilds(&cubeModel[indices[22]]);
+		solver.rotate_counter_clock('g');
 		int temp = indices[18];
 		indices[18] = indices[24];
 		indices[24] = indices[26];
@@ -461,11 +456,12 @@ void Controller::BackLeft(bool rotate)
 {
     if (rotate)
     {
-        cubeModel[indices[22]].rotate(glm::vec3(0, 0, -step));
+        cubeModel[indices[22]].rotate(glm::vec3(-step, 0, 0));
     }
 	else
 	{
 		Addchilds(&cubeModel[indices[22]]);
+		solver.rotate_clock('g');
 		int temp = indices[18];
 		indices[18] = indices[20];
 		indices[20] = indices[26];
