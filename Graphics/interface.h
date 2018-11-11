@@ -29,5 +29,7 @@ void doMovement(CViewPoint* camera);
 
 
 GLFWwindow* initializeInterface(GLuint width, GLuint height);
+struct nk_context* initializeUI(GLFWwindow* window);
+void drawUI(struct nk_context* ctx, struct nk_colorf& bg);
 
 #endif // INTERFACE_H

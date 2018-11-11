@@ -80,6 +80,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)glew-2.0.0-win32\glew-2.0.0\lib\Release\Win32;$(SolutionDir)glfw-3.2.1.bin.WIN32\glfw-3.2.1.bin.WIN32\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -135,6 +136,8 @@
     <ClInclude Include="customgltemplates.h" />
     <ClInclude Include="interface.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="nuclear.h" />
+    <ClInclude Include="nuklear_glfw_gl3.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="viewpoint.h" />
     <ClInclude Include="way.h" />
@@ -142,6 +145,9 @@
   <ItemGroup>
     <None Include="fragment-shader.frag" />
     <None Include="vertex-shader.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="DroidSans.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
