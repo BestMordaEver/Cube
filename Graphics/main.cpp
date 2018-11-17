@@ -38,7 +38,19 @@ int main() {
 	CViewPoint mainCam(std::move(mainShader), WIDTH, HEIGHT);
 	mainCam.SetCamera(glm::vec3(-5, 5, -5), glm::vec3(-0.7, -0.7, 0));
 	
-	Controller controller;
+	Controller controller = Controller(0);
+
+	bool good = true;
+	do {
+		try {
+			controller = Controller();
+			good = true;
+		}
+		catch (const exception& e) {
+			controller.~Controller();
+			good = false;
+		}
+	} while (!good);
 	
 	double dt = 0;
 	//main loop

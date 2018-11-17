@@ -1,4 +1,5 @@
 #include "way.h"
+#include <iostream>
 
 Way::Way()
 {
@@ -12,12 +13,13 @@ Way::Way()
 
 vector<spin> Way::Solve()
 {
-	way.clear();
-	solve_white_cross();
-	solve_white_corners();
-	solve_middle_layer();
-	solve_yellow_cross();
-	solve_yellow_corners();
+	vector<vector<char>> temp = { white, red, orange, blue, green, yellow };
+	way.clear();					// While solving the cube, vectors come to the initial state
+	solve_white_cross();			// which is a definition of solved cube
+	solve_white_corners();			// We still need to preserve the original state of the cube
+	solve_middle_layer();			// as we need to monitor where we make an interruption
+	solve_yellow_cross();			// to re-generate the way from that point if nessesary 
+	solve_yellow_corners();			// This is not optimal, but it follows the spirit of the algorithm
 	yellow_corner_orientation();
 	yellow_edges_colour_arrangement();
 
@@ -52,19 +54,23 @@ vector<spin> Way::Solve()
 		else
 			++way[i + 1];
 	}
-
+	white = temp[0]; red = temp[1]; orange = temp[2]; blue = temp[3]; green = temp[4]; yellow = temp[5];
+	temp.~vector();
 	return way;
 }
 
 void Way::swap(char &a, char &b)
 {
-	char t = a;
-	a = b;
-	b = t;
+	a += b;
+	b = a - b;
+	a -= b;
 }
 
 void Way::rotate_clock(char choice)
 {
+	if (way.size() > 1000)
+		throw exception();
+
 	if (choice == 'w')
 	{
 		way.push_back(UL);

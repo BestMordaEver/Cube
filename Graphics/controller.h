@@ -16,6 +16,7 @@ class Controller
 {
 public:
 	Controller();
+	Controller(int a);
 	void Update(double dt);
 	void Draw(CViewPoint mainCam);
 	void Disassemble(int i);
@@ -26,7 +27,7 @@ private:
 	vector<CModel> cubeModel;
     vector<CModel*> childs;
 	vector<spin> way;
-	Way solver;
+	static Way solver;
 	void RightUp(bool rotate),
 		RightDown(bool rotate),
 		LeftUp(bool rotate),

@@ -58,48 +58,40 @@ vector<int> indices = {
 	18, 19, 20, 21, 22, 23, 24, 25, 26
 };
 
-static int state = 0, animstate = 0;
+static int state = 0, animstate = 0, globalstate = 0;
 static double timer = 0, counter = 0;
 double step = glm::pi<double>() / 100;
+Way Controller::solver;
 
 float getDistance(CModel const* lhs, CModel const* rhs)
 {
     return glm::distance(lhs->getPosition(), rhs->getPosition());
 }
 
+Controller::Controller(int a){}
+
 Controller::Controller()
 {
-	bool good = true;
-	do {
-		for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
 		{
-			for (int j = 0; j < 3; j++)
+			for (int k = 0; k < 3; k++)
 			{
-				for (int k = 0; k < 3; k++)
-				{
-					cubeModel.emplace_back(square);
-					cubeModel.back().setPosition(glm::vec3(-1.0f + i, 1.0f - j, -1.0f + k) * 1.05f, cubeModel.back().getEulers());
-				}
+				cubeModel.emplace_back(square);
+				cubeModel.back().setPosition(glm::vec3(-1.0f + i, 1.0f - j, -1.0f + k) * 1.05f, cubeModel.back().getEulers());
 			}
 		}
-		vector<CModel*> copy;
-		transform(cubeModel.begin(), cubeModel.end(), back_inserter(copy), [](CModel& model) { return &model; });
-		sort(copy.begin(), copy.end(), [model = &cubeModel[indices[13]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
-		childs.resize(20);
-		std::copy(copy.begin() + 7, copy.end(), childs.begin());
-
-		solver = Way();
-
-		Disassemble(20);
-		try {
-			way = solver.Solve();
-			good = true;
-		}
-		catch (const exception& e) {
-			good = false;
-		}
-	} while (!good);
-    
+	}
+	vector<CModel*> copy;
+	transform(cubeModel.begin(), cubeModel.end(), back_inserter(copy), [](CModel& model) { return &model; });
+	sort(copy.begin(), copy.end(), [model = &cubeModel[indices[13]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
+	childs.resize(20);
+	std::copy(copy.begin() + 7, copy.end(), childs.begin());
+		
+	solver = Way();
+	Disassemble(100);
+	way = solver.Solve();
 };
 
 void Controller::Update(double dt)
@@ -150,7 +142,7 @@ void Controller::Draw(CViewPoint mainCam)
 void Controller::Action(spin s, bool rotate)     // Rotate false is for preparation, assigns children to centers
 {   
 	if (s == RU) { RightUp(rotate); return; }              // True makes actual rotation
-	if (s == RD) { RightDown(rotate); return; }              // rn rotation is fixed in int step, change on your own risk
+	if (s == RD) { RightDown(rotate); return; }
 	if (s == LU) { LeftUp(rotate); return; }
 	if (s == LD) { LeftDown(rotate); return; }
 	if (s == UR) { UpRight(rotate); return; }
