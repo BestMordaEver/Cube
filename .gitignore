@@ -5,3 +5,11 @@
 *.obj
 *.pdb
 *.iobj
+*.lastcodeanalysissucceeded
+*.ilk
+*.sln
+*.db
+*.opendb
+*.xml
+*.idb
+*.ipdb
