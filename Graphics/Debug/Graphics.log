@@ -1,6 +1,0 @@
-﻿  controller.cpp
-d:\cube\graphics\controller.cpp(126): warning C4018: '<': signed/unsigned mismatch
-d:\cube\graphics\controller.cpp(144): warning C4018: '<': signed/unsigned mismatch
-d:\cube\graphics\controller.cpp(199): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-d:\cube\graphics\controller.cpp(224): warning C4018: '<': signed/unsigned mismatch
-  Graphics.vcxproj -> D:\cube\Debug\Graphics.exe
