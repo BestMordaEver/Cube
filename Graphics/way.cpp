@@ -1,4 +1,5 @@
 #include "way.h"
+#include "controller.h"
 #include <iostream>
 
 Way::Way()
@@ -14,7 +15,10 @@ Way::Way()
 vector<spin> Way::Solve()
 {
 	vector<vector<char>> temp = { white, red, orange, blue, green, yellow };
-	way.clear();					// While solving the cube, vectors come to the initial state
+	way.clear();
+	if (Controller::way.size())
+		way.push_back(Controller::way.front());
+									// While solving the cube, vectors come to the initial state
 	solve_white_cross();			// which is a definition of solved cube
 	solve_white_corners();			// We still need to preserve the original state of the cube
 	solve_middle_layer();			// as we need to monitor where we make an interruption

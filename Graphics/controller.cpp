@@ -58,10 +58,12 @@ vector<int> indices = {
 	18, 19, 20, 21, 22, 23, 24, 25, 26
 };
 
-static int state = 0, animstate = 0, globalstate = 0;
-static double timer = 0, counter = 0;
+int animstate = 0;
+double timer = 0, counter = 0;
 double step = glm::pi<double>() / 100;
 Way Controller::solver;
+int Controller::state = 0;
+vector<spin> Controller::way;
 
 float getDistance(CModel const* lhs, CModel const* rhs)
 {
@@ -83,6 +85,7 @@ Controller::Controller()
 			}
 		}
 	}
+
 	vector<CModel*> copy;
 	transform(cubeModel.begin(), cubeModel.end(), back_inserter(copy), [](CModel& model) { return &model; });
 	sort(copy.begin(), copy.end(), [model = &cubeModel[indices[13]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
@@ -97,14 +100,12 @@ Controller::Controller()
 void Controller::Update(double dt)
 {
     timer += dt;
-    if (way.size() == 0)
-        state = 2; // Assembled
     switch (state)
     {
         case 0:
 			Action(way.front(), false);
             state = 1;
-            timer -= dt;
+            timer = 0;
 			return;
         case 1:
             if (timer > counter)
@@ -122,6 +123,8 @@ void Controller::Update(double dt)
 				for (int j = 0; j < cubeModel.size(); j++)
 					cubeModel[j].clearChilds();
 				way.erase(way.begin());
+				if (way.size() == 0)
+					state = 2;  // Assembled
             }
             return;
     }
@@ -131,12 +134,6 @@ void Controller::Draw(CViewPoint mainCam)
 {
     for (int i = 0; i < cubeModel.size(); i++)
         mainCam.drawModel(cubeModel[i]);
-	//mainCam.drawModel(cubeModel[1]);
-	//mainCam.drawModel(cubeModel[0]);
-	//mainCam.drawModel(cubeModel[4]);
-	//mainCam.drawModel(Xaxis);
-	//mainCam.drawModel(Yaxis);
-	//mainCam.drawModel(Zaxis);
 }
 
 void Controller::Action(spin s, bool rotate)     // Rotate false is for preparation, assigns children to centers

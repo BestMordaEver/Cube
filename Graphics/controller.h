@@ -20,14 +20,16 @@ public:
 	void Update(double dt);
 	void Draw(CViewPoint mainCam);
 	void Disassemble(int i);
+	void Assemble();
 	void Action(spin s, bool rotate);
+	static int Controller::state;
+	static vector<spin> Controller::way;
+	static Way Controller::solver;
 private:
     void Addchilds(CModel* parent);
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
 	vector<CModel> cubeModel;
     vector<CModel*> childs;
-	vector<spin> way;
-	static Way solver;
 	void RightUp(bool rotate),
 		RightDown(bool rotate),
 		LeftUp(bool rotate),

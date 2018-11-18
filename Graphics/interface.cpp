@@ -1,5 +1,5 @@
-
 #include "interface.h"
+#include "controller.h"
 
 #define NK_INCLUDE_FIXED_TYPES
 #define NK_INCLUDE_STANDARD_IO
@@ -149,15 +149,20 @@ struct nk_context* initializeUI(GLFWwindow* window)
     struct nk_font_atlas *atlas;
     nk_glfw3_font_stash_begin(&atlas);
     struct nk_font *droid = nk_font_atlas_add_from_file(atlas, "DroidSans.ttf", 14, 0);
-    /*struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "../../../extra_font/Roboto-Regular.ttf", 14, 0);*/
-    /*struct nk_font *future = nk_font_atlas_add_from_file(atlas, "../../../extra_font/kenvector_future_thin.ttf", 13, 0);*/
-    /*struct nk_font *clean = nk_font_atlas_add_from_file(atlas, "../../../extra_font/ProggyClean.ttf", 12, 0);*/
-    /*struct nk_font *tiny = nk_font_atlas_add_from_file(atlas, "../../../extra_font/ProggyTiny.ttf", 10, 0);*/
-    /*struct nk_font *cousine = nk_font_atlas_add_from_file(atlas, "../../../extra_font/Cousine-Regular.ttf", 13, 0);*/
     nk_glfw3_font_stash_end();
-    /*nk_style_load_all_cursors(ctx, atlas->cursors);*/
     nk_style_set_font(ctx, &droid->handle);
     return ctx;
+}
+
+int prevstate = Controller::state;
+
+void wayoverride(spin s) {
+	for (auto i = Controller::way.size(); i > 1; i--) {
+		Controller::way.pop_back();
+	}
+	if (Controller::state == 2)
+		Controller::state = 0;
+	Controller::way.push_back(s);
 }
 
 void drawUI(nk_context* ctx, nk_colorf& bg)
@@ -165,12 +170,88 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
     nk_glfw3_new_frame();
 
     /* GUI */
-    if (nk_begin(ctx, "", nk_rect(10, 10, 200, 260),
-        NK_WINDOW_TITLE))
-    {
-        nk_layout_row_static(ctx, 30, 80, 1);
-        if (nk_button_label(ctx, "button"))
-            fprintf(stdout, "button pressed\n");
-    }
+	if (nk_begin(ctx, "Show", nk_rect(1093, 0, 273, 384),
+		NK_WINDOW_BORDER)) {
+
+		nk_layout_row_static(ctx, 30, 80, 1);
+		nk_label(ctx, "Actions", NK_TEXT_LEFT);
+
+		nk_layout_row_static(ctx, 30, 75, 3);
+		if (nk_button_label(ctx, "Pause")) {
+			prevstate = Controller::state;
+			Controller::state = 3;
+		}
+		if (nk_button_label(ctx, "Continue")) {
+			if (Controller::state > 1) 
+				Controller::state = prevstate;
+		}
+		if (nk_button_label(ctx, "Re-generate")) {
+			Controller::way = Controller::solver.Solve();
+			if (Controller::state == 2)
+				Controller::state = 0;
+		}
+
+		nk_layout_row_static(ctx, 30, 80, 1);
+		nk_label(ctx, "Manual inputs", NK_TEXT_LEFT);
+
+		nk_layout_row_begin(ctx, NK_STATIC, 30, 3); {
+
+			nk_layout_row_push(ctx, 60);
+			if (nk_button_label(ctx, "Left")) {		//UR
+				wayoverride(UR);
+			}
+			nk_label(ctx, "White", NK_TEXT_CENTERED);
+			if (nk_button_label(ctx, "Right")) {	//UL
+				wayoverride(UL);
+			}
+
+			nk_layout_row_push(ctx, 60);
+			if (nk_button_label(ctx, "Left")) {		//DL
+				wayoverride(DL);
+			}
+			nk_label(ctx, "Yellow", NK_TEXT_CENTERED);
+			if (nk_button_label(ctx, "Right")) {	//DR
+				wayoverride(DR);
+			}
+
+			nk_layout_row_push(ctx, 60);
+			if (nk_button_label(ctx, "Left")) {		//LU
+				wayoverride(LU);
+			}
+			nk_label(ctx, "Red", NK_TEXT_CENTERED);
+			if (nk_button_label(ctx, "Right")) {	//LD
+				wayoverride(LD);
+			}
+
+			nk_layout_row_push(ctx, 60);
+			if (nk_button_label(ctx, "Left")) {		//FL
+				wayoverride(FL);
+			}
+			nk_label(ctx, "Blue", NK_TEXT_CENTERED);
+			if (nk_button_label(ctx, "Right")) {	//FR
+				wayoverride(FR);
+			}
+
+			nk_layout_row_push(ctx, 60);
+			if (nk_button_label(ctx, "Left")) {		//RD
+				wayoverride(RD);
+			}
+			nk_label(ctx, "Orange", NK_TEXT_CENTERED);
+			if (nk_button_label(ctx, "Right")) {	//RU
+				wayoverride(RU);
+			}
+
+			nk_layout_row_push(ctx, 60);
+			if (nk_button_label(ctx, "Left")) {		//BR
+				wayoverride(BR);
+			}
+			nk_label(ctx, "Green", NK_TEXT_CENTERED);
+			if (nk_button_label(ctx, "Right")) {	//BL
+				wayoverride(BL);
+			}
+		}
+		nk_layout_row_end(ctx);
+	}
+
     nk_end(ctx);
 }
