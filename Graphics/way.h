@@ -2,17 +2,9 @@
 #define WAY_H
 
 #include <vector>
+#include "spin.h"
 
 using namespace std; 
-
-enum spin { RD, RU, LD, LU, UR, UL, DR, DL, FR, FL, BR, BL };
-
-inline spin& operator++(spin& s) {
-	switch (s % 2) {
-	case 0: s = static_cast<spin>(s + 1); return s;
-	case 1: s = static_cast<spin>(s - 1); return s;
-	}
-}
 
 class Way
 {

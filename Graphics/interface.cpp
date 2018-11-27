@@ -198,56 +198,56 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 
 			nk_layout_row_push(ctx, 60);
 			if (nk_button_label(ctx, "Left")) {		//UR
-				wayoverride(UR);
+				wayoverride(WL);
 			}
 			nk_label(ctx, "White", NK_TEXT_CENTERED);
 			if (nk_button_label(ctx, "Right")) {	//UL
-				wayoverride(UL);
+				wayoverride(WR);
 			}
 
 			nk_layout_row_push(ctx, 60);
 			if (nk_button_label(ctx, "Left")) {		//DL
-				wayoverride(DL);
+				wayoverride(YL);
 			}
 			nk_label(ctx, "Yellow", NK_TEXT_CENTERED);
 			if (nk_button_label(ctx, "Right")) {	//DR
-				wayoverride(DR);
+				wayoverride(YR);
 			}
 
 			nk_layout_row_push(ctx, 60);
 			if (nk_button_label(ctx, "Left")) {		//LU
-				wayoverride(LU);
+				wayoverride(RL);
 			}
 			nk_label(ctx, "Red", NK_TEXT_CENTERED);
 			if (nk_button_label(ctx, "Right")) {	//LD
-				wayoverride(LD);
+				wayoverride(RR);
 			}
 
 			nk_layout_row_push(ctx, 60);
 			if (nk_button_label(ctx, "Left")) {		//FL
-				wayoverride(FL);
+				wayoverride(BL);
 			}
 			nk_label(ctx, "Blue", NK_TEXT_CENTERED);
 			if (nk_button_label(ctx, "Right")) {	//FR
-				wayoverride(FR);
+				wayoverride(BR);
 			}
 
 			nk_layout_row_push(ctx, 60);
 			if (nk_button_label(ctx, "Left")) {		//RD
-				wayoverride(RD);
+				wayoverride(OL);
 			}
 			nk_label(ctx, "Orange", NK_TEXT_CENTERED);
 			if (nk_button_label(ctx, "Right")) {	//RU
-				wayoverride(RU);
+				wayoverride(OR);
 			}
 
 			nk_layout_row_push(ctx, 60);
 			if (nk_button_label(ctx, "Left")) {		//BR
-				wayoverride(BR);
+				wayoverride(GL);
 			}
 			nk_label(ctx, "Green", NK_TEXT_CENTERED);
 			if (nk_button_label(ctx, "Right")) {	//BL
-				wayoverride(BL);
+				wayoverride(GR);
 			}
 		}
 		nk_layout_row_end(ctx);

@@ -125,23 +125,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="controller.cpp" />
+    <ClCompile Include="cubestate.cpp" />
     <ClCompile Include="interface.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="viewpoint.cpp" />
     <ClCompile Include="way.cpp" />
+    <ClCompile Include="way2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controller.h" />
+    <ClInclude Include="cubestate.h" />
     <ClInclude Include="customgltemplates.h" />
     <ClInclude Include="interface.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="nuclear.h" />
     <ClInclude Include="nuklear_glfw_gl3.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="spin.h" />
     <ClInclude Include="viewpoint.h" />
     <ClInclude Include="way.h" />
+    <ClInclude Include="way2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment-shader.frag" />

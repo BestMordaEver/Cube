@@ -77,7 +77,7 @@ void Way::rotate_clock(char choice)
 
 	if (choice == 'w')
 	{
-		way.push_back(UL);
+		way.push_back(WR);
 
 		swap(white[7], white[3]);
 		swap(white[6], white[4]);
@@ -99,7 +99,7 @@ void Way::rotate_clock(char choice)
 
 	else if (choice == 'r')
 	{
-		way.push_back(LD);
+		way.push_back(RR);
 
 		swap(red[0], red[4]);
 		swap(red[7], red[5]);
@@ -121,7 +121,7 @@ void Way::rotate_clock(char choice)
 
 	else if (choice == 'y')
 	{
-		way.push_back(DR);
+		way.push_back(YR);
 
 		swap(yellow[1], yellow[5]);
 		swap(yellow[2], yellow[4]);
@@ -143,7 +143,7 @@ void Way::rotate_clock(char choice)
 
 	else if (choice == 'o')
 	{
-		way.push_back(RU);
+		way.push_back(OR);
 
 		swap(orange[4], orange[0]);
 		swap(orange[3], orange[1]);
@@ -165,7 +165,7 @@ void Way::rotate_clock(char choice)
 
 	else if (choice == 'g')
 	{
-		way.push_back(BL);
+		way.push_back(GR);
 
 		swap(green[6], green[2]);
 		swap(green[5], green[3]);
@@ -187,7 +187,7 @@ void Way::rotate_clock(char choice)
 
 	else if (choice == 'b')
 	{
-	way.push_back(FR);
+	way.push_back(BR);
 
 		swap(blue[1], blue[7]);
 		swap(blue[2], blue[6]);

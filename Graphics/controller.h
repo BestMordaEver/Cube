@@ -3,7 +3,8 @@
 
 #include "viewpoint.h"
 #include "model.h"
-#include "way.h""
+#include "way.h"
+#include "way2.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -20,7 +21,6 @@ public:
 	void Update(double dt);
 	void Draw(CViewPoint mainCam);
 	void Disassemble(int i);
-	void Assemble();
 	void Action(spin s, bool rotate);
 	static int Controller::state;
 	static vector<spin> Controller::way;
@@ -30,18 +30,18 @@ private:
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
 	vector<CModel> cubeModel;
     vector<CModel*> childs;
-	void RightUp(bool rotate),
-		RightDown(bool rotate),
-		LeftUp(bool rotate),
-		LeftDown(bool rotate),
-		UpRight(bool rotate),
-		UpLeft(bool rotate),
-		DownRight(bool rotate),
-		DownLeft(bool rotate),
-		FrontRight(bool rotate),
-		FrontLeft(bool rotate),
-		BackRight(bool rotate),
-		BackLeft(bool rotate);
+	void OrangeRight(bool rotate),
+		OrangeLeft(bool rotate),
+		RedLeft(bool rotate),
+		RedRight(bool rotate),
+		WhiteLeft(bool rotate),
+		WhiteRight(bool rotate),
+		YellowRight(bool rotate),
+		YellowLeft(bool rotate),
+		BlueRight(bool rotate),
+		BlueLeft(bool rotate),
+		GreenLeft(bool rotate),
+		GreenRight(bool rotate);
 };
 
 #endif
