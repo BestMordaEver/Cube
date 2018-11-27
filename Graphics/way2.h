@@ -12,10 +12,12 @@ class HardWay
 {
 public:
 	HardWay(bool force = false);
+	vector<spin> Solve();
 	map<int, CubeState*> map;
-
 private:
-	int doStateName(CubeState cs);
+	string path = "tree/";
+	void write(CubeState* cs);
+	CubeState read(string s);
 };
 
 #endif // WAY2_H

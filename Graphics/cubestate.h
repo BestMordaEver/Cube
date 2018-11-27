@@ -8,6 +8,9 @@
 class CubeState {
 public:
 	CubeState(int d);
+	int depth;
+	std::vector<int> state;
+	std::map<spin, CubeState*> neighbours;
 	void Act(spin act);
 	void OrangeRight(),
 		OrangeLeft(),
@@ -21,13 +24,8 @@ public:
 		BlueLeft(),
 		GreenLeft(),
 		GreenRight();
-	int operator[](int i) {
-		return state[i];
-	}
-private:
-	vector<int> state;
-	map<spin, CubeState*> neighbours;
-	int depth;
+	int doStateName();
+	int operator[](int i) {return state[i];	}
 };
 
 #endif // CUBESTATE_H

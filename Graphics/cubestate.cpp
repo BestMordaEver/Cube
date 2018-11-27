@@ -1,4 +1,5 @@
 #include "cubestate.h"
+#include <string>
 
 CubeState::CubeState(int d)
 {
@@ -23,6 +24,14 @@ void CubeState::Act(spin act) {
 	if (act == BL) { BlueLeft(); return; }
 	if (act == GL) { GreenLeft(); return; }
 	if (act == GR) { GreenRight(); return; }
+}
+
+int CubeState::doStateName()
+{
+	std::string temp = "";
+	for (int index : state)
+		temp += index;
+	return std::hash<std::string>{}(temp);
 }
 
 void CubeState::OrangeLeft()

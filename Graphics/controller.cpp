@@ -59,7 +59,7 @@ double timer = 0, counter = 0;
 double step = glm::pi<double>() / 100;
 Way Controller::solver;
 int Controller::state = 0;
-vector<spin> Controller::way;
+list<spin> Controller::way;
 
 float getDistance(CModel const* lhs, CModel const* rhs)
 {

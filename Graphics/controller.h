@@ -23,7 +23,7 @@ public:
 	void Disassemble(int i);
 	void Action(spin s, bool rotate);
 	static int Controller::state;
-	static vector<spin> Controller::way;
+	static list<spin> Controller::way;
 	static Way Controller::solver;
 private:
     void Addchilds(CModel* parent);

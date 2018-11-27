@@ -12,7 +12,7 @@ Way::Way()
 	yellow = { 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y' };
 }
 
-vector<spin> Way::Solve()
+list<spin> Way::Solve()
 {
 	vector<vector<char>> temp = { white, red, orange, blue, green, yellow };
 	way.clear();
@@ -27,36 +27,36 @@ vector<spin> Way::Solve()
 	yellow_corner_orientation();
 	yellow_edges_colour_arrangement();
 
-	for (int i = 0; i < way.size() - 2; i++) {
-		if (way[i] == way[i + 1] && way[i] == way[i + 2]) {
-			++way[i];
-			way.erase(way.begin() + i + 1);
-			way.erase(way.begin() + i + 1);
+	for (auto i = way.begin(); i != --(--way.end()); i++) {
+		if (*i == *(++i) && *(++i) == *(----i)) {
+			++*i;				// [i] is converted
+			way.erase(++i);		// [i+1] is erased
+			way.erase(i--);		// [i+1] (was i+2) is erased, i--
 		}
 	}
-	for (int i = 0; i < way.size() - 1; i++) {
-		if (way[i] == ++way[i + 1]) {
-			way.erase(way.begin() + i);
-			way.erase(way.begin() + i);
+	for (auto i = way.begin(); i != --way.end(); i++) {
+		if (*i == ++*++i) {
+			way.erase(i);
+			way.erase(i);
 		}
 		else
-			++way[i + 1];
+			++*++i;
 	}
 	// yup, just repeat it again
-	for (int i = 0; i < way.size() - 2; i++) {
-		if (way[i] == way[i + 1] && way[i] == way[i + 2]) {
-			++way[i];
-			way.erase(way.begin() + i + 1);
-			way.erase(way.begin() + i + 1);
+	for (auto i = way.begin(); i != --(--way.end()); i++) {
+		if (*i == *(++i) && *(++i) == *(----i)) {
+			++*i;
+			way.erase(++i);
+			way.erase(i--);
 		}
 	}
-	for (int i = 0; i < way.size() - 1; i++) {
-		if (way[i] == ++way[i + 1]) {
-			way.erase(way.begin() + i);
-			way.erase(way.begin() + i);
+	for (auto i = way.begin(); i != --way.end(); i++) {
+		if (*i == ++*++i) {
+			way.erase(i);
+			way.erase(i);
 		}
 		else
-			++way[i + 1];
+			++*++i;
 	}
 	white = temp[0]; red = temp[1]; orange = temp[2]; blue = temp[3]; green = temp[4]; yellow = temp[5];
 	temp.~vector();

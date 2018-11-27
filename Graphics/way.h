@@ -1,6 +1,7 @@
 #ifndef WAY_H
 #define WAY_H
 
+#include <list>
 #include <vector>
 #include "spin.h"
 
@@ -10,7 +11,7 @@ class Way
 {
 public:
 	Way();
-	vector<spin> Solve();
+	list<spin> Solve();
 	void rotate_clock(char choice);
 	void rotate_counter_clock(char choice);
 
@@ -22,7 +23,7 @@ private:
 	vector<char> green;
 	vector<char> yellow;
 
-	vector<spin> way;
+	list<spin> way;
 
 	void swap(char &a, char &b);
 	void white_bottom(char q);
