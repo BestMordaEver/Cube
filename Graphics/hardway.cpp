@@ -15,7 +15,7 @@ HardWay::HardWay(bool force)
 		forward_list<CubeState*> parents, children;
 		parents.emplace_front(new CubeState());
 
-		for (int i = 1; i < 10; i++) { // God's number with restricted central spins and 180 degree spins is 26
+		for (int i = 1; i < 5; i++) { // God's number with restricted central spins and 180 degree spins is 26
 			for (CubeState* parent : parents) {
 				for (spin act : spins) {
 					children.emplace_front(new CubeState(parent, act));	// Constructing child as Act from parent
@@ -76,6 +76,8 @@ bool HardWay::exists(CubeState* cs) {
 	while (istr.good() && !exists) {
 		istr.getline(line, 28);
 		exists = line == name;
+		if (exists)
+			cout << line << endl << name << endl;
 	}
 	istr.close();
 	return exists;

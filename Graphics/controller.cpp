@@ -89,7 +89,7 @@ Controller::Controller()
 	childs.resize(20);
 	std::copy(copy.begin() + 7, copy.end(), childs.begin());
 	
-	hardsolver = HardWay(true); //!!!!!!!!!!!!!!!!
+	hardsolver = HardWay(false); //!!!!!!!!!!!!!!!!
 	Disassemble(4);
 	way = hardsolver.Solve();
 	//solver = Solver();
