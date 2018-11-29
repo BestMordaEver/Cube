@@ -16,8 +16,8 @@ vector<spin> Solver::Solve()
 {
 	vector<vector<char>> temp = { white, red, orange, blue, green, yellow };
 	way.clear();
-	if (Controller::way.size())
-		way.push_back(Controller::way.front());
+	if (Controller::getInstance().way.size())
+		way.push_back(Controller::getInstance().way.front());
 									// While solving the cube, vectors come to the initial state
 	solve_white_cross();			// which is a definition of solved cube
 	solve_white_corners();			// We still need to preserve the original state of the cube

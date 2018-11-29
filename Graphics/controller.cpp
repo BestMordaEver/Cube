@@ -55,20 +55,13 @@ vector<GLfloat> square = {
 int animstate = 0;
 double timer = 0, counter = 0;
 double step = glm::pi<double>() / 100;
-Solver Controller::solver;
-HardWay Controller::hardsolver;
-int Controller::state = 0;
-vector<spin> Controller::way;
-CubeState Controller::cubestate;
 
 float getDistance(CModel const* lhs, CModel const* rhs)
 {
     return glm::distance(lhs->getPosition(), rhs->getPosition());
 }
 
-Controller::Controller(int a){}
-
-Controller::Controller()
+void Controller::Start()
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -88,9 +81,9 @@ Controller::Controller()
 	sort(copy.begin(), copy.end(), [model = &cubeModel[cubestate[13]]] (CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
 	childs.resize(20);
 	std::copy(copy.begin() + 7, copy.end(), childs.begin());
-	
-	hardsolver = HardWay(false); //!!!!!!!!!!!!!!!!
-	Disassemble(4);
+	state = 2;
+	hardsolver = HardSolver(true); //!!!!!!!!!!!!!!!!
+	//Disassemble(4);
 	way = hardsolver.Solve();
 	//solver = Solver();
 	//Disassemble(100);
@@ -167,12 +160,17 @@ void Controller::Disassemble(int i)
 	for (; i > 0; i--)
 	{
 		int temp = rand() % 12;
-		cout << temp << endl;
 		Action((spin)temp, false); Action((spin)temp, true);
 		for (int j = 0; j < cubeModel.size(); j++)
 			cubeModel[j].clearChilds();
 	}
 	step = glm::pi<double>() / 100;
+}
+
+Controller & Controller::getInstance()
+{
+	static Controller instance;
+	return instance;
 }
 
 void Controller::Addchilds(CModel* parent)

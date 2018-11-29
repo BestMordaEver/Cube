@@ -8,14 +8,14 @@
 
 using namespace std;
 
-class HardWay
+class HardSolver
 {
 public:
-	HardWay(bool force = false);
+	HardSolver(bool force = false);
 	vector<spin> Solve();
 	vector<spin> way;
 private:
-	string Path(CubeState* cs);
+	string Path(CubeState * cs);
 	ofstream ostr;
 	bool exists(CubeState * cs);
 };

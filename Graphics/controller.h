@@ -16,18 +16,19 @@
 class Controller 
 {
 public:
-	Controller();
-	Controller(int a);
+	void Start();
+	static Controller& getInstance();
 	void Update(double dt);
 	void Draw(CViewPoint mainCam);
 	void Disassemble(int i);
-	void Action(spin s, bool rotate);
-	static int Controller::state;
-	static vector<spin> Controller::way;
-	static Solver Controller::solver;
-	static HardWay Controller::hardsolver;
-	static CubeState Controller::cubestate;
+	int state = 0;
+	vector<spin> way;
+	Solver solver;
+	HardSolver hardsolver;
+	CubeState cubestate;
 private:
+	Controller() {};
+	void Action(spin s, bool rotate);
     void Addchilds(CModel* parent);
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
 	vector<CModel> cubeModel;
@@ -44,6 +45,7 @@ private:
 		BlueLeft(bool rotate),
 		GreenLeft(bool rotate),
 		GreenRight(bool rotate);
+public:
 };
 
 #endif

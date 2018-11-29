@@ -38,16 +38,14 @@ int main() {
 	CViewPoint mainCam(std::move(mainShader), WIDTH, HEIGHT);
 	mainCam.SetCamera(glm::vec3(-5, 5, -5), glm::vec3(-0.7, -0.7, 0));
 	
-	Controller controller = Controller(0);
-
 	bool good = true;
 	do {
 		try {
-			controller = Controller();
+			Controller::getInstance().Start();
 			good = true;
 		}
 		catch (const exception& e) {
-			controller.~Controller();
+			Controller::getInstance().~Controller();
 			good = false;
 		}
 	} while (!good);
@@ -63,12 +61,12 @@ int main() {
 		double currTime = glfwGetTime();
 
 		//game logic
-		controller.Update(-prevTime + currTime);
+		Controller::getInstance().Update(-prevTime + currTime);
 		mainCam.UseCamera();
 		dt = glfwGetTime();
 
 		//drawing
-        controller.Draw(mainCam);
+		Controller::getInstance().Draw(mainCam);
         nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
         glEnable(GL_DEPTH_TEST);
 		glfwSwapBuffers(window);

@@ -155,15 +155,14 @@ struct nk_context* initializeUI(GLFWwindow* window)
     return ctx;
 }
 
-int prevstate = Controller::state;
+int prevstate = 0;
 
 void wayoverride(spin s) {
-	for (auto i = Controller::way.size(); i > 1; i--) {
-		Controller::way.pop_back();
-	}
-	if (Controller::state == 2)
-		Controller::state = 0;
-	Controller::way.push_back(s);
+	if (Controller::getInstance().way.size())
+		Controller::getInstance().way = vector<spin>(1, Controller::getInstance().way[0]);
+	Controller::getInstance().way.push_back(s);
+	if (Controller::getInstance().state == 2)
+		Controller::getInstance().state = 0;
 }
 
 void drawUI(nk_context* ctx, nk_colorf& bg)
@@ -171,25 +170,38 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
     nk_glfw3_new_frame();
 
     /* GUI */
-	if (nk_begin(ctx, "Show", nk_rect(1093, 0, 273, 384),
+	if (nk_begin(ctx, "Show", nk_rect(1093, 0, 273, 600),
 		NK_WINDOW_BORDER)) {
+
+		static const char *algorithms[] = { "God's", "Amateur" };
+		static int selectedAlgorithm = 1;
 
 		nk_layout_row_static(ctx, 30, 80, 1);
 		nk_label(ctx, "Actions", NK_TEXT_LEFT);
 
-		nk_layout_row_static(ctx, 30, 75, 3);
+		nk_layout_row_static(ctx, 30, 100, 2);
 		if (nk_button_label(ctx, "Pause")) {
-			prevstate = Controller::state;
-			Controller::state = 3;
+			if (Controller::getInstance().state != 3) {
+				prevstate = Controller::getInstance().state;
+				Controller::getInstance().state = 3;
+			}
 		}
 		if (nk_button_label(ctx, "Continue")) {
-			if (Controller::state > 1) 
-				Controller::state = prevstate;
+			if (Controller::getInstance().state > 1)
+				Controller::getInstance().state = prevstate;
 		}
-		if (nk_button_label(ctx, "Re-generate")) {
-			Controller::way = Controller::solver.Solve();
-			if (Controller::state == 2)
-				Controller::state = 0;
+		if (nk_button_label(ctx, "Generate")) {
+			if (selectedAlgorithm) 
+				Controller::getInstance().way = Controller::getInstance().solver.Solve();
+			else
+				Controller::getInstance().way = Controller::getInstance().hardsolver.Solve();
+
+			if (Controller::getInstance().state == 2)
+				Controller::getInstance().state = 0;
+		}
+		if (nk_button_label(ctx, "Stop")) {
+			if (Controller::getInstance().way[0])
+				Controller::getInstance().way = vector<spin>(1, Controller::getInstance().way[0]);
 		}
 
 		nk_layout_row_static(ctx, 30, 80, 1);
@@ -198,62 +210,64 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 		nk_layout_row_begin(ctx, NK_STATIC, 30, 3); {
 
 			nk_layout_row_push(ctx, 60);
-			if (nk_button_label(ctx, "Left")) {		//UR
+			if (nk_button_label(ctx, "Left")) {
 				wayoverride(WL);
 			}
 			nk_label(ctx, "White", NK_TEXT_CENTERED);
-			if (nk_button_label(ctx, "Right")) {	//UL
+			if (nk_button_label(ctx, "Right")) {
 				wayoverride(WR);
 			}
 
 			nk_layout_row_push(ctx, 60);
-			if (nk_button_label(ctx, "Left")) {		//DL
+			if (nk_button_label(ctx, "Left")) {
 				wayoverride(YL);
 			}
 			nk_label(ctx, "Yellow", NK_TEXT_CENTERED);
-			if (nk_button_label(ctx, "Right")) {	//DR
+			if (nk_button_label(ctx, "Right")) {
 				wayoverride(YR);
 			}
 
 			nk_layout_row_push(ctx, 60);
-			if (nk_button_label(ctx, "Left")) {		//LU
+			if (nk_button_label(ctx, "Left")) {
 				wayoverride(RL);
 			}
 			nk_label(ctx, "Red", NK_TEXT_CENTERED);
-			if (nk_button_label(ctx, "Right")) {	//LD
+			if (nk_button_label(ctx, "Right")) {
 				wayoverride(RR);
 			}
 
 			nk_layout_row_push(ctx, 60);
-			if (nk_button_label(ctx, "Left")) {		//FL
+			if (nk_button_label(ctx, "Left")) {
 				wayoverride(BL);
 			}
 			nk_label(ctx, "Blue", NK_TEXT_CENTERED);
-			if (nk_button_label(ctx, "Right")) {	//FR
+			if (nk_button_label(ctx, "Right")) {
 				wayoverride(BR);
 			}
 
 			nk_layout_row_push(ctx, 60);
-			if (nk_button_label(ctx, "Left")) {		//RD
+			if (nk_button_label(ctx, "Left")) {
 				wayoverride(OL);
 			}
 			nk_label(ctx, "Orange", NK_TEXT_CENTERED);
-			if (nk_button_label(ctx, "Right")) {	//RU
+			if (nk_button_label(ctx, "Right")) {
 				wayoverride(OR);
 			}
 
 			nk_layout_row_push(ctx, 60);
-			if (nk_button_label(ctx, "Left")) {		//BR
+			if (nk_button_label(ctx, "Left")) {
 				wayoverride(GL);
 			}
 			nk_label(ctx, "Green", NK_TEXT_CENTERED);
-			if (nk_button_label(ctx, "Right")) {	//BL
+			if (nk_button_label(ctx, "Right")) {
 				wayoverride(GR);
 			}
 		}
 		nk_layout_row_end(ctx);
-		nk_layout_row_static(ctx, 30, 80, 1);
-		nk_label(ctx, to_string(Controller::way.size()).c_str(), NK_TEXT_CENTERED);
+		nk_layout_row_static(ctx, 30, 100, 1);
+		nk_label(ctx, to_string(Controller::getInstance().way.size()).c_str(), NK_TEXT_LEFT);
+		
+		selectedAlgorithm = nk_combo(ctx, algorithms, 2, selectedAlgorithm, 30, nk_vec2(200, 400));
 	}
 
     nk_end(ctx);

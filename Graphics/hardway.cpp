@@ -5,7 +5,7 @@
 int compression = 15;
 string path = "tree/";
 
-HardWay::HardWay(bool force)
+HardSolver::HardSolver(bool force)
 {
 	if (force) { // Generate tree
 		vector<spin> spins = { OL, OR, RL, RR, WL, WR, YL, YR, BL, BR, GL, GR };
@@ -15,7 +15,7 @@ HardWay::HardWay(bool force)
 		forward_list<CubeState*> parents, children;
 		parents.emplace_front(new CubeState());
 
-		for (int i = 1; i < 5; i++) { // God's number with restricted central spins and 180 degree spins is 26
+		for (int i = 1; i < 26; i++) { // God's number with restricted central spins and 180 degree spins is 26
 			for (CubeState* parent : parents) {
 				for (spin act : spins) {
 					children.emplace_front(new CubeState(parent, act));	// Constructing child as Act from parent
@@ -38,14 +38,14 @@ HardWay::HardWay(bool force)
 	ostr.close();
 }
 
-vector<spin> HardWay::Solve() {
+vector<spin> HardSolver::Solve() {
 	way.clear();
-	if (Controller::way.size())				// If you press Re-generate while cube is spinning 
-		way.push_back(Controller::way[0]);	// this will prevent it from spinning sideways
+	if (Controller::getInstance().way.size())				// If you press Re-generate while cube is spinning 
+		way.push_back(Controller::getInstance().way[0]);	// this will prevent it from spinning sideways
 	
 	CubeState state;
 	string solved = state.doStateName();	// Solved name
-	state.state = Controller::cubestate.state;
+	state.state = Controller::getInstance().cubestate.state;
 	char line[64];
 	string name = state.doStateName();		// Current name
 	while (name != solved) {
@@ -63,12 +63,12 @@ vector<spin> HardWay::Solve() {
 	return way;
 }
 
-string HardWay::Path(CubeState * cs)	// Compression defines the spread of children
+string HardSolver::Path(CubeState * cs)	// Compression defines the spread of children
 {										// Compression ~ n files ~ 1 / filesize
 	return path + cs->doStateName().substr(0, compression);	
 }										// Each file should contain at least 4kb of data
 
-bool HardWay::exists(CubeState* cs) {
+bool HardSolver::exists(CubeState* cs) {
 	bool exists = false;
 	string name = cs->doStateName().substr(0, 27);	// We need to compare only state
 	char line[32];									// so we ignore Act (statename[27])
@@ -76,8 +76,8 @@ bool HardWay::exists(CubeState* cs) {
 	while (istr.good() && !exists) {
 		istr.getline(line, 28);
 		exists = line == name;
-		if (exists)
-			cout << line << endl << name << endl;
+		//if (exists)
+			//cout << line << endl;
 	}
 	istr.close();
 	return exists;
