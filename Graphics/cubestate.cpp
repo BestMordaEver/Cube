@@ -7,7 +7,7 @@
 
 CubeState::CubeState()
 {
-	state = {
+	state = { // Default and solved
 	0, 1, 2, 3, 4, 5, 6, 7, 8,
 	9, 10, 11, 12, 13, 14, 15, 16, 17,
 	18, 19, 20, 21, 22, 23, 24, 25, 26
@@ -15,17 +15,17 @@ CubeState::CubeState()
 }
 
 CubeState::CubeState(std::string s) {
-	for (auto it = s.begin(); it != s.end() - 1; it++)
-		state.emplace_back(((int)*it) - 50);
-	parent = (spin)(s.back()-50);
+	for (auto it = s.begin(); it != s.end() - 1; it++)					// if Statename[i] < 10 = 0-9 else A-Z
+		state.emplace_back(((int)*it) - ((int)*it < 'A' ? 48 : 55));	// (int)'0' = 49, (int)'A' = 54
+	parent = (spin)(s.back() - ((int)s.back() < 'A' ? 48 : 55));
 }
 
 CubeState::CubeState(CubeState* s, spin act)
 {
 	state = s->state;
-	parent = act;
+	parent = act;	// parent.Act(act) == this
 	Act(act);
-	++act;
+	++parent;		// this.Act(++act) == parent
 }
 
 int CubeState::operator[](int i) { return state[i]; }
@@ -53,8 +53,8 @@ std::string CubeState::doStateName()
 	copy(state.begin(), state.end(), std::ostream_iterator<char>(ss));
 	std::string temp = ss.str() + (char)parent;
 	for (auto it = temp.begin(); it != temp.end(); it++)
-		*it += 50;
-	return temp;
+		*it += *it < 10 ? 48 : 55;	// if Statename[i] < 10 = 0-9 else A-Z
+	return temp;					// (int)'0' = 49, (int)'A' = 54
 }
 
 void CubeState::print() {

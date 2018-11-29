@@ -15,9 +15,8 @@ public:
 	vector<spin> Solve();
 	vector<spin> way;
 private:
-	string path = "tree";
+	string Path(CubeState* cs);
 	ofstream ostr;
-	void write(CubeState* cs);
 	bool exists(CubeState * cs);
 };
 
