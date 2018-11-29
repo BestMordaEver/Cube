@@ -1,7 +1,7 @@
 #ifndef SPIN_H
 #define SPIN_H
 
-enum spin { OL, OR, RR, RL, WL, WR, YR, YL, BR, BL, GL, GR };
+enum spin { OL, OR, RL, RR, WL, WR, YL, YR, BL, BR, GL, GR };
 
 inline spin& operator++(spin& s) {
 	switch (s % 2) {

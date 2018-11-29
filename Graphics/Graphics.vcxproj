@@ -131,8 +131,8 @@
     <ClCompile Include="model.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="viewpoint.cpp" />
-    <ClCompile Include="way.cpp" />
-    <ClCompile Include="way2.cpp" />
+    <ClCompile Include="solver.cpp" />
+    <ClCompile Include="hardway.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controller.h" />
@@ -145,8 +145,8 @@
     <ClInclude Include="shader.h" />
     <ClInclude Include="spin.h" />
     <ClInclude Include="viewpoint.h" />
-    <ClInclude Include="way.h" />
-    <ClInclude Include="way2.h" />
+    <ClInclude Include="solver.h" />
+    <ClInclude Include="hardway.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment-shader.frag" />

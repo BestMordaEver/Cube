@@ -3,8 +3,8 @@
 
 #include "viewpoint.h"
 #include "model.h"
-#include "way.h"
-#include "way2.h"
+#include "solver.h"
+#include "hardway.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -23,8 +23,10 @@ public:
 	void Disassemble(int i);
 	void Action(spin s, bool rotate);
 	static int Controller::state;
-	static list<spin> Controller::way;
-	static Way Controller::solver;
+	static vector<spin> Controller::way;
+	static Solver Controller::solver;
+	static HardWay Controller::hardsolver;
+	static CubeState Controller::cubestate;
 private:
     void Addchilds(CModel* parent);
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;

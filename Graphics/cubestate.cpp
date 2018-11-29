@@ -1,9 +1,12 @@
 #include "cubestate.h"
 #include <string>
+#include <iostream>
+#include <sstream>
+#include <iterator>
+#include <algorithm>
 
-CubeState::CubeState(int d)
+CubeState::CubeState()
 {
-	depth = d;
 	state = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8,
 	9, 10, 11, 12, 13, 14, 15, 16, 17,
@@ -11,27 +14,59 @@ CubeState::CubeState(int d)
 	};
 }
 
-void CubeState::Act(spin act) {
-	if (act == OR) { OrangeRight(); return; }
-	if (act == OL) { OrangeLeft(); return; }
-	if (act == RL) { RedLeft(); return; }
-	if (act == RR) { RedRight(); return; }
-	if (act == WL) { WhiteLeft(); return; }
-	if (act == WR) { WhiteRight(); return; }
-	if (act == YR) { YellowRight(); return; }
-	if (act == YL) { YellowLeft(); return; }
-	if (act == BR) { BlueRight(); return; }
-	if (act == BL) { BlueLeft(); return; }
-	if (act == GL) { GreenLeft(); return; }
-	if (act == GR) { GreenRight(); return; }
+CubeState::CubeState(std::string s) {
+	for (auto it = s.begin(); it != s.end() - 1; it++)
+		state.emplace_back(((int)*it) - 50);
+	parent = (spin)(s.back()-50);
 }
 
-int CubeState::doStateName()
+CubeState::CubeState(CubeState* s, spin act)
 {
-	std::string temp = "";
-	for (int index : state)
-		temp += index;
-	return std::hash<std::string>{}(temp);
+	state = s->state;
+	parent = act;
+	Act(act);
+	++act;
+}
+
+int CubeState::operator[](int i) { return state[i]; }
+
+void CubeState::Act(spin act) {
+	switch (act) {
+	case OL: OrangeLeft(); return;
+	case OR: OrangeRight(); return;
+	case RL: RedLeft(); return;
+	case RR: RedRight(); return;
+	case WL: WhiteLeft(); return;
+	case WR: WhiteRight(); return;
+	case YL: YellowLeft(); return;
+	case YR: YellowRight(); return;
+	case BL: BlueLeft(); return;
+	case BR: BlueRight(); return;
+	case GL: GreenLeft(); return;
+	case GR: GreenRight(); return;
+	}
+}
+
+std::string CubeState::doStateName()
+{
+	std::stringstream ss;
+	copy(state.begin(), state.end(), std::ostream_iterator<char>(ss));
+	std::string temp = ss.str() + (char)parent;
+	for (auto it = temp.begin(); it != temp.end(); it++)
+		*it += 50;
+	return temp;
+}
+
+void CubeState::print() {
+	for (auto i = 0; i < 3; i++) {
+		for (auto j = 0; j < 3; j++) {
+			for (auto k = 0; k < 3; k++) {
+				std::cout << state[i * 9 + j * 3 + k] << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+	}
 }
 
 void CubeState::OrangeLeft()
@@ -78,7 +113,7 @@ void CubeState::RedRight()
 
 void CubeState::RedLeft()
 {
-	int temp = state[2];
+	int temp = state[0];
 	state[0] = state[6];
 	state[6] = state[24];
 	state[24] = state[18];
@@ -99,8 +134,8 @@ void CubeState::WhiteLeft()
 	state[2] = temp;
 	temp = state[1];
 	state[1] = state[9];
-	state[9] = state[20];
-	state[20] = state[11];
+	state[9] = state[19];
+	state[19] = state[11];
 	state[11] = temp;
 }
 
@@ -113,8 +148,8 @@ void CubeState::WhiteRight()
 	state[18] = temp;
 	temp = state[1];
 	state[1] = state[11];
-	state[11] = state[20];
-	state[20] = state[9];
+	state[11] = state[19];
+	state[19] = state[9];
 	state[9] = temp;
 }
 
@@ -181,8 +216,8 @@ void CubeState::GreenLeft()
 	state[24] = state[26];
 	state[26] = state[20];
 	state[20] = temp;
-	temp = state[20];
-	state[20] = state[21];
+	temp = state[19];
+	state[19] = state[21];
 	state[21] = state[25];
 	state[25] = state[23];
 	state[23] = temp;
@@ -196,8 +231,8 @@ void CubeState::GreenRight()
 	state[26] = state[24];
 	state[24] = temp;
 	temp = state[19];
-	state[19] = state[21];
-	state[21] = state[25];
-	state[25] = state[23];
-	state[23] = temp;
+	state[19] = state[23];
+	state[23] = state[25];
+	state[25] = state[21];
+	state[21] = temp;
 }

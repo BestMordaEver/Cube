@@ -13,6 +13,7 @@
 #define NK_KEYSTATE_BASED_INPUT
 
 #include "nuklear_glfw_gl3.h"
+#include <string>
 
 
 bool keys[1024];
@@ -251,6 +252,8 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 			}
 		}
 		nk_layout_row_end(ctx);
+		nk_layout_row_static(ctx, 30, 80, 1);
+		nk_label(ctx, to_string(Controller::way.size()).c_str(), NK_TEXT_CENTERED);
 	}
 
     nk_end(ctx);

@@ -2,16 +2,14 @@
 #define CUBESTATE_H
 
 #include <vector>
-#include <map>
 #include "spin.h"
 
 class CubeState {
 public:
-	CubeState(int d);
-	int depth;
-	std::vector<int> state;
-	std::map<spin, CubeState*> neighbours;
-	void Act(spin act);
+	CubeState();
+	CubeState(std::string s);
+	CubeState(CubeState * s, spin act);
+	void Act(spin act), print();
 	void OrangeRight(),
 		OrangeLeft(),
 		RedLeft(),
@@ -24,8 +22,10 @@ public:
 		BlueLeft(),
 		GreenLeft(),
 		GreenRight();
-	int doStateName();
-	int operator[](int i) {return state[i];	}
+	std::string doStateName();
+	int operator[](int i);
+	std::vector<int> state;
+	spin parent;
 };
 
 #endif // CUBESTATE_H

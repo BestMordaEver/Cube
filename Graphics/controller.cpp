@@ -52,14 +52,14 @@ vector<GLfloat> square = {
     -0.5f, -0.5f, 0.5f,  1.0f, 1.0f, 0.2f
 };
 
-CubeState cubestate = CubeState(0);
-
 int animstate = 0;
 double timer = 0, counter = 0;
 double step = glm::pi<double>() / 100;
-Way Controller::solver;
+Solver Controller::solver;
+HardWay Controller::hardsolver;
 int Controller::state = 0;
-list<spin> Controller::way;
+vector<spin> Controller::way;
+CubeState Controller::cubestate;
 
 float getDistance(CModel const* lhs, CModel const* rhs)
 {
@@ -82,15 +82,27 @@ Controller::Controller()
 		}
 	}
 
+	cubestate = CubeState();
 	vector<CModel*> copy;
 	transform(cubeModel.begin(), cubeModel.end(), back_inserter(copy), [](CModel& model) { return &model; });
-	sort(copy.begin(), copy.end(), [model = &cubeModel[cubestate[13]]](CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
+	sort(copy.begin(), copy.end(), [model = &cubeModel[cubestate[13]]] (CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
 	childs.resize(20);
 	std::copy(copy.begin() + 7, copy.end(), childs.begin());
-		
-	solver = Way();
-	Disassemble(100);
-	way = solver.Solve();
+	
+	hardsolver = HardWay(true); //!!!!!!!!!!!!!!!!
+	Disassemble(80);
+	way = hardsolver.Solve();
+	//solver = Solver();
+	//Disassemble(100);
+	//way = solver.Solve();
+	//step = glm::pi<double>() / 2;
+	//RedLeft(false); RedLeft(true); 
+	//cubestate.print();
+	//RedLeft(false); RedLeft(true); 
+	//cubestate.print();
+	//WhiteLeft(false); WhiteLeft(true);
+	//cubestate.print();
+	//step = glm::pi<double>() / 100;
 };
 
 void Controller::Update(double dt)
@@ -98,31 +110,31 @@ void Controller::Update(double dt)
     timer += dt;
     switch (state)
     {
-        case 0:
-			Action(way.front(), false);
-            state = 1;
-            timer = 0;
-			return;
-        case 1:
-            if (timer > counter)
-            {
-				Action(way.front(), true);
-                counter += step / 2;  // Tweak this to control animation speed. 
-                animstate++;
-            }
-            if (animstate == 50)
-            {
-                state = 0;
-                timer = 0;
-                counter = 0;
-                animstate = 0;
-				for (int j = 0; j < cubeModel.size(); j++)
-					cubeModel[j].clearChilds();
-				way.erase(way.begin());
-				if (way.size() == 0)
-					state = 2;  // Assembled
-            }
-            return;
+	case 0:
+		Action(way.front(), false);
+		state = 1;
+		timer = 0;
+		return;
+	case 1:
+		if (timer > counter)
+		{
+			Action(way.front(), true);
+			counter += step / 2;  // Tweak this to control animation speed. 
+			animstate++;
+		}
+		if (animstate == 50)
+		{
+			state = 0;
+			timer = 0;
+			counter = 0;
+			animstate = 0;
+			for (int j = 0; j < cubeModel.size(); j++)
+				cubeModel[j].clearChilds();
+			way.erase(way.begin());
+			if (way.size() == 0) 
+				state = 2;  // Assembled
+		}
+		return;
     }
 }
 
@@ -155,6 +167,7 @@ void Controller::Disassemble(int i)
 	for (; i > 0; i--)
 	{
 		int temp = rand() % 12;
+		cout << temp << endl;
 		Action((spin)temp, false); Action((spin)temp, true);
 		for (int j = 0; j < cubeModel.size(); j++)
 			cubeModel[j].clearChilds();
