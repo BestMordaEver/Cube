@@ -71,11 +71,11 @@ string HardSolver::Path(CubeState * cs)	// Compression defines the spread of chi
 bool HardSolver::exists(CubeState* cs) {
 	bool exists = false;
 	string name = cs->doStateName().substr(0, 27);	// We need to compare only state
-	char line[32];									// so we ignore Act (statename[27])
+	string line;									// so we ignore Act (statename[27])
 	ifstream istr(Path(cs), fstream::in);			// We look for duplicates in a specific file
 	while (istr.good() && !exists) {
-		istr.getline(line, 28);
-		exists = line == name;
+		getline(istr, line);
+		exists = line.substr(0, 27) == name;
 		//if (exists)
 			//cout << line << endl;
 	}
