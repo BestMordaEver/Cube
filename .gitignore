@@ -7,7 +7,6 @@
 *.iobj
 *.lastcodeanalysissucceeded
 *.ilk
-*.sln
 *.db
 *.opendb
 *.xml
