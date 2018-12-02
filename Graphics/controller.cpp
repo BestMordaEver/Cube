@@ -2,7 +2,7 @@
 #include <time.h>
 #include <algorithm>
 
-vector<GLfloat> square = {
+std::vector<GLfloat> square = {
     // Blue
     -0.5f, 0.5f, -0.5f,  0.0f, 0.0f, 1.0f,
     -0.5f, 0.5f, 0.5f,  0.0f, 0.0f, 1.0f,
@@ -76,8 +76,8 @@ void Controller::Start()
 	}
 
 	cubestate = CubeState();
-	vector<CModel*> copy;
-	transform(cubeModel.begin(), cubeModel.end(), back_inserter(copy), [](CModel& model) { return &model; });
+	std::vector<CModel*> copy;
+	transform(cubeModel.begin(), cubeModel.end(), std::back_inserter(copy), [](CModel& model) { return &model; });
 	sort(copy.begin(), copy.end(), [model = &cubeModel[cubestate[13]]] (CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
 	childs.resize(20);
 	std::copy(copy.begin() + 7, copy.end(), childs.begin());
@@ -175,7 +175,7 @@ Controller & Controller::getInstance()
 
 void Controller::Addchilds(CModel* parent)
 {
-    sort(childs.begin(), childs.end(), [model = parent](CModel const* lhs, CModel const* rhs) { return getDistance(lhs, model) < getDistance(rhs, model); });
+	std::sort(childs.begin(), childs.end(), [model = parent](CModel const* lhs, CModel const* rhs) { return getDistance(lhs, model) < getDistance(rhs, model); });
     parent->AddChild(childs[0]);
     parent->AddChild(childs[1]);
     parent->AddChild(childs[2]);

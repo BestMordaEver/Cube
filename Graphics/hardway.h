@@ -6,17 +6,16 @@
 #include "spin.h"
 #include "cubestate.h"
 
-using namespace std;
-
 class HardSolver
 {
 public:
 	HardSolver(bool force = false);
-	vector<spin> Solve();
-	vector<spin> way;
+	std::vector<spin> Solve();
+	std::vector<spin> way;
 private:
-	string Path(CubeState * cs);
-	ofstream ostr;
+	void ThreadTask(int i, CubeState * parent);
+	std::string Path(CubeState * cs);
+	bool preparedElsewhere(CubeState * cs);
 	bool exists(CubeState * cs);
 };
 

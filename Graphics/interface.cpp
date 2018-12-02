@@ -159,7 +159,7 @@ int prevstate = 0;
 
 void wayoverride(spin s) {
 	if (Controller::getInstance().way.size())
-		Controller::getInstance().way = vector<spin>(1, Controller::getInstance().way[0]);
+		Controller::getInstance().way = std::vector<spin>(1, Controller::getInstance().way[0]);
 	Controller::getInstance().way.push_back(s);
 	if (Controller::getInstance().state == 2)
 		Controller::getInstance().state = 0;
@@ -201,7 +201,7 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 		}
 		if (nk_button_label(ctx, "Stop")) {
 			if (Controller::getInstance().way[0])
-				Controller::getInstance().way = vector<spin>(1, Controller::getInstance().way[0]);
+				Controller::getInstance().way = std::vector<spin>(1, Controller::getInstance().way[0]);
 		}
 
 		nk_layout_row_static(ctx, 30, 80, 1);
@@ -265,7 +265,7 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 		}
 		nk_layout_row_end(ctx);
 		nk_layout_row_static(ctx, 30, 100, 1);
-		nk_label(ctx, to_string(Controller::getInstance().way.size()).c_str(), NK_TEXT_LEFT);
+		nk_label(ctx, std::to_string(Controller::getInstance().way.size()).c_str(), NK_TEXT_LEFT);
 		
 		selectedAlgorithm = nk_combo(ctx, algorithms, 2, selectedAlgorithm, 30, nk_vec2(200, 400));
 	}
