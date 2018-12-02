@@ -5,25 +5,23 @@
 #include <vector>
 #include "spin.h"
 
-using namespace std; 
-
 class Solver
 {
 public:
 	Solver();
-	vector<spin> Solve();
+	std::vector<spin> Solve();
 	void rotate_clock(char choice);
 	void rotate_counter_clock(char choice);
 
 private:
-	vector<char> white;
-	vector<char> red;
-	vector<char> orange;
-	vector<char> blue;
-	vector<char> green;
-	vector<char> yellow;
+	std::vector<char> white;
+	std::vector<char> red;
+	std::vector<char> orange;
+	std::vector<char> blue;
+	std::vector<char> green;
+	std::vector<char> yellow;
 
-	vector<spin> way;
+	std::vector<spin> way;
 
 	void swap(char &a, char &b);
 	void white_bottom(char q);

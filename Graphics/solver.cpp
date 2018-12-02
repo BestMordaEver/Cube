@@ -12,9 +12,9 @@ Solver::Solver()
 	yellow = { 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y' };
 }
 
-vector<spin> Solver::Solve()
+std::vector<spin> Solver::Solve()
 {
-	vector<vector<char>> temp = { white, red, orange, blue, green, yellow };
+	std::vector<std::vector<char>> temp = { white, red, orange, blue, green, yellow };
 	way.clear();
 	if (Controller::getInstance().way.size())
 		way.push_back(Controller::getInstance().way.front());
@@ -64,7 +64,7 @@ void Solver::swap(char &a, char &b)
 void Solver::rotate_clock(char choice)
 {
 	if (way.size() > 1000)
-		throw exception();
+		throw std::exception();
 
 	if (choice == 'w')
 	{
