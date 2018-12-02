@@ -22,7 +22,7 @@ public:
 	void Draw(CViewPoint mainCam);
 	void Disassemble(int i);
 	int state = 0;
-	std::vector<spin> way;
+	vector<spin> way;
 	Solver solver;
 	HardSolver hardsolver;
 	CubeState cubestate;
@@ -31,8 +31,8 @@ private:
 	void Action(spin s, bool rotate);
     void Addchilds(CModel* parent);
 	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
-	std::vector<CModel> cubeModel;
-	std::vector<CModel*> childs;
+	vector<CModel> cubeModel;
+    vector<CModel*> childs;
 	void OrangeRight(bool rotate),
 		OrangeLeft(bool rotate),
 		RedLeft(bool rotate),
