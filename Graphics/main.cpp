@@ -44,7 +44,7 @@ int main() {
 			Controller::getInstance().Start();
 			good = true;
 		}
-		catch (const exception& e) {
+		catch (const std::exception& e) {
 			Controller::getInstance().~Controller();
 			good = false;
 		}

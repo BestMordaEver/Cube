@@ -2,7 +2,7 @@
 #include "controller.h"
 #include <forward_list>
 
-int compression = 15;
+int compression = 6;
 std::string path = "tree/";
 
 HardSolver::HardSolver(bool force)
@@ -12,26 +12,27 @@ HardSolver::HardSolver(bool force)
 		system("rd /s /q tree");
 		system("mkdir tree");
 
-		std::forward_list<CubeState*> parents, children;
-		parents.emplace_front(new CubeState());
+		std::forward_list<std::unique_ptr<CubeState>> parents, children;
+		parents.emplace_front(std::unique_ptr<CubeState>(new CubeState()));
 
 		for (int i = 1; i < 26; i++) { // God's number with restricted central spins and 180 degree spins is 26
 			for (auto it = parents.begin(); it != parents.end(); ) {
 				for (spin act : spins) {
-					children.emplace_front(new CubeState(*it, act));	// Constructing child as Act from parent
-					if (exists(children.front())) {			// We don't need duplicates
+					children.emplace_front(std::unique_ptr<CubeState>(new CubeState((*it).get(), act)));	// Constructing child as Act from parent
+					if (exists(children.front().get())) {			// We don't need duplicates
 						children.pop_front();
 					}
 					else {
-						ostr = std::ofstream(Path(children.front()), std::fstream::out | std::fstream::app);
+						ostr = std::ofstream(Path(children.front().get()), std::fstream::out | std::fstream::app);
 						ostr << children.front()->doStateName() << std::endl;
  						ostr.close();
 					}
 				}
+				it++;
 				parents.pop_front();
 			}
-			parents.swap(children);	// Algorithm is breadth-first which allows to discard duplicates without any problems
-			std::cout << i << std::endl;
+			parents.swap(children);
+			std::cout << i << " " << std::distance(parents.begin(), parents.end()) << std::endl;
 		}
 	}
 	ostr.close();
