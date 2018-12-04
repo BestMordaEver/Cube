@@ -8,7 +8,7 @@ class CubeState {
 public:
 	CubeState();
 	CubeState(std::string s);
-	CubeState(CubeState * s, spin act);
+	CubeState(CubeState s, spin act);
 	void Act(spin act), print();
 	void OrangeRight(),
 		OrangeLeft(),

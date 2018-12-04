@@ -2,7 +2,7 @@
 #include "controller.h"
 #include <forward_list>
 
-int compression = 6;
+int compression = 6, states = 0;
 std::string path = "tree/";
 
 HardSolver::HardSolver(bool force)
@@ -12,29 +12,39 @@ HardSolver::HardSolver(bool force)
 		system("rd /s /q tree");
 		system("mkdir tree");
 
-		std::forward_list<std::unique_ptr<CubeState>> parents, children;
-		parents.emplace_front(std::unique_ptr<CubeState>(new CubeState()));
+		CubeState currentParent = CubeState();
+		std::string currentName;
+		ostr = std::ofstream("parents", std::fstream::out);
+		ostr << currentParent.doStateName() << std::endl;
+		ostr.close();
 
 		for (int i = 1; i < 26; i++) { // God's number with restricted central spins and 180 degree spins is 26
-			for (auto it = parents.begin(); it != parents.end(); ) {
-				for (spin act : spins) {
-					children.emplace_front(std::unique_ptr<CubeState>(new CubeState((*it).get(), act)));	// Constructing child as Act from parent
-					if (exists(children.front().get())) {			// We don't need duplicates
-						children.pop_front();
-					}
-					else {
-						ostr = std::ofstream(Path(children.front().get()), std::fstream::out | std::fstream::app);
-						ostr << children.front()->doStateName() << std::endl;
- 						ostr.close();
+			std::ifstream istr("parents", std::fstream::in);
+			while (istr.good()){
+				getline(istr, currentName);		// Parent init
+				if (istr.good() && currentName != "") {
+					CubeState currentParent = CubeState(currentName);
+					for (spin act : spins) {
+						CubeState currentChild = CubeState(currentParent, act);	// Constructing child as Act from parent
+						if (!exists(currentChild)) {			// We don't need duplicates
+							states++;
+							ostr.open(Path(currentChild), std::fstream::out | std::fstream::app);
+							ostr << currentChild.doStateName() << std::endl;
+							ostr.close();
+							ostr.open("children", std::fstream::out | std::fstream::app);
+							ostr << currentChild.doStateName() << std::endl;
+							ostr.close();
+						}
 					}
 				}
-				it++;
-				parents.pop_front();
 			}
-			parents.swap(children);
-			std::cout << i << " " << std::distance(parents.begin(), parents.end()) << std::endl;
+			istr.close();
+			system("del /f /q parents");
+			system("ren children parents");
+			std::cout << i << " " << states << std::endl;
 		}
 	}
+	system("del /f /q parents children");
 	ostr.close();
 }
 
@@ -49,7 +59,7 @@ std::vector<spin> HardSolver::Solve() {
 	std::string line;
 	std::string name = state.doStateName();		// Current name
 	while (name != solved) {
-		std::ifstream istr(Path(&state), std::fstream::in);
+		std::ifstream istr(Path(state), std::fstream::in);
 		do {
 			getline(istr, line);	
 			state.parent = (spin)(line[27] - (line[27] < 'A' ? 48 : 55));
@@ -63,14 +73,14 @@ std::vector<spin> HardSolver::Solve() {
 	return way;
 }
 
-std::string HardSolver::Path(CubeState * cs)	// Compression defines the spread of children
+std::string HardSolver::Path(CubeState cs)	// Compression defines the spread of children
 {										// Compression ~ n files ~ 1 / filesize
-	return path + cs->doStateName().substr(0, compression);	
+	return path + cs.doStateName().substr(0, compression);	
 }										// Each file should contain at least 4kb of data
 
-bool HardSolver::exists(CubeState* cs) {
+bool HardSolver::exists(CubeState cs) {
 	bool exists = false;
-	std::string name = cs->doStateName().substr(0, 27);	// We need to compare only state
+	std::string name = cs.doStateName().substr(0, 27);	// We need to compare only state
 	std::string line;									// so we ignore Act (statename[27])
 	std::ifstream istr(Path(cs), std::fstream::in);			// We look for duplicates in a specific file
 	while (istr.good() && !exists) {

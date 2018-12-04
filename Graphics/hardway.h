@@ -13,9 +13,9 @@ public:
 	std::vector<spin> Solve();
 	std::vector<spin> way;
 private:
-	std::string Path(CubeState * cs);
+	std::string Path(CubeState cs);
+	bool exists(CubeState cs);
 	std::ofstream ostr;
-	bool exists(CubeState * cs);
 };
 
 #endif // HARDWAY_H

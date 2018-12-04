@@ -20,9 +20,9 @@ CubeState::CubeState(std::string s) {
 	parent = (spin)(s.back() - ((int)s.back() < 'A' ? 48 : 55));
 }
 
-CubeState::CubeState(CubeState* s, spin act)
+CubeState::CubeState(CubeState s, spin act)
 {
-	state = s->state;
+	state = s.state;
 	parent = act;	// parent.Act(act) == this
 	Act(act);
 	++parent;		// this.Act(++act) == parent
