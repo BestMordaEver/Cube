@@ -2,7 +2,8 @@
 #include "controller.h"
 #include <forward_list>
 
-int compression = 6, states = 0;
+int compression = 6;
+long long int states = 0;
 std::string path = "tree/";
 
 HardSolver::HardSolver(bool force)
@@ -20,7 +21,7 @@ HardSolver::HardSolver(bool force)
 
 		for (int i = 1; i < 26; i++) { // God's number with restricted central spins and 180 degree spins is 26
 			std::ifstream istr("parents", std::fstream::in);
-			while (istr.good()){
+			do {
 				getline(istr, currentName);		// Parent init
 				if (istr.good() && currentName != "") {
 					CubeState currentParent = CubeState(currentName);
@@ -37,14 +38,15 @@ HardSolver::HardSolver(bool force)
 						}
 					}
 				}
-			}
+			} while (istr.good() && currentName != "");
+
 			istr.close();
 			system("del /f /q parents");
 			system("ren children parents");
 			std::cout << i << " " << states << std::endl;
 		}
 	}
-	system("del /f /q parents children");
+	//system("del /f /q parents children");
 	ostr.close();
 }
 
@@ -63,12 +65,13 @@ std::vector<spin> HardSolver::Solve() {
 		do {
 			getline(istr, line);	
 			state.parent = (spin)(line[27] - (line[27] < 'A' ? 48 : 55));
-		} while (line.substr(0, 27) != state.doStateName() && istr.good());	
+		} while (line.substr(0, 27) != state.doStateName().substr(0, 27) && istr.good());
 		state.Act(state.parent);		// We found current state, use Act to move up the tree
 		way.push_back(state.parent);	// and remember the Act
 		state.parent = (spin)(0);		// Reset parent to check if solved
 		name = state.doStateName();
 		istr.close();
+		if (way.size() > 30) break;
 	}
 	return way;
 }

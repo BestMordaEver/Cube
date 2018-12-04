@@ -83,7 +83,7 @@ void Controller::Start()
 	std::copy(copy.begin() + 7, copy.end(), childs.begin());
 	state = 2;
 	hardsolver = HardSolver(true); //!!!!!!!!!!!!!!!!
-	//Disassemble(4);
+	Disassemble(20);
 	way = hardsolver.Solve();
 	//solver = Solver();
 	//Disassemble(100);
