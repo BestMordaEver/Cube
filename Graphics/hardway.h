@@ -15,7 +15,6 @@ public:
 private:
 	std::string Path(CubeState cs);
 	bool exists(CubeState cs);
-	std::ofstream ostr;
 };
 
 #endif // HARDWAY_H

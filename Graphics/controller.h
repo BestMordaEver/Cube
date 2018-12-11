@@ -25,7 +25,7 @@ public:
 	std::vector<spin> way;
 	Solver solver;
 	HardSolver hardsolver;
-	CubeState cubestate;
+	CubeState cubeState;
 private:
 	Controller() {};
 	void Action(spin s, bool rotate);

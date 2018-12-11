@@ -5,6 +5,7 @@
 int compression = 6;
 long long int states = 0;
 std::string path = "tree/";
+std::ofstream ostr;
 
 HardSolver::HardSolver(bool force)
 {
@@ -14,31 +15,44 @@ HardSolver::HardSolver(bool force)
 		system("mkdir tree");
 
 		CubeState currentParent = CubeState();
-		std::string currentName;
-		ostr = std::ofstream("parents", std::fstream::out);
-		ostr << currentParent.doStateName() << std::endl;
+		std::stringbuf buf = std::stringbuf(std::ios::in | std::ios::binary);
+		ostr = std::ofstream("parents", std::ios::out | std::ios::trunc | std::ios::binary);
+		ostr << currentParent.getContent();
+		ostr.flush();
 		ostr.close();
 
-		for (int i = 1; i < 26; i++) { // God's number with restricted central spins and 180 degree spins is 26
-			std::ifstream istr("parents", std::fstream::in);
+		std::cout << currentParent.getStateName() << std::endl << currentParent.getContent() << std::endl;
+
+		std::ifstream istr(Path(currentParent), std::ios::in | std::ios::binary);	// We look for duplicates in a specific file
+		
+		istr.get(buf, 10);
+		currentParent = CubeState(buf.str());
+
+		std::cout << currentParent.getStateName() << std::endl << currentParent.getContent() << std::endl;
+
+		for (int i = 1; i < 1; i++) { // God's number with restricted central spins and 180 degree spins is 26
+			std::ifstream istr("parents", std::ios::in | std::ios::binary);
 			do {
-				getline(istr, currentName);		// Parent init
-				if (istr.good() && currentName != "") {
-					CubeState currentParent = CubeState(currentName);
+				istr.get(buf, 10);
+				if (istr.good() && buf.str() != "") {
+					CubeState currentParent = CubeState(buf.str());
+
 					for (spin act : spins) {
 						CubeState currentChild = CubeState(currentParent, act);	// Constructing child as Act from parent
 						if (!exists(currentChild)) {			// We don't need duplicates
 							states++;
-							ostr.open(Path(currentChild), std::fstream::out | std::fstream::app);
-							ostr << currentChild.doStateName() << std::endl;
+							ostr.open(Path(currentChild), std::ios::out | std::ios::app | std::ios::binary);
+							ostr << currentChild.getContent();
+							ostr.flush();
 							ostr.close();
-							ostr.open("children", std::fstream::out | std::fstream::app);
-							ostr << currentChild.doStateName() << std::endl;
+							ostr.open("children", std::ios::out | std::ios::app | std::ios::binary);
+							ostr << currentChild.getContent();
+							ostr.flush();
 							ostr.close();
 						}
 					}
 				}
-			} while (istr.good() && currentName != "");
+			} while (istr.good() && buf.str() != "");
 
 			istr.close();
 			system("del /f /q parents");
@@ -56,20 +70,20 @@ std::vector<spin> HardSolver::Solve() {
 		way.push_back(Controller::getInstance().way[0]);	// this will prevent it from spinning sideways
 	
 	CubeState state;
-	std::string solved = state.doStateName();	// Solved name
-	state.state = Controller::getInstance().cubestate.state;
+	std::string solved = state.getStateName();	// Solved name
+	state.state = Controller::getInstance().cubeState.state;
 	std::string line;
-	std::string name = state.doStateName();		// Current name
+	std::string name = state.getStateName();		// Current name
 	while (name != solved) {
-		std::ifstream istr(Path(state), std::fstream::in);
+		std::ifstream istr(Path(state), std::ios::in | std::ios::binary);
 		do {
 			getline(istr, line);	
 			state.parent = (spin)(line[27] - (line[27] < 'A' ? 48 : 55));
-		} while (line.substr(0, 27) != state.doStateName().substr(0, 27) && istr.good());
+		} while (line.substr(0, 27) != state.getStateName().substr(0, 27) && istr.good());
 		state.Act(state.parent);		// We found current state, use Act to move up the tree
 		way.push_back(state.parent);	// and remember the Act
 		state.parent = (spin)(0);		// Reset parent to check if solved
-		name = state.doStateName();
+		name = state.getStateName();
 		istr.close();
 		if (way.size() > 30) break;
 	}
@@ -78,14 +92,14 @@ std::vector<spin> HardSolver::Solve() {
 
 std::string HardSolver::Path(CubeState cs)	// Compression defines the spread of children
 {										// Compression ~ n files ~ 1 / filesize
-	return path + cs.doStateName().substr(0, compression);	
+	return path + cs.getStateName().substr(0, compression);	
 }										// Each file should contain at least 4kb of data
 
 bool HardSolver::exists(CubeState cs) {
 	bool exists = false;
-	std::string name = cs.doStateName().substr(0, 27);	// We need to compare only state
+	std::string name = cs.getStateName().substr(0, 27);	// We need to compare only state
 	std::string line;									// so we ignore Act (statename[27])
-	std::ifstream istr(Path(cs), std::fstream::in);			// We look for duplicates in a specific file
+	std::ifstream istr(Path(cs), std::ios::in | std::ios::binary);	// We look for duplicates in a specific file
 	while (istr.good() && !exists) {
 		getline(istr, line);
 		exists = line.substr(0, 27) == name;

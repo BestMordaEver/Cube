@@ -7,9 +7,9 @@
 class CubeState {
 public:
 	CubeState();
-	CubeState(std::string s);
+	CubeState(std::string charset);
 	CubeState(CubeState s, spin act);
-	void Act(spin act), print();
+	void Act(spin act);
 	void OrangeRight(),
 		OrangeLeft(),
 		RedLeft(),
@@ -22,7 +22,7 @@ public:
 		BlueLeft(),
 		GreenLeft(),
 		GreenRight();
-	std::string doStateName();
+	std::string getStateName(), getContent();
 	int operator[](int i);
 	std::vector<int> state;
 	spin parent;
