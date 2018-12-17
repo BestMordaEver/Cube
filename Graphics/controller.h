@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 
 #include "viewpoint.h"
+#include "logger.h"
 #include "model.h"
 #include "solver.h"
 #include "hardway.h"

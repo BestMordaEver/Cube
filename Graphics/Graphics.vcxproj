@@ -75,6 +75,10 @@
     <IncludePath>$(SolutionDir)glm-0.9.8.4\glm-0.9.8.4;$(SolutionDir)glew-2.0.0-win32\glew-2.0.0\include;$(SolutionDir)glfw-3.2.1.bin.WIN32\glfw-3.2.1.bin.WIN32\include;$(IncludePath)</IncludePath>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\Eugene\Desktop\project\cube-master\glfw-3.2.1.bin.WIN32\glfw-3.2.1.bin.WIN64\include;C:\Users\Eugene\Desktop\project\cube-master\glew-2.0.0-win32\glew-2.0.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Eugene\Desktop\project\cube-master\glfw-3.2.1.bin.WIN32\glfw-3.2.1.bin.WIN64\lib-vc2015;C:\Users\Eugene\Desktop\project\cube-master\glew-2.0.0-win32\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -92,7 +96,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Eugene\Desktop\project\cube-master\glfw-3.2.1.bin.WIN32\glfw-3.2.1.bin.WIN64\include;C:\Users\Eugene\Desktop\project\cube-master\glew-2.0.0-win32\glew-2.0.0\lib\Release\x64;C:\Users\Eugene\Desktop\project\cube-master\glm-0.9.8.4\glm-0.9.8.4;C:\Users\Eugene\Desktop\project\cube-master\glew-2.0.0-win32\glew-2.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalUsingDirectories>C:\Users\Eugene\Desktop\project\cube-master\glfw-3.2.1.bin.WIN32\glfw-3.2.1.bin.WIN64\lib-vc2015;C:\Users\Eugene\Desktop\project\cube-master\glew-2.0.0-win32\glew-2.0.0\lib\Release\Win32;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\Eugene\Desktop\project\cube-master\glew-2.0.0-win32\glew-2.0.0\lib\Release\x64;C:\Users\Eugene\Desktop\project\cube-master\glfw-3.2.1.bin.WIN32\glfw-3.2.1.bin.WIN64\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -127,6 +138,7 @@
     <ClCompile Include="controller.cpp" />
     <ClCompile Include="cubestate.cpp" />
     <ClCompile Include="interface.cpp" />
+    <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -139,6 +151,7 @@
     <ClInclude Include="cubestate.h" />
     <ClInclude Include="customgltemplates.h" />
     <ClInclude Include="interface.h" />
+    <ClInclude Include="logger.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="nuclear.h" />
     <ClInclude Include="nuklear_glfw_gl3.h" />

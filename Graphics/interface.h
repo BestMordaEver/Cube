@@ -8,7 +8,9 @@
 #include <GLFW/glfw3.h>
 
 
+
 // Other includes
+#include "logger.h"
 #include "shader.h"
 #include "viewpoint.h"
 #include "model.h"

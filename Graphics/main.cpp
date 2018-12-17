@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 // GLEW
 #define GLEW_STATIC
@@ -20,6 +21,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "nuklear_glfw_gl3.h"
+#include "logger.h"
 
 const GLuint WIDTH = 1366, HEIGHT = 768;
 #define MAX_VERTEX_BUFFER 512 * 1024
@@ -28,6 +30,7 @@ const GLuint WIDTH = 1366, HEIGHT = 768;
 GLFWwindow* window;
 
 int main() {
+	logger::write_start();
     window = initializeInterface(WIDTH, HEIGHT);
 
     struct nk_colorf bg;

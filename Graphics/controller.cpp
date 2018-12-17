@@ -1,4 +1,5 @@
 #include "controller.h"
+#include "logger.h"
 #include <time.h>
 #include <algorithm>
 #include <iostream>
@@ -75,20 +76,19 @@ void Controller::Start()
 			}
 		}
 	}
-
 	cubeState = CubeState();
 	std::vector<CModel*> copy;
 	transform(cubeModel.begin(), cubeModel.end(), std::back_inserter(copy), [](CModel& model) { return &model; });
 	std::sort(copy.begin(), copy.end(), [model = &cubeModel[cubeState[13]]] (CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
 	childs.resize(20);
 	std::copy(copy.begin() + 7, copy.end(), childs.begin());
-	state = 2;
-	hardsolver = HardSolver(true); //!!!!!!!!!!!!!!!!
+	state = 0;
+	//hardsolver = HardSolver(true); //!!!!!!!!!!!!!!!!
 	//Disassemble(4);
 	//way = hardsolver.Solve();
 	//solver = Solver();
-	//Disassemble(100);
-	//way = solver.Solve();
+	Disassemble(100);
+	way = solver.Solve();
 };
 
 void Controller::Update(double dt)
@@ -132,18 +132,18 @@ void Controller::Draw(CViewPoint mainCam)
 
 void Controller::Action(spin s, bool rotate)     // Rotate false is for preparation, assigns children to centers
 {   
-	if (s == OR) { OrangeRight(rotate); return; }              // True makes actual rotation
-	if (s == OL) { OrangeLeft(rotate); return; }
-	if (s == RL) { RedLeft(rotate); return; }
-	if (s == RR) { RedRight(rotate); return; }
-	if (s == WL) { WhiteLeft(rotate); return; }
-	if (s == WR) { WhiteRight(rotate); return; }
-	if (s == YR) { YellowRight(rotate); return; }
-	if (s == YL) { YellowLeft(rotate); return; }
-	if (s == BR) { BlueRight(rotate); return; }
-	if (s == BL) { BlueLeft(rotate); return; }
-	if (s == GL) { GreenLeft(rotate); return; }
-	if (s == GR) { GreenRight(rotate); return; }
+	if (s == OR) { logger::write_action(s); OrangeRight(rotate); return; }              // True makes actual rotation
+	if (s == OL) { logger::write_action(s); OrangeLeft(rotate); return; }
+	if (s == RL) { logger::write_action(s); RedLeft(rotate); return; }
+	if (s == RR) { logger::write_action(s); RedRight(rotate); return; }
+	if (s == WL) { logger::write_action(s); WhiteLeft(rotate); return; }
+	if (s == WR) { logger::write_action(s); WhiteRight(rotate); return; }
+	if (s == YR) { logger::write_action(s); YellowRight(rotate); return; }
+	if (s == YL) { logger::write_action(s); YellowLeft(rotate); return; }
+	if (s == BR) { logger::write_action(s); BlueRight(rotate); return; }
+	if (s == BL) { logger::write_action(s); BlueLeft(rotate); return; }
+	if (s == GL) { logger::write_action(s); GreenLeft(rotate); return; }
+	if (s == GR) { logger::write_action(s); GreenRight(rotate); return; }
 }
 
 void Controller::Disassemble(int i)

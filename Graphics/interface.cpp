@@ -14,6 +14,7 @@
 
 #include "nuklear_glfw_gl3.h"
 #include <string>
+#include "logger.h"
 
 
 bool keys[1024];
@@ -158,6 +159,7 @@ struct nk_context* initializeUI(GLFWwindow* window)
 int prevstate = 0;
 
 void wayoverride(spin s) {
+	//logger::write_action(s);
 	if (Controller::getInstance().way.size())
 		Controller::getInstance().way = std::vector<spin>(1, Controller::getInstance().way[0]);
 	Controller::getInstance().way.push_back(s);
@@ -181,16 +183,19 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 
 		nk_layout_row_static(ctx, 30, 100, 2);
 		if (nk_button_label(ctx, "Pause")) {
+			logger::write_bpress(3);
 			if (Controller::getInstance().state != 3) {
 				prevstate = Controller::getInstance().state;
 				Controller::getInstance().state = 3;
 			}
 		}
 		if (nk_button_label(ctx, "Continue")) {
+			logger::write_bpress(1);
 			if (Controller::getInstance().state > 1)
 				Controller::getInstance().state = prevstate;
 		}
 		if (nk_button_label(ctx, "Generate")) {
+			logger::write_bpress(2);
 			if (selectedAlgorithm) 
 				Controller::getInstance().way = Controller::getInstance().solver.Solve();
 			else
@@ -200,6 +205,7 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 				Controller::getInstance().state = 0;
 		}
 		if (nk_button_label(ctx, "Stop")) {
+			logger::write_bpress(0);
 			if (Controller::getInstance().way[0])
 				Controller::getInstance().way = std::vector<spin>(1, Controller::getInstance().way[0]);
 		}
