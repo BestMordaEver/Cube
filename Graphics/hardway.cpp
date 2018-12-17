@@ -5,7 +5,6 @@
 int compression = 6;
 long long int states = 0;
 std::string path = "tree/";
-std::ofstream ostr;
 
 HardSolver::HardSolver(bool force)
 {
@@ -13,20 +12,21 @@ HardSolver::HardSolver(bool force)
 		std::vector<spin> spins = { OL, OR, RL, RR, WL, WR, YL, YR, BL, BR, GL, GR };
 		system("rd /s /q tree");
 		system("mkdir tree");
-
+		
 		CubeState currentParent = CubeState();
-		std::stringbuf buf = std::stringbuf(std::ios::in | std::ios::binary);
-		ostr = std::ofstream("parents", std::ios::out | std::ios::trunc | std::ios::binary);
-		ostr << currentParent.getContent();
-		ostr.flush();
+		char* buf = new char[10];
+		std::ofstream ostr = std::ofstream("parents", std::ios::out | std::ios::binary);
+		
+		ostr.write(currentParent.getContent().c_str(), 10);
 		ostr.close();
 
 		std::cout << currentParent.getStateName() << std::endl << currentParent.getContent() << std::endl;
 
-		std::ifstream istr(Path(currentParent), std::ios::in | std::ios::binary);	// We look for duplicates in a specific file
+		std::ifstream istr("parents", std::ios::in | std::ios::binary);
 		
-		istr.get(buf, 10);
-		currentParent = CubeState(buf.str());
+		istr.read(buf, 10);
+		istr.close();
+		currentParent = CubeState(buf);
 
 		std::cout << currentParent.getStateName() << std::endl << currentParent.getContent() << std::endl;
 
@@ -34,34 +34,35 @@ HardSolver::HardSolver(bool force)
 			std::ifstream istr("parents", std::ios::in | std::ios::binary);
 			do {
 				istr.get(buf, 10);
-				if (istr.good() && buf.str() != "") {
-					CubeState currentParent = CubeState(buf.str());
+				if (istr.good() && buf != "") {
+					CubeState currentParent = CubeState(buf);
 
 					for (spin act : spins) {
 						CubeState currentChild = CubeState(currentParent, act);	// Constructing child as Act from parent
 						if (!exists(currentChild)) {			// We don't need duplicates
 							states++;
 							ostr.open(Path(currentChild), std::ios::out | std::ios::app | std::ios::binary);
-							ostr << currentChild.getContent();
+							ostr.write(currentChild.getContent().c_str(), 10);
 							ostr.flush();
 							ostr.close();
 							ostr.open("children", std::ios::out | std::ios::app | std::ios::binary);
-							ostr << currentChild.getContent();
+							ostr.write(currentChild.getContent().c_str(), 10);
 							ostr.flush();
 							ostr.close();
 						}
 					}
 				}
-			} while (istr.good() && buf.str() != "");
+			} while (istr.good() && buf != "");
 
 			istr.close();
 			system("del /f /q parents");
 			system("ren children parents");
 			std::cout << i << " " << states << std::endl;
 		}
+		delete[] buf;
+		ostr.close();
 	}
 	//system("del /f /q parents children");
-	ostr.close();
 }
 
 std::vector<spin> HardSolver::Solve() {

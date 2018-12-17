@@ -28,8 +28,11 @@ CubeState::CubeState(std::string charset) {
 	};
 	std::string bitset;
 	
-	for (int i = 0; i < 10; i++) 
-		bitset += std::bitset<8>((int)charset[i]).to_string();
+	for (int i = 0; i < 10; i++) {
+		bitset += std::bitset<8>((int)charset[i]-1).to_string();
+		std::cout << std::bitset<8>((int)charset[i]-1).to_string() << std::endl;
+	}
+		
 	
 	for (int i = 0; i < 8; i++) 
 		state[corners[i]] = std::bitset<8>(bitset.substr(i * 3, 3)).to_ulong();
@@ -110,8 +113,8 @@ std::string CubeState::getContent() {
 	std::string result;
 
 	for (int i = 0; i < 10; i++) 
-		result += std::bitset<8>(container.to_string().substr(i, i * 8)).to_ulong();
-
+		result += std::bitset<8>(container.to_string().substr(i, i * 8)).to_ulong() + 1;
+	
  	return result;
 }
 
