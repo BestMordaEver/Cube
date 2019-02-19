@@ -82,7 +82,7 @@ void Controller::Start()
 	std::sort(copy.begin(), copy.end(), [model = &cubeModel[cubeState[13]]] (CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
 	childs.resize(20);
 	std::copy(copy.begin() + 7, copy.end(), childs.begin());
-	state = 0;
+	state = contactive;
 	Disassemble(100);
 	way = solver.Solve();
 };
@@ -92,12 +92,12 @@ void Controller::Update(double dt)
     timer += dt;
     switch (state)
     {
-	case 0:
+	case contactive:
 		Action(way.front(), false);
 		state = 1;
 		timer = 0;
 		return;
-	case 1:
+	case animactive:
 		if (timer > counter)
 		{
 			Action(way.front(), true);
@@ -128,7 +128,6 @@ void Controller::Draw(CViewPoint mainCam)
 
 void Controller::Action(spin s, bool rotate)     // Rotate false is for preparation, assigns children to centers. True makes actual rotation
 {   
-	logger::write_action(s);
 	glm::vec3 spinvec;
 	int section = 0;
 	switch (s) {
@@ -152,6 +151,7 @@ void Controller::Action(spin s, bool rotate)     // Rotate false is for preparat
 	}
 	else
 	{
+		logger::LogAction(s);
 		Addchilds(&cubeModel[cubeState[section]]);
 		solver.rotate(s);
 		cubeState.Act(s);
@@ -160,6 +160,7 @@ void Controller::Action(spin s, bool rotate)     // Rotate false is for preparat
 
 void Controller::Disassemble(int i)
 {
+	logger::LogDisassembly(true);
 	step = glm::pi<double>() / 2;
 	srand(time(NULL));
 	for (; i > 0; i--)
@@ -170,6 +171,7 @@ void Controller::Disassemble(int i)
 			cubeModel[j].clearChilds();
 	}
 	step = glm::pi<double>() / 100;
+	logger::LogDisassembly(false);
 }
 
 void Controller::Addchilds(CModel* parent)
@@ -190,173 +192,3 @@ Controller &Controller::getInstance()
 	static Controller instance;
 	return instance;
 }
-
-/*
-void Controller::OrangeLeft(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[14]].rotate(glm::vec3(0, 0, step));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[14]]);
-		solver.rotate_counter_clock('o');
-		cubeState.OrangeLeft();
-    }
-}
-
-void Controller::OrangeRight(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[14]].rotate(glm::vec3(0, 0, -step));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[14]]);
-		solver.rotate_clock('o');
-		cubeState.OrangeRight();
-    }
-}
-
-void Controller::RedRight(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[12]].rotate(glm::vec3(0, 0, step));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[12]]);
-		solver.rotate_clock('r');
-		cubeState.RedRight();
-    }
-}
-
-void Controller::RedLeft(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[12]].rotate(glm::vec3(0, 0, -step));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[12]]);
-		solver.rotate_counter_clock('r');
-		cubeState.RedLeft();
-    }
-}
-
-void Controller::WhiteLeft(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[10]].rotate(glm::vec3(0, step, 0));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[10]]);
-		solver.rotate_counter_clock('w');
-		cubeState.WhiteLeft();
-    }
-}
-
-void Controller::WhiteRight(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[10]].rotate(glm::vec3(0, -step, 0));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[10]]);
-		solver.rotate_clock('w');
-		cubeState.WhiteRight();
-    }
-}
-
-void Controller::YellowRight(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[16]].rotate(glm::vec3(0, step, 0));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[16]]);
-		solver.rotate_clock('y');
-		cubeState.YellowRight();
-    }
-}
-
-void Controller::YellowLeft(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[16]].rotate(glm::vec3(0, -step, 0));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[16]]);
-		solver.rotate_counter_clock('y');
-		cubeState.YellowLeft();
-    }
-}
-
-void Controller::BlueRight(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[4]].rotate(glm::vec3(step, 0, 0));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[4]]);
-		solver.rotate_clock('b');
-		cubeState.BlueRight();
-    }
-}
-
-void Controller::BlueLeft(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[4]].rotate(glm::vec3(-step, 0, 0));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[4]]);
-		solver.rotate_counter_clock('b');
-		cubeState.BlueLeft();
-    }
-}
-
-void Controller::GreenLeft(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[22]].rotate(glm::vec3(step, 0, 0));
-    }
-    else
-    {
-        Addchilds(&cubeModel[cubeState[22]]);
-		solver.rotate_counter_clock('g');
-		cubeState.GreenLeft();
-    }
-}
-
-void Controller::GreenRight(bool rotate)
-{
-    if (rotate)
-    {
-        cubeModel[cubeState[22]].rotate(glm::vec3(-step, 0, 0));
-    }
-	else
-	{
-		Addchilds(&cubeModel[cubeState[22]]);
-		solver.rotate_clock('g');
-		cubeState.GreenRight();
-	}
-}
-*/

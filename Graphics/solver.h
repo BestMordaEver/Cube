@@ -8,20 +8,15 @@
 class Solver
 {
 public:
+	Solver();
 	std::vector<spin> Solve();
 	void rotate(spin s);
 
 private:
-	char white[9] = { 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w' },
-	red[9] = { 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r' },
-	orange[9] = { 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o' },
-	blue[9] = { 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b' },
-	green[9] = { 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g' },
-	yellow[9] = { 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y' };
-
+	std::vector<char> white, red, orange, blue, green, yellow;
 	std::vector<spin> way;
 
-	bool rotate_clock(char choice);
+	void rotate_clock(char choice);
 	void print();
 	void rotate_counter_clock(char choice);
 	void swap(char &a, char &b);

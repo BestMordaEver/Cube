@@ -7,20 +7,8 @@
 class CubeState {
 public:
 	CubeState();
-	void Act(spin act);
-	void OrangeRight(),
-		OrangeLeft(),
-		RedLeft(),
-		RedRight(),
-		WhiteLeft(),
-		WhiteRight(),
-		YellowRight(),
-		YellowLeft(),
-		BlueRight(),
-		BlueLeft(),
-		GreenLeft(),
-		GreenRight();
-	int operator[](int i);
+	void Act(spin);
+	int operator[](int);
 	std::vector<int> state;
 };
 

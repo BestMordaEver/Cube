@@ -14,21 +14,23 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
+enum state { contactive, animactive, idle, paused };
+
 class Controller 
 {
 public:
 	void Start();
 	static Controller& getInstance();
-	void Update(double dt);
-	void Draw(CViewPoint mainCam);
-	void Disassemble(int i);
+	void Update(double);
+	void Draw(CViewPoint);
+	void Disassemble(int);
 	int state = 0;
 	std::vector<spin> way;
 	Solver solver;
 	CubeState cubeState;
 private:
-	void Action(spin s, bool rotate);
-    void Addchilds(CModel* parent);
+	void Action(spin, bool);
+    void Addchilds(CModel*);
 	std::vector<CModel> cubeModel;
 	std::vector<CModel*> childs;
 

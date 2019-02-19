@@ -163,8 +163,8 @@ void wayoverride(spin s) {
 		Controller::getInstance().way = std::vector<spin>(1, Controller::getInstance().way[0]);
 	Controller::getInstance().way.push_back(s);
 	logger::ButtonPress(4);
-	if (Controller::getInstance().state == 2)
-		Controller::getInstance().state = 0;
+	if (Controller::getInstance().state == idle)
+		Controller::getInstance().state = contactive;
 }
 
 void drawUI(nk_context* ctx, nk_colorf& bg)
@@ -181,9 +181,9 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 		nk_layout_row_static(ctx, 30, 100, 2);
 		if (nk_button_label(ctx, "Pause")) {
 			logger::ButtonPress(3);
-			if (Controller::getInstance().state != 3) {
+			if (Controller::getInstance().state != paused) {
 				prevstate = Controller::getInstance().state;
-				Controller::getInstance().state = 3;
+				Controller::getInstance().state = paused;
 			}
 		}
 		if (nk_button_label(ctx, "Continue")) {
@@ -195,8 +195,8 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 			logger::ButtonPress(2);
 			Controller::getInstance().way = Controller::getInstance().solver.Solve();
 
-			if (Controller::getInstance().state == 2)
-				Controller::getInstance().state = 0;
+			if (Controller::getInstance().state == idle)
+				Controller::getInstance().state = contactive;
 		}
 		if (nk_button_label(ctx, "Stop")) {
 			logger::ButtonPress(0);
