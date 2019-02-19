@@ -5,7 +5,7 @@
 #include "logger.h"
 #include "model.h"
 #include "solver.h"
-#include "hardway.h"
+#include "cubestate.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -25,28 +25,16 @@ public:
 	int state = 0;
 	std::vector<spin> way;
 	Solver solver;
-	HardSolver hardsolver;
 	CubeState cubeState;
 private:
-	Controller() {};
 	void Action(spin s, bool rotate);
     void Addchilds(CModel* parent);
-	CModel Right, Left, Up, Down, Front, Back, CenterV, CenterH, Middle;
 	std::vector<CModel> cubeModel;
 	std::vector<CModel*> childs;
-	void OrangeRight(bool rotate),
-		OrangeLeft(bool rotate),
-		RedLeft(bool rotate),
-		RedRight(bool rotate),
-		WhiteLeft(bool rotate),
-		WhiteRight(bool rotate),
-		YellowRight(bool rotate),
-		YellowLeft(bool rotate),
-		BlueRight(bool rotate),
-		BlueLeft(bool rotate),
-		GreenLeft(bool rotate),
-		GreenRight(bool rotate);
-public:
+
+	Controller() { childs = std::vector<CModel*>(); };
+	Controller(Controller const&) = delete;
+	Controller& operator= (Controller const&) = delete;
 };
 
 #endif

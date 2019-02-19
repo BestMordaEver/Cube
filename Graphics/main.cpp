@@ -30,7 +30,7 @@ const GLuint WIDTH = 1366, HEIGHT = 768;
 GLFWwindow* window;
 
 int main() {
-	logger::write_start();
+	logger::Start();
     window = initializeInterface(WIDTH, HEIGHT);
 
     struct nk_colorf bg;
@@ -41,17 +41,7 @@ int main() {
 	CViewPoint mainCam(std::move(mainShader), WIDTH, HEIGHT);
 	mainCam.SetCamera(glm::vec3(-5, 5, -5), glm::vec3(-0.7, -0.7, 0));
 	
-	bool good = true;
-	do {
-		try {
-			Controller::getInstance().Start();
-			good = true;
-		}
-		catch (const std::exception& e) {
-			Controller::getInstance().~Controller();
-			good = false;
-		}
-	} while (!good);
+	Controller::getInstance().Start();
 	
 	double dt = 0;
 	//main loop

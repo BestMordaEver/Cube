@@ -12,7 +12,4 @@
 *.xml
 *.idb
 *.ipdb
-tree/
-Graphics/children
-Graphics/parents
-tree1/
+logs/

@@ -33,16 +33,13 @@
     <ClCompile Include="controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cubestate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="solver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hardway.cpp">
+    <ClCompile Include="logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="logger.cpp">
+    <ClCompile Include="cubestate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,16 +71,13 @@
     <ClInclude Include="spin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cubestate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="solver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hardway.h">
+    <ClInclude Include="logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="logger.h">
+    <ClInclude Include="cubestate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

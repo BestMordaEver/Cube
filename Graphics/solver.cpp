@@ -2,25 +2,15 @@
 #include "controller.h"
 #include <iostream>
 
-Solver::Solver()
-{
-	white = { 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w' };
-	red = { 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r' };
-	orange = { 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o' };
-	blue = { 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b' };
-	green = { 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g' };
-	yellow = { 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y' };
-}
-
 std::vector<spin> Solver::Solve()
 {
-	std::vector<std::vector<char>> temp = { white, red, orange, blue, green, yellow };
+	std::vector<char*> temp = { white, red, orange, blue, green, yellow };
 	way.clear();
 	if (Controller::getInstance().way.size())
 		way.push_back(Controller::getInstance().way.front());
 									// While solving the cube, vectors come to the initial state
 	solve_white_cross();			// which is a definition of solved cube
-	solve_white_corners();			// We still need to preserve the original state of the cube
+/*	solve_white_corners();			// We still need to preserve the original state of the cube
 	solve_middle_layer();			// as we need to monitor where we make an interruption
 	solve_yellow_cross();			// to re-generate the way from that point if nessesary 
 	solve_yellow_corners();			// This is not optimal, but it follows the spirit of the algorithm
@@ -48,8 +38,8 @@ std::vector<spin> Solver::Solve()
 				++way[i + 1];
 		}
 	} while (flag);
-	
-	white = temp[0]; red = temp[1]; orange = temp[2]; blue = temp[3]; green = temp[4]; yellow = temp[5];
+	*/
+	*white = *temp[0]; *red = *temp[1]; *orange = *temp[2]; *blue = *temp[3]; *green = *temp[4]; *yellow = *temp[5];
 	temp.~vector();
 	return way;
 }
@@ -61,22 +51,40 @@ void Solver::swap(char &a, char &b)
 	a -= b;
 }
 
-void Solver::rotate_clock(char choice)
+void Solver::rotate(spin s) {
+	switch (s) {
+	case OR: rotate_clock('o'); return;
+	case OL: rotate_counter_clock('o'); return;
+	case RR: rotate_clock('r'); return;
+	case RL: rotate_counter_clock('r'); return;
+	case WR: rotate_clock('w'); return;
+	case WL: rotate_counter_clock('w'); return;
+	case YR: rotate_clock('y'); return;
+	case YL: rotate_counter_clock('y'); return;
+	case BR: rotate_clock('b'); return;
+	case BL: rotate_counter_clock('b'); return;
+	case GR: rotate_clock('g'); return;
+	case GL: rotate_counter_clock('g'); return;
+	}
+}
+
+bool Solver::rotate_clock(char choice)
 {
-	if (way.size() > 1000)
-		throw std::exception();
+	if (way.size() > 1000) {
+		return true;
+		throw std::exception("This is why we can't have nice things, Barry. You asshole!");
+	}
 
-	if (choice == 'w')
-	{
+	switch (choice) {
+	case 'w':
 		way.push_back(WR);
-
+		
 		swap(white[7], white[3]);
 		swap(white[6], white[4]);
 		swap(white[0], white[2]);
 		swap(white[7], white[5]);
 		swap(white[0], white[4]);
 		swap(white[1], white[3]);
-
 		swap(blue[0], orange[0]);
 		swap(blue[7], orange[7]);
 		swap(blue[6], orange[6]);
@@ -86,10 +94,9 @@ void Solver::rotate_clock(char choice)
 		swap(green[6], red[6]);
 		swap(green[7], red[7]);
 		swap(green[0], red[0]);
-	}
+		return;
 
-	else if (choice == 'r')
-	{
+	case 'r':
 		way.push_back(RR);
 
 		swap(red[0], red[4]);
@@ -98,7 +105,6 @@ void Solver::rotate_clock(char choice)
 		swap(red[0], red[6]);
 		swap(red[1], red[5]);
 		swap(red[2], red[4]);
-
 		swap(blue[6], white[3]);
 		swap(blue[5], white[2]);
 		swap(blue[4], white[1]);
@@ -108,10 +114,9 @@ void Solver::rotate_clock(char choice)
 		swap(green[0], yellow[3]);
 		swap(green[1], yellow[2]);
 		swap(green[2], yellow[1]);
-	}
+		return;
 
-	else if (choice == 'y')
-	{
+	case 'y':
 		way.push_back(YR);
 
 		swap(yellow[1], yellow[5]);
@@ -120,7 +125,6 @@ void Solver::rotate_clock(char choice)
 		swap(yellow[1], yellow[3]);
 		swap(yellow[0], yellow[4]);
 		swap(yellow[7], yellow[5]);
-
 		swap(blue[4], red[4]);
 		swap(blue[3], red[3]);
 		swap(blue[2], red[2]);
@@ -130,10 +134,8 @@ void Solver::rotate_clock(char choice)
 		swap(green[4], orange[4]);
 		swap(green[3], orange[3]);
 		swap(green[2], orange[2]);
-	}
 
-	else if (choice == 'o')
-	{
+	case 'o':
 		way.push_back(OR);
 
 		swap(orange[4], orange[0]);
@@ -142,7 +144,6 @@ void Solver::rotate_clock(char choice)
 		swap(orange[4], orange[2]);
 		swap(orange[5], orange[1]);
 		swap(orange[6], orange[0]);
-
 		swap(blue[2], yellow[5]);
 		swap(blue[1], yellow[6]);
 		swap(blue[0], yellow[7]);
@@ -152,10 +153,9 @@ void Solver::rotate_clock(char choice)
 		swap(green[6], white[7]);
 		swap(green[5], white[6]);
 		swap(green[4], white[5]);
-	}
+		return;
 
-	else if (choice == 'g')
-	{
+	case 'g':
 		way.push_back(GR);
 
 		swap(green[6], green[2]);
@@ -164,7 +164,6 @@ void Solver::rotate_clock(char choice)
 		swap(green[4], green[6]);
 		swap(green[7], green[3]);
 		swap(green[0], green[2]);
-
 		swap(white[5], orange[2]);
 		swap(white[4], orange[1]);
 		swap(white[3], orange[0]);
@@ -174,11 +173,10 @@ void Solver::rotate_clock(char choice)
 		swap(yellow[3], red[6]);
 		swap(yellow[4], red[5]);
 		swap(yellow[5], red[4]);
-	}
+		return;
 
-	else if (choice == 'b')
-	{
-	way.push_back(BR);
+	case 'b':
+		way.push_back(BR);
 
 		swap(blue[1], blue[7]);
 		swap(blue[2], blue[6]);
@@ -186,7 +184,6 @@ void Solver::rotate_clock(char choice)
 		swap(blue[2], blue[0]);
 		swap(blue[7], blue[3]);
 		swap(blue[6], blue[4]);
-
 		swap(yellow[1], orange[4]);
 		swap(yellow[0], orange[5]);
 		swap(yellow[7], orange[6]);
@@ -196,7 +193,33 @@ void Solver::rotate_clock(char choice)
 		swap(white[7], red[0]);
 		swap(white[0], red[1]);
 		swap(white[1], red[2]);
+		return;
 	}
+}
+
+void display(char face[9])
+{
+	for (int i = 0; i < 9; i++)
+	{
+		std::cout << face[i] << " ";
+	}
+	std::cout << std::endl << std::endl;
+}
+
+void Solver::print() {
+	std::cout << "White Side : ";
+	display(white);
+	std::cout << "Red Side : ";
+	display(red);
+	std::cout << "Orange Side : ";
+	display(orange);
+	std::cout << "Blue Side : ";
+	display(blue);
+	std::cout << "Green Side : ";
+	display(green);
+	std::cout << "Yellow Side : ";
+	display(yellow);
+	std::cout << std::endl;
 }
 
 void Solver::rotate_counter_clock(char choice) {
@@ -388,7 +411,7 @@ void Solver::solve_white_cross()
 		white_bottom(prefer[i]); white_bottom_inverted(prefer[i]); white_left(prefer[i]); white_right(prefer[i]); white_top(prefer[i]);
 		if (i != 0)
 		{
-			while (blue[7] != 'b') { rotate_clock('w'); }
+			while (blue[7] != 'b') { if (rotate_clock('w')) return; }
 		}
 		if (white[0] == 'w' && white[2] == 'w' && white[4] == 'w' && white[6] == 'w' &&blue[7] == 'b' && red[7] == 'r' && green[7] == 'g' && orange[7] == 'o')
 		{

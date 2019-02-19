@@ -83,10 +83,6 @@ void Controller::Start()
 	childs.resize(20);
 	std::copy(copy.begin() + 7, copy.end(), childs.begin());
 	state = 0;
-	//hardsolver = HardSolver(true); //!!!!!!!!!!!!!!!!
-	//Disassemble(4);
-	//way = hardsolver.Solve();
-	//solver = Solver();
 	Disassemble(100);
 	way = solver.Solve();
 };
@@ -130,20 +126,36 @@ void Controller::Draw(CViewPoint mainCam)
         mainCam.drawModel(cubeModel[i]);
 }
 
-void Controller::Action(spin s, bool rotate)     // Rotate false is for preparation, assigns children to centers
+void Controller::Action(spin s, bool rotate)     // Rotate false is for preparation, assigns children to centers. True makes actual rotation
 {   
-	if (s == OR) { logger::write_action(s); OrangeRight(rotate); return; }              // True makes actual rotation
-	if (s == OL) { logger::write_action(s); OrangeLeft(rotate); return; }
-	if (s == RL) { logger::write_action(s); RedLeft(rotate); return; }
-	if (s == RR) { logger::write_action(s); RedRight(rotate); return; }
-	if (s == WL) { logger::write_action(s); WhiteLeft(rotate); return; }
-	if (s == WR) { logger::write_action(s); WhiteRight(rotate); return; }
-	if (s == YR) { logger::write_action(s); YellowRight(rotate); return; }
-	if (s == YL) { logger::write_action(s); YellowLeft(rotate); return; }
-	if (s == BR) { logger::write_action(s); BlueRight(rotate); return; }
-	if (s == BL) { logger::write_action(s); BlueLeft(rotate); return; }
-	if (s == GL) { logger::write_action(s); GreenLeft(rotate); return; }
-	if (s == GR) { logger::write_action(s); GreenRight(rotate); return; }
+	logger::write_action(s);
+	glm::vec3 spinvec;
+	int section = 0;
+	switch (s) {
+	case OR: section = 14; spinvec = glm::vec3(0, 0, -step); break;
+	case OL: section = 14; spinvec = glm::vec3(0, 0, step); break;
+	case RL: section = 12; spinvec = glm::vec3(0, 0, step); break;
+	case RR: section = 12; spinvec = glm::vec3(0, 0, -step); break;
+	case WL: section = 10; spinvec = glm::vec3(0, step, 0); break;
+	case WR: section = 10; spinvec = glm::vec3(0, -step, 0); break;
+	case YR: section = 16; spinvec = glm::vec3(0, step, 0); break;
+	case YL: section = 16; spinvec = glm::vec3(0, -step, 0); break;
+	case BR: section = 4; spinvec = glm::vec3(step, 0, 0); break;
+	case BL: section = 4; spinvec = glm::vec3(-step, 0, 0); break;
+	case GL: section = 22; spinvec = glm::vec3(step, 0, 0); break;
+	case GR: section = 22; spinvec = glm::vec3(-step, 0, 0); break;
+	}
+
+	if (rotate)
+	{
+		cubeModel[cubeState[section]].rotate(spinvec);
+	}
+	else
+	{
+		Addchilds(&cubeModel[cubeState[section]]);
+		solver.rotate(s);
+		cubeState.Act(s);
+	}
 }
 
 void Controller::Disassemble(int i)
@@ -160,12 +172,6 @@ void Controller::Disassemble(int i)
 	step = glm::pi<double>() / 100;
 }
 
-Controller & Controller::getInstance()
-{
-	static Controller instance;
-	return instance;
-}
-
 void Controller::Addchilds(CModel* parent)
 {
 	std::sort(childs.begin(), childs.end(), [model = parent](CModel const* lhs, CModel const* rhs) { return getDistance(lhs, model) < getDistance(rhs, model); });
@@ -179,6 +185,13 @@ void Controller::Addchilds(CModel* parent)
     parent->AddChild(childs[7]);
 }
 
+Controller &Controller::getInstance()
+{
+	static Controller instance;
+	return instance;
+}
+
+/*
 void Controller::OrangeLeft(bool rotate)
 {
     if (rotate)
@@ -346,3 +359,4 @@ void Controller::GreenRight(bool rotate)
 		cubeState.GreenRight();
 	}
 }
+*/

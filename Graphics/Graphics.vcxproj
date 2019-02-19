@@ -144,7 +144,6 @@
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="viewpoint.cpp" />
     <ClCompile Include="solver.cpp" />
-    <ClCompile Include="hardway.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="controller.h" />
@@ -159,7 +158,6 @@
     <ClInclude Include="spin.h" />
     <ClInclude Include="viewpoint.h" />
     <ClInclude Include="solver.h" />
-    <ClInclude Include="hardway.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment-shader.frag" />

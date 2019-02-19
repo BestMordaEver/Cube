@@ -5,10 +5,6 @@
 #include <algorithm>
 #include <bitset>
 #include <iostream>
-//86792973
-const int av[] = { 0, 0, 1, 1, 0, 2, 2, 3, 3, 4, 0, 5, 0, 0, 0, 6, 0, 7, 4, 8, 5, 9, 0, 10, 6, 11, 7 },
-corners[] = { 0, 2, 6, 8, 18, 20, 24, 26 },	// Don't even ask
-sides[] = { 1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25 };
 
 CubeState::CubeState()
 {
@@ -17,35 +13,6 @@ CubeState::CubeState()
 	9, 10, 11, 12, 13, 14, 15, 16, 17,
 	18, 19, 20, 21, 22, 23, 24, 25, 26
 	};
-	parent = (spin)0;
-}
-
-CubeState::CubeState(std::string charset) {
-	state = { 
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-	9, 10, 11, 12, 13, 14, 15, 16, 17,
-	18, 19, 20, 21, 22, 23, 24, 25, 26
-	};
-	std::string bitset;
-	
-	for (int i = 0; i < 10; i++) 
-		bitset += std::bitset<8>((int)charset[i]).to_string();
-	
-	for (int i = 0; i < 8; i++) 
-		state[corners[i]] = std::bitset<8>(bitset.substr(i * 3, 3)).to_ulong();
-
-	for (int i = 0; i < 12; i++) 
-		state[sides[i]] = std::bitset<8>(bitset.substr(i * 4 + 27, 4)).to_ulong();
-
-	parent = (spin)std::bitset<8>(bitset.substr(72, 4)).to_ulong();
-}
-
-CubeState::CubeState(CubeState s, spin act)
-{
-	state = s.state;
-	parent = act;	// parent.Act(act) == this
-	Act(act);
-	++parent;		// this.Act(++act) == parent
 }
 
 int CubeState::operator[](int i) { return state[i]; }
@@ -65,54 +32,6 @@ void CubeState::Act(spin act) {
 	case GL: GreenLeft(); return;
 	case GR: GreenRight(); return;
 	}
-}
-
-std::string CubeState::getStateName()
-{
-	std::stringstream ss;
-	copy(state.begin(), state.end(), std::ostream_iterator<char>(ss));
-	std::string temp = ss.str() + (char)parent;
-	for (auto it = temp.begin(); it != temp.end(); it++)
-		*it += *it < 10 ? 48 : 55;	// if Statename[i] < 10 = 0-9 else A-Z
-	return temp;					// (int)'0' = 49, (int)'A' = 54
-}
-
-std::string CubeState::getContent() {
-	std::bitset<80> container(0);
-	for (int i = 0; i < 8; i++) {
-		int temp = av[state[corners[i]]];
-		container[i * 3] = temp % 2;
-		temp >>= 1;
-		container[i * 3 + 1] = temp % 2;
-		temp >>= 1;
-		container[i * 3 + 2] = temp;
-	}
-
-	for (int i = 0; i < 12; i++) {
-		int temp = av[state[sides[i]]];	// I laugh in your face
-		container[i * 4 + 24] = temp % 2;
-		temp >>= 1;
-		container[i * 4 + 25] = temp % 2;
-		temp >>= 1;
-		container[i * 4 + 26] = temp % 2;
-		temp >>= 1;
-		container[i * 4 + 27] = temp;
-	}
-
-	int temp = parent;	
-	container[72] = temp % 2;
-	temp >>= 1;
-	container[73] = temp % 2;
-	temp >>= 1;
-	container[74] = temp % 2;
-	temp >>= 1;
-	container[75] = temp;
-	std::string result;
-
-	for (int i = 0; i < 10; i++) 
-		result += std::bitset<8>(container.to_string().substr(i, i * 8)).to_ulong();
-
- 	return result;
 }
 
 void CubeState::OrangeLeft()

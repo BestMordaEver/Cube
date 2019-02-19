@@ -5,7 +5,7 @@
 
 static class logger {
 public:
-	static void write_start();
-	static void write_bpress(int);
+	static void Start();
+	static void ButtonPress(int);
 	static void write_action(int);
 };

@@ -159,10 +159,10 @@ struct nk_context* initializeUI(GLFWwindow* window)
 int prevstate = 0;
 
 void wayoverride(spin s) {
-	//logger::write_action(s);
 	if (Controller::getInstance().way.size())
 		Controller::getInstance().way = std::vector<spin>(1, Controller::getInstance().way[0]);
 	Controller::getInstance().way.push_back(s);
+	logger::ButtonPress(4);
 	if (Controller::getInstance().state == 2)
 		Controller::getInstance().state = 0;
 }
@@ -175,37 +175,31 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 	if (nk_begin(ctx, "Show", nk_rect(1093, 0, 273, 600),
 		NK_WINDOW_BORDER)) {
 
-		static const char *algorithms[] = { "God's", "Amateur" };
-		static int selectedAlgorithm = 1;
-
 		nk_layout_row_static(ctx, 30, 80, 1);
 		nk_label(ctx, "Actions", NK_TEXT_LEFT);
 
 		nk_layout_row_static(ctx, 30, 100, 2);
 		if (nk_button_label(ctx, "Pause")) {
-			logger::write_bpress(3);
+			logger::ButtonPress(3);
 			if (Controller::getInstance().state != 3) {
 				prevstate = Controller::getInstance().state;
 				Controller::getInstance().state = 3;
 			}
 		}
 		if (nk_button_label(ctx, "Continue")) {
-			logger::write_bpress(1);
+			logger::ButtonPress(1);
 			if (Controller::getInstance().state > 1)
 				Controller::getInstance().state = prevstate;
 		}
 		if (nk_button_label(ctx, "Generate")) {
-			logger::write_bpress(2);
-			if (selectedAlgorithm) 
-				Controller::getInstance().way = Controller::getInstance().solver.Solve();
-			else
-				Controller::getInstance().way = Controller::getInstance().hardsolver.Solve();
+			logger::ButtonPress(2);
+			Controller::getInstance().way = Controller::getInstance().solver.Solve();
 
 			if (Controller::getInstance().state == 2)
 				Controller::getInstance().state = 0;
 		}
 		if (nk_button_label(ctx, "Stop")) {
-			logger::write_bpress(0);
+			logger::ButtonPress(0);
 			if (Controller::getInstance().way[0])
 				Controller::getInstance().way = std::vector<spin>(1, Controller::getInstance().way[0]);
 		}
@@ -272,8 +266,6 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 		nk_layout_row_end(ctx);
 		nk_layout_row_static(ctx, 30, 100, 1);
 		nk_label(ctx, std::to_string(Controller::getInstance().way.size()).c_str(), NK_TEXT_LEFT);
-		
-		selectedAlgorithm = nk_combo(ctx, algorithms, 2, selectedAlgorithm, 30, nk_vec2(200, 400));
 	}
 
     nk_end(ctx);
