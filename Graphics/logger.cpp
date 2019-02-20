@@ -5,20 +5,23 @@
 #include <string>
 #include "controller.h"
 
-using namespace std;
 time_t t = time(NULL);
 struct tm tm = *localtime(&t);
-string logname = "logs/" + to_string(tm.tm_mday) + "." + to_string(tm.tm_mon+1) + "." + to_string(tm.tm_year+1900) + "-" + to_string(tm.tm_hour) + "." + to_string(tm.tm_min) + "." + to_string(tm.tm_sec) + ".txt";
+std::string logname = "logs/" + std::to_string(tm.tm_mday) + "." + std::to_string(tm.tm_mon+1) + "." + std::to_string(tm.tm_year+1900) + "-" + std::to_string(tm.tm_hour) + "." + std::to_string(tm.tm_min) + "." + std::to_string(tm.tm_sec) + ".txt";
 
 void logger::Start() {
 	system("mkdir logs");
-	ofstream stream(logname, ios_base::app);
-	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " Aplication started" << endl;
+	std::ofstream stream(logname, std::ios::app);
+	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " Aplication started, reading instructions" << std::endl;
+	if (!std::fstream("program.cube").good())
+		stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " No instructions, standing by" << std::endl;
+	else
+		stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " Found instructions" << std::endl;
 	stream.close();
 }
 
 void logger::ButtonPress(int bp) {
-	string info;
+	std::string info;
 	switch (bp) {
 	case 0: info = " MANUAL INPUT - Stop"; break;
 	case 1: info = " MANUAL INPUT - Continue"; break;
@@ -29,25 +32,31 @@ void logger::ButtonPress(int bp) {
 
 	time_t t = time(NULL);
 	tm = *localtime(&t);
-	ofstream stream(logname, ios_base::app);
-	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << info << endl;
+	std::ofstream stream(logname, std::ios::app);
+	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << info << std::endl;
 	stream.close();
 }
 
 void logger::LogAction(spin act) {
-	string info = " " + to_string(act);
+	std::string info = " " + to_string(act);
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
-	ofstream stream(logname, ios_base::app);
-	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << info << endl;
+	std::ofstream stream(logname, std::ios::app);
+	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << info << std::endl;
 	stream.close();
 }
 
 void logger::LogDisassembly(bool isDisassembling) {
-	string info = isDisassembling ? " Starting disasembly" : " Disassembly finished, starting to solve";
+	std::string info = isDisassembling ? " Starting disasembly" : " Disassembly finished, starting to solve";
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
-	ofstream stream(logname, ios_base::app);
-	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << info << endl;
+	std::ofstream stream(logname, std::ios::app);
+	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << info << std::endl;
+	stream.close();
+}
+
+void logger::LogMsg(std::string msg) {
+	std::ofstream stream(logname, std::ios::app);
+	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " " << msg << std::endl;
 	stream.close();
 }
