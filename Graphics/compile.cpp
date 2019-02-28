@@ -87,7 +87,7 @@ void Compiler::SyntaxAnalysis() {
 				continue;
 			}
 
-			if (line != "end" && line != "solve" && line.length() != 0) {
+			if (line != "end" && line.length() != 0) {
 				logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbol " + line);
 				compileable = false;
 			}

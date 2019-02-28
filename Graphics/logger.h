@@ -10,6 +10,6 @@ public:
 	static void ButtonPress(int);
 	static void LogAction(spin s);
 	static void LogDisassembly(bool);
-	static void LogSyntaxAnalysis();
 	static void LogMsg(std::string);
+	static bool CodePresent();
 };

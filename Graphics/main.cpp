@@ -21,7 +21,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "nuklear_glfw_gl3.h"
-#include "logger.h"
 
 const GLuint WIDTH = 1366, HEIGHT = 768;
 #define MAX_VERTEX_BUFFER 512 * 1024

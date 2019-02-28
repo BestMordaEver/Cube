@@ -12,12 +12,22 @@ std::string logname = "logs/" + std::to_string(tm.tm_mday) + "." + std::to_strin
 void logger::Start() {
 	system("mkdir logs");
 	std::ofstream stream(logname, std::ios::app);
-	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " Aplication started, reading instructions" << std::endl;
-	if (!std::fstream("program.cube").good())
-		stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " No instructions, standing by" << std::endl;
-	else
-		stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " Found instructions" << std::endl;
+	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " Aplication started" << std::endl;
 	stream.close();
+}
+
+bool logger::CodePresent() {
+	std::ofstream stream(logname, std::ios::app);
+	if (!std::fstream("program.cube").good()) {
+		stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " No instructions, standing by" << std::endl;
+		stream.close();
+		return false;
+	}
+	else {
+		stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " Found instructions" << std::endl;
+		stream.close();
+		return true;
+	}
 }
 
 void logger::ButtonPress(int bp) {

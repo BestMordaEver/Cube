@@ -66,8 +66,10 @@ float getDistance(CModel const* lhs, CModel const* rhs)
 
 void Controller::Start()
 {
-	Compiler::SyntaxAnalysis();
-
+	if (logger::CodePresent()) {
+		Compiler::SyntaxAnalysis();
+	}
+	
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
