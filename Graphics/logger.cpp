@@ -9,28 +9,14 @@ time_t t = time(NULL);
 struct tm tm = *localtime(&t);
 std::string logname = "logs/" + std::to_string(tm.tm_mday) + "." + std::to_string(tm.tm_mon+1) + "." + std::to_string(tm.tm_year+1900) + "-" + std::to_string(tm.tm_hour) + "." + std::to_string(tm.tm_min) + "." + std::to_string(tm.tm_sec) + ".txt";
 
-void logger::Start() {
+void Logger::Start() {
 	system("mkdir logs");
 	std::ofstream stream(logname, std::ios::app);
 	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " Aplication started" << std::endl;
 	stream.close();
 }
 
-bool logger::CodePresent() {
-	std::ofstream stream(logname, std::ios::app);
-	if (!std::fstream("program.cube").good()) {
-		stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " No instructions, standing by" << std::endl;
-		stream.close();
-		return false;
-	}
-	else {
-		stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " Found instructions" << std::endl;
-		stream.close();
-		return true;
-	}
-}
-
-void logger::ButtonPress(int bp) {
+void Logger::ButtonPress(int bp) {
 	std::string info;
 	switch (bp) {
 	case 0: info = " MANUAL INPUT - Stop"; break;
@@ -47,7 +33,7 @@ void logger::ButtonPress(int bp) {
 	stream.close();
 }
 
-void logger::LogAction(spin act) {
+void Logger::LogAction(spin act) {
 	std::string info = " " + to_string(act);
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
@@ -56,7 +42,7 @@ void logger::LogAction(spin act) {
 	stream.close();
 }
 
-void logger::LogDisassembly(bool isDisassembling) {
+void Logger::LogDisassembly(bool isDisassembling) {
 	std::string info = isDisassembling ? " Starting disasembly" : " Disassembly finished, starting to solve";
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
@@ -65,7 +51,7 @@ void logger::LogDisassembly(bool isDisassembling) {
 	stream.close();
 }
 
-void logger::LogMsg(std::string msg) {
+void Logger::LogMsg(std::string msg) {
 	std::ofstream stream(logname, std::ios::app);
 	stream << tm.tm_hour << ":" << tm.tm_min << ":" << tm.tm_sec << " " << msg << std::endl;
 	stream.close();

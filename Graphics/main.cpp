@@ -15,6 +15,7 @@
 #include "model.h"
 #include "interface.h"
 #include "controller.h"
+#include "compile.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -29,7 +30,8 @@ const GLuint WIDTH = 1366, HEIGHT = 768;
 GLFWwindow* window;
 
 int main() {
-	logger::Start();
+	Logger::Start();
+	Compiler();
     window = initializeInterface(WIDTH, HEIGHT);
 
     struct nk_colorf bg;
@@ -46,7 +48,10 @@ int main() {
 	//main loop
 	double prevTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
+		nk_input_begin(ctx);
+		glfwPollEvents();
+		nk_input_end(ctx);
+
         drawUI(ctx, bg);
 		doMovement(&mainCam);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

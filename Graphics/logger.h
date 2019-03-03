@@ -1,15 +1,12 @@
 #pragma once
-#include<fstream>
 #include<time.h>
-#include<string>
 #include"spin.h"
 
-static class logger {
+static class Logger {
 public:
 	static void Start();
 	static void ButtonPress(int);
 	static void LogAction(spin s);
 	static void LogDisassembly(bool);
 	static void LogMsg(std::string);
-	static bool CodePresent();
 };

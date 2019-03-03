@@ -1,5 +1,6 @@
 #ifndef SPIN_H
 #define SPIN_H
+#include <string>
 
 enum spin { OL, OR, RL, RR, WL, WR, YL, YR, BL, BR, GL, GR };
 
