@@ -17,7 +17,7 @@ void Compiler::SyntaxAnalysis() {
 	std::istringstream stream(code);
 
 	bool compileable = true;
-	logger::LogMsg("Starting syntax analysis");
+	logger::LogMsg("Starting syntax analysis\n===================================");
 
 	if (code.length() == 0)
 		logger::LogMsg("No code to analyze, standing by");
@@ -94,7 +94,7 @@ void Compiler::SyntaxAnalysis() {
 		}
 	}
 	if (compileable)
-		logger::LogMsg("No errors found");
+		logger::LogMsg("No errors found\n===================================");
 	else
-		logger::LogMsg("Unable to compile the program");
+		logger::LogMsg("Unable to compile the program\n===================================");
 }
