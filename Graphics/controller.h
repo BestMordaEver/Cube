@@ -14,7 +14,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-enum state { contactive, animactive, idle, paused };
+enum state { prepare, animation, idle, paused };
 
 class Controller 
 {

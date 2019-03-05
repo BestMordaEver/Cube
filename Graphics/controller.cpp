@@ -66,10 +66,6 @@ float getDistance(CModel const* lhs, CModel const* rhs)
 
 void Controller::Start()
 {
-	if (logger::CodePresent()) {
-		Compiler::SyntaxAnalysis();
-	}
-	
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
@@ -87,9 +83,7 @@ void Controller::Start()
 	std::sort(copy.begin(), copy.end(), [model = &cubeModel[cubeState[13]]] (CModel const* lhs, CModel const* rhs) {return getDistance(lhs, model) < getDistance(rhs, model); });
 	childs.resize(20);
 	std::copy(copy.begin() + 7, copy.end(), childs.begin());
-	state = contactive;
-	Disassemble(100);
-	way = solver.Solve();
+	state = idle;
 };
 
 void Controller::Update(double dt)
@@ -97,12 +91,12 @@ void Controller::Update(double dt)
     timer += dt;
     switch (state)
     {
-	case contactive:
+	case prepare:
 		Action(way.front(), false);
 		state = 1;
 		timer = 0;
 		return;
-	case animactive:
+	case animation:
 		if (timer > counter)
 		{
 			Action(way.front(), true);
@@ -156,7 +150,7 @@ void Controller::Action(spin s, bool rotate)     // Rotate false is for preparat
 	}
 	else
 	{
-		logger::LogAction(s);
+		Logger::LogAction(s);
 		Addchilds(&cubeModel[cubeState[section]]);
 		solver.rotate(s);
 		cubeState.Act(s);
@@ -165,7 +159,7 @@ void Controller::Action(spin s, bool rotate)     // Rotate false is for preparat
 
 void Controller::Disassemble(int i)
 {
-	logger::LogDisassembly(true);
+	Logger::LogDisassembly(true);
 	step = glm::pi<double>() / 2;
 	srand(time(NULL));
 	for (; i > 0; i--)
@@ -176,7 +170,7 @@ void Controller::Disassemble(int i)
 			cubeModel[j].clearChilds();
 	}
 	step = glm::pi<double>() / 100;
-	logger::LogDisassembly(false);
+	Logger::LogDisassembly(false);
 }
 
 void Controller::Addchilds(CModel* parent)
