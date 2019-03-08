@@ -155,8 +155,8 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
     nk_glfw3_new_frame();
 
     /* GUI */
-	if (nk_begin(ctx, "Show", nk_rect(1093, 0, 273, 700),
-		NK_WINDOW_BORDER)) {
+	if (nk_begin(ctx, "Buttons", nk_rect(1093, 0, 273, 360),
+		NK_WINDOW_BORDER | NK_WINDOW_BACKGROUND)) {
 		
 		nk_layout_row_static(ctx, 30, 80, 1);
 		nk_label(ctx, "Actions", NK_TEXT_LEFT);
@@ -247,16 +247,40 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 			}
 		}
 		nk_layout_row_end(ctx);
-		
-		nk_layout_row_dynamic(ctx, 200, 1);
-		nk_flags event = nk_edit_string_zero_terminated(ctx,
-			NK_EDIT_BOX | NK_EDIT_AUTO_SELECT,
-			Compiler::code, sizeof(Compiler::code), nk_filter_default);
+	}
+
+    nk_end(ctx);
+
+	if (nk_begin(ctx, "Code", nk_rect(1093, 350, 273, 350),
+		NK_WINDOW_BORDER)) {
+
+
+		static char linenums[256];
+		std::string buf;
+		std::istringstream str(Compiler::code);
+		int linecount = 0;
+		strcpy(linenums, "");
+		while (std::getline(str, buf)) {
+			strcat(linenums, (std::to_string(++linecount) + "\n").c_str());
+		}
+
+
+		nk_layout_row_begin(ctx, NK_STATIC, 200, 2); {
+			nk_layout_row_push(ctx, 40);
+			nk_edit_string_zero_terminated(ctx,
+				NK_EDIT_BOX | NK_EDIT_AUTO_SELECT,
+				linenums, sizeof(linenums), nk_filter_default);
+
+			nk_layout_row_push(ctx, 220);
+			nk_edit_string_zero_terminated(ctx,
+				NK_EDIT_BOX | NK_EDIT_AUTO_SELECT,
+				Compiler::code, sizeof(Compiler::code), nk_filter_default);
+		}
 
 		nk_layout_row_begin(ctx, NK_STATIC, 30, 2); {
 			nk_layout_row_push(ctx, 60);
 			if (nk_button_label(ctx, "Run")) {
-				Compiler::SyntaxAnalysis();
+				Compiler::Compile();
 			}
 			if (nk_button_label(ctx, "Save")) {
 				Compiler::Save();
@@ -268,5 +292,5 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 			Compiler::output, sizeof(Compiler::output), nk_filter_default);
 	}
 
-    nk_end(ctx);
+	nk_end(ctx);
 }

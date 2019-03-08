@@ -36,7 +36,7 @@ void Compiler::Save() {
 		strcpy(output, "Error, file may be corrupted!");
 }
 
-void Compiler::SyntaxAnalysis() {
+void Compiler::Compile() {
 	std::istringstream stream(code);
 
 	bool compileable = true;
