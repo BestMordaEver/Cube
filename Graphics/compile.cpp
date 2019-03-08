@@ -127,7 +127,37 @@ void Compiler::SyntaxAnalysis() {
 				compileable = false;
 			}
 		}
+
+		if (!compileable) {
+			Logger::LogMsg("Unable to compile the program\n===================================");
+			strcat(output, "Unable to compile the program\n");
+			return;
+		}
+		
+		stream = std::istringstream(code);
+		linenum = 0;
+
+		Logger::LogMsg("Starting semantics analysis\n===================================");
+		strcat(output, "Starting semantics analysis\n");
+		
+		while (std::getline(stream, line)) {
+			linenum++;
+			if (line.find("times") != std::string::npos) {
+				std::istringstream iss(line);
+				std::vector<std::string> subs;
+				std::string temp;
+				while (iss >> temp)
+					subs.push_back(temp);
+
+				if (std::stoi(subs[0]) > 256 || std::stoi(subs[0]) < 1) {
+					Logger::LogMsg("error, line " + std::to_string(linenum) + " : integer out of bounds");
+					strcat(output, ("error, line " + std::to_string(linenum) + " : integer out of bounds/n").c_str());
+					compileable = false;
+				}
+			}
+		}
 	}
+
 	if (compileable) {
 		Logger::LogMsg("No errors found\n===================================");
 		strcat(output, "No errors found\n");
