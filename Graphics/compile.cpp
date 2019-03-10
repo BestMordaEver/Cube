@@ -9,6 +9,7 @@
 std::vector<spin> spiniterable = { OL, OR, RL, RR, WL, WR, YL, YR, BL, BR, GL, GR };
 std::string Compiler::codepath = "program.cube";
 char Compiler::output[2048], Compiler::code[2048];
+int Compiler::cursorpos = 0;
 
 Compiler::Compiler() {
 	std::ifstream fs(codepath);
@@ -56,6 +57,7 @@ void Compiler::Compile() {
 		if (line != "disassembled" && line != "assembled") {
 			Logger::LogMsg("error, line 1: expected setup instruction ('disassembled' or 'assembled'), got " + line);
 			strcat(output, ("error, line 1: expected setup instruction ('disassembled' or 'assembled'), got " + line + "\n").c_str());
+			cursorpos = 1;
 			compileable = false;
 		}
 		while (std::getline(stream, line)) {
@@ -70,17 +72,20 @@ void Compiler::Compile() {
 					if (ch < '0' && ch > '9') {
 						Logger::LogMsg("error, line " + std::to_string(linenum) + " : expected integer, got " + subs[0]);
 						strcat(output, ("error, line " + std::to_string(linenum) + " : expected integer, got " + subs[0] + "\n").c_str());
+						if (!cursorpos) cursorpos = std::string(code).find(line);
 						compileable = false;
 						break;
 					}
 				if (subs[1] != "times") {
 					Logger::LogMsg("error, line " + std::to_string(linenum) + " : expected 'times', got " + subs[1]);
 					strcat(output, ("error, line " + std::to_string(linenum) + " : expected 'times', got " + subs[1] + "\n").c_str());
+					if (!cursorpos) cursorpos = std::string(code).find(line);
 					compileable = false;
 				}
 				if (subs.size() > 2) {
 					Logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbol after " + subs[1]);
 					strcat(output, ("error, line " + std::to_string(linenum) + " : unexpected symbol after " + subs[1] + "\n").c_str());
+					if (!cursorpos) cursorpos = std::string(code).find(line);
 					compileable = false;
 				}
 				continue;
@@ -95,6 +100,7 @@ void Compiler::Compile() {
 				if (subs[0] != "spin") {
 					Logger::LogMsg("error, line " + std::to_string(linenum) + " : expected 'spin', got " + subs[0]);
 					strcat(output, ("error, line " + std::to_string(linenum) + " : expected 'spin', got " + subs[0] + "\n").c_str());
+					if (!cursorpos) cursorpos = std::string(code).find(line);
 					compileable = false;
 				}
 
@@ -110,12 +116,14 @@ void Compiler::Compile() {
 				if (!spinable) {
 					Logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbols after 'spin'");
 					strcat(output, ("error, line " + std::to_string(linenum) + " : unexpected symbols after 'spin'\n").c_str());
+					if (!cursorpos) cursorpos = std::string(code).find(line);
 					compileable = false;
 					continue;
 				}
 				if (subs.size() > 4) {
 					Logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbol after " + subs[3]);
 					strcat(output, ("error, line " + std::to_string(linenum) + " : unexpected symbol after " + subs[3] + "\n").c_str());
+					if (!cursorpos) cursorpos = std::string(code).find(line);
 					compileable = false;
 				}
 				continue;
@@ -124,6 +132,7 @@ void Compiler::Compile() {
 			if (line != "end" && line.length() != 0) {
 				Logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbol " + line);
 				strcat(output, ("error, line " + std::to_string(linenum) + " : unexpected symbol " + line + "\n").c_str());
+				if (!cursorpos) cursorpos = std::string(code).find(line);
 				compileable = false;
 			}
 		}
@@ -152,6 +161,7 @@ void Compiler::Compile() {
 				if (std::stoi(subs[0]) > 256 || std::stoi(subs[0]) < 1) {
 					Logger::LogMsg("error, line " + std::to_string(linenum) + " : integer out of bounds");
 					strcat(output, ("error, line " + std::to_string(linenum) + " : integer out of bounds/n").c_str());
+					if (!cursorpos) cursorpos = std::string(code).find(line);
 					compileable = false;
 				}
 			}

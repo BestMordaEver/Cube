@@ -254,27 +254,33 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 	if (nk_begin(ctx, "Code", nk_rect(1093, 350, 273, 350),
 		NK_WINDOW_BORDER)) {
 
-
 		static char linenums[256];
 		std::string buf;
 		std::istringstream str(Compiler::code);
 		int linecount = 0;
 		strcpy(linenums, "");
-		while (std::getline(str, buf)) {
-			strcat(linenums, (std::to_string(++linecount) + "\n").c_str());
-		}
-
+		while (std::getline(str, buf)) strcat(linenums, (std::to_string(++linecount) + "\n").c_str());
+		strcat(linenums, (std::to_string(++linecount) + "\n").c_str());
 
 		nk_layout_row_begin(ctx, NK_STATIC, 200, 2); {
 			nk_layout_row_push(ctx, 40);
-			nk_edit_string_zero_terminated(ctx,
-				NK_EDIT_BOX | NK_EDIT_AUTO_SELECT,
-				linenums, sizeof(linenums), nk_filter_default);
+			if (nk_group_begin(ctx, "nums", NK_WINDOW_NO_SCROLLBAR)) {
+				nk_layout_row_static(ctx, 1000, 40, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_BOX, linenums, sizeof(linenums), nk_filter_default);
+				nk_group_end(ctx);
+			} 
 
-			nk_layout_row_push(ctx, 220);
-			nk_edit_string_zero_terminated(ctx,
-				NK_EDIT_BOX | NK_EDIT_AUTO_SELECT,
-				Compiler::code, sizeof(Compiler::code), nk_filter_default);
+			nk_layout_row_push(ctx, 200);
+			if (nk_group_begin(ctx, "text", 0)) {
+				nk_layout_row_static(ctx, 1000, 176, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_BOX, Compiler::code, sizeof(Compiler::code), nk_filter_default);
+				nk_group_end(ctx);
+			}
+
+			nk_uint *x = new nk_uint(0), *y = new nk_uint(0);
+			nk_group_get_scroll(ctx, "text", x, y);
+			nk_group_set_scroll(ctx, "nums", *x, *y);
+			delete(x); delete(y);
 		}
 
 		nk_layout_row_begin(ctx, NK_STATIC, 30, 2); {
