@@ -254,7 +254,6 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 	if (nk_begin(ctx, "Code", nk_rect(1093, 350, 273, 350),
 		NK_WINDOW_BORDER)) {
 
-
 		static char linenums[256];
 		std::string buf;
 		std::istringstream str(Compiler::code);
@@ -263,7 +262,6 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 		while (std::getline(str, buf)) {
 			strcat(linenums, (std::to_string(++linecount) + "\n").c_str());
 		}
-
 
 		nk_layout_row_begin(ctx, NK_STATIC, 200, 2); {
 			nk_layout_row_push(ctx, 40);
