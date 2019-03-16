@@ -160,7 +160,7 @@ void Compiler::Compile() {
 
 				if (std::stoi(subs[0]) > 256 || std::stoi(subs[0]) < 1) {
 					Logger::LogMsg("error, line " + std::to_string(linenum) + " : integer out of bounds");
-					strcat(output, ("error, line " + std::to_string(linenum) + " : integer out of bounds/n").c_str());
+					strcat(output, ("error, line " + std::to_string(linenum) + " : integer out of bounds\n").c_str());
 					if (!cursorpos) cursorpos = std::string(code).find(line);
 					compileable = false;
 				}
