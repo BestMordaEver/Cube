@@ -127,7 +127,7 @@ GLFWwindow* initializeInterface(GLuint width, GLuint height){
     return wind;
 }
 
-int prevstate = idle;
+int prevstate = Controller::idle;
 char codebuffer[2048];
 
 struct nk_context* initializeUI(GLFWwindow* window)
@@ -144,10 +144,10 @@ struct nk_context* initializeUI(GLFWwindow* window)
 void wayoverride(spin s) {
 	if (Controller::getInstance().way.size())
 		Controller::getInstance().way = std::vector<spin>(1, Controller::getInstance().way[0]);
-	Controller::getInstance().way.push_back(s);
+	Controller::getInstance().way.emplace_back(s);
 	Logger::ButtonPress(4);
-	if (Controller::getInstance().state == idle)
-		Controller::getInstance().state = prepare;
+	if (Controller::getInstance().state == Controller::idle)
+		Controller::getInstance().state = Controller::prepare;
 }
 
 void drawUI(nk_context* ctx, nk_colorf& bg)
@@ -164,9 +164,9 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 		nk_layout_row_static(ctx, 30, 100, 2);
 		if (nk_button_label(ctx, "Pause")) {
 			Logger::ButtonPress(3);
-			if (Controller::getInstance().state != paused) {
+			if (Controller::getInstance().state != Controller::paused) {
 				prevstate = Controller::getInstance().state;
-				Controller::getInstance().state = paused;
+				Controller::getInstance().state = Controller::paused;
 			}
 		}
 		if (nk_button_label(ctx, "Continue")) {
@@ -178,8 +178,8 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 			Logger::ButtonPress(2);
 			Controller::getInstance().way = Controller::getInstance().solver.Solve();
 
-			if (Controller::getInstance().state == idle)
-				Controller::getInstance().state = prepare;
+			if (Controller::getInstance().state == Controller::idle)
+				Controller::getInstance().state = Controller::prepare;
 		}
 		if (nk_button_label(ctx, "Stop")) {
 			Logger::ButtonPress(0);
@@ -294,8 +294,7 @@ void drawUI(nk_context* ctx, nk_colorf& bg)
 		}
 
 		nk_layout_row_dynamic(ctx, 200, 1);
-		nk_edit_string_zero_terminated(ctx, NK_EDIT_BOX | NK_EDIT_AUTO_SELECT,
-			Compiler::output, sizeof(Compiler::output), nk_filter_default);
+		nk_edit_string_zero_terminated(ctx, NK_EDIT_BOX, Compiler::output, sizeof(Compiler::output), nk_filter_default);
 	}
 
 	nk_end(ctx);

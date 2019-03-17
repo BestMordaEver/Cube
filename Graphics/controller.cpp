@@ -66,6 +66,9 @@ float getDistance(CModel const* lhs, CModel const* rhs)
 
 void Controller::Start()
 {
+	timer = 0; counter = 0; animstate = 0;
+	cubeModel.clear();
+	childs.clear();
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
@@ -132,8 +135,8 @@ void Controller::Action(spin s, bool rotate)     // Rotate false is for preparat
 	switch (s) {
 	case OR: section = 14; spinvec = glm::vec3(0, 0, -step); break;
 	case OL: section = 14; spinvec = glm::vec3(0, 0, step); break;
-	case RL: section = 12; spinvec = glm::vec3(0, 0, step); break;
-	case RR: section = 12; spinvec = glm::vec3(0, 0, -step); break;
+	case RL: section = 12; spinvec = glm::vec3(0, 0, -step); break;
+	case RR: section = 12; spinvec = glm::vec3(0, 0, step); break;
 	case WL: section = 10; spinvec = glm::vec3(0, step, 0); break;
 	case WR: section = 10; spinvec = glm::vec3(0, -step, 0); break;
 	case YR: section = 16; spinvec = glm::vec3(0, step, 0); break;

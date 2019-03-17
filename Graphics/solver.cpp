@@ -17,7 +17,7 @@ std::vector<spin> Solver::Solve()
 	std::vector<std::vector<char>> temp = { white, red, orange, blue, green, yellow };
 	way.clear();
 	if (Controller::getInstance().way.size())
-		way.push_back(Controller::getInstance().way.front());
+		way.emplace_back(Controller::getInstance().way.front());
 									// While solving the cube, vectors come to the initial state
 	solve_white_cross();			// which is a definition of solved cube
 	solve_white_corners();			// We still need to preserve the original state of the cube
@@ -86,7 +86,7 @@ void Solver::rotate_clock(char choice)
 
 	switch (choice) {
 	case 'w':
-		way.push_back(WR);
+		way.emplace_back(WR);
 		
 		swap(white[7], white[3]);
 		swap(white[6], white[4]);
@@ -105,7 +105,7 @@ void Solver::rotate_clock(char choice)
 		swap(green[0], red[0]);
 		break;
 	case 'r':
-		way.push_back(RR);
+		way.emplace_back(RR);
 
 		swap(red[0], red[4]);
 		swap(red[7], red[5]);
@@ -124,7 +124,7 @@ void Solver::rotate_clock(char choice)
 		swap(green[2], yellow[1]);
 		break;
 	case 'y':
-		way.push_back(YR);
+		way.emplace_back(YR);
 
 		swap(yellow[1], yellow[5]);
 		swap(yellow[2], yellow[4]);
@@ -143,7 +143,7 @@ void Solver::rotate_clock(char choice)
 		swap(green[2], orange[2]);
 		break;
 	case 'o':
-		way.push_back(OR);
+		way.emplace_back(OR);
 
 		swap(orange[4], orange[0]);
 		swap(orange[3], orange[1]);
@@ -162,7 +162,7 @@ void Solver::rotate_clock(char choice)
 		swap(green[4], white[5]);
 		break;
 	case 'g':
-		way.push_back(GR);
+		way.emplace_back(GR);
 
 		swap(green[6], green[2]);
 		swap(green[5], green[3]);
@@ -181,7 +181,7 @@ void Solver::rotate_clock(char choice)
 		swap(yellow[5], red[4]);
 		break;
 	case 'b':
-		way.push_back(BR);
+		way.emplace_back(BR);
 
 		swap(blue[1], blue[7]);
 		swap(blue[2], blue[6]);

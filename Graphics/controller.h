@@ -14,11 +14,12 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-enum state { prepare, animation, idle, paused };
+
 
 class Controller 
 {
 public:
+	enum state { prepare, animation, idle, paused };
 	void Start();
 	static Controller& getInstance();
 	void Update(double);
