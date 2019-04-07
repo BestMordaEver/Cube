@@ -8,9 +8,12 @@
 #include <fstream>
 #include <algorithm>
 
+std::vector<std::string> colors = { "red", "blue", "orange", "green", "white", "yellow" };
 std::vector<spin> spiniterable = { OL, OR, RL, RR, WL, WR, YL, YR, BL, BR, GL, GR };
 std::string Compiler::codepath = "program.cube";
 char Compiler::output[2048], Compiler::code[2048];
+std::vector<std::vector<std::string>> Compiler::query = std::vector<std::vector<std::string>>();
+
 
 Compiler::Compiler() {
 	std::ifstream fs(codepath);
@@ -39,9 +42,21 @@ void Compiler::Save() {
 }
 
 void Compiler::Compile() {
-	Controller::getInstance().way.clear();
-
 	std::istringstream stream(code);
+	std::string line;
+	query.clear();
+
+	while (std::getline(stream, line))
+	{
+		std::istringstream iss(line);
+		std::vector<std::string> subs;
+		std::string temp;
+		while (iss >> temp)
+			subs.emplace_back(temp);
+		query.emplace_back(subs);
+	}
+
+	Controller::getInstance().way.clear();
 
 	std::string trans = "";
 	bool compileable = true;
@@ -54,93 +69,88 @@ void Compiler::Compile() {
 		return;
 	}
 	else {
-		std::string line;
-		int linenum = 1;
 		std::vector<int> loops;
 
-		std::getline(stream, line);
-		if (line != "disassembled" && line != "assembled") {
-			Logger::LogMsg("error, line 1: expected setup instruction ('disassembled' or 'assembled'), got " + line);
-			strcat(output, ("error, line 1: expected setup instruction ('disassembled' or 'assembled'), got " + line + "\n").c_str());
+		if (query[0][0] != "disassembled" && query[0][0] != "assembled") {
+			Logger::LogMsg("error, line 1: expected setup instruction ('disassembled' or 'assembled'), got " + query[0][0]);
+			strcat(output, ("error, line 1: expected setup instruction ('disassembled' or 'assembled'), got " + query[0][0] + "\n").c_str());
 			compileable = false;
 		}
-		while (std::getline(stream, line)) {
-			linenum++;
-			if (line.find("times") != std::string::npos) {
-				std::istringstream iss(line);
-				std::vector<std::string> subs;
-				std::string temp;
-				while (iss >> temp)
-					subs.emplace_back(temp);
-				for (char ch : subs[0])
+		for (int linenum = 1; linenum < query.size(); linenum++) {
+			if (query[linenum][0][0] > '0' && query[linenum][0][0] < '9') {
+				for (char ch : query[linenum][0])
 					if (ch < '0' && ch > '9') {
-						Logger::LogMsg("error, line " + std::to_string(linenum) + " : expected integer, got " + subs[0]);
-						strcat(output, ("error, line " + std::to_string(linenum) + " : expected integer, got " + subs[0] + "\n").c_str());
+						Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : expected integer, got " + query[linenum][0]);
+						strcat(output, ("error, line " + std::to_string(linenum+1) + " : expected integer, got " + query[linenum][0] + "\n").c_str());
 						compileable = false;
-						break;
 					}
-				if (subs[1] != "times") {
-					Logger::LogMsg("error, line " + std::to_string(linenum) + " : expected 'times', got " + subs[1]);
-					strcat(output, ("error, line " + std::to_string(linenum) + " : expected 'times', got " + subs[1] + "\n").c_str());
+				if (query[linenum][1] != "times") {
+					Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : expected 'times', got " + query[linenum][1]);
+					strcat(output, ("error, line " + std::to_string(linenum+1) + " : expected 'times', got " + query[linenum][1] + "\n").c_str());
 					compileable = false;
 				}
-				if (subs.size() > 2) {
-					Logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbol after " + subs[1]);
-					strcat(output, ("error, line " + std::to_string(linenum) + " : unexpected symbol after " + subs[1] + "\n").c_str());
+				if (query[linenum].size() > 2) {
+					Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : unexpected command after " + query[linenum][1]);
+					strcat(output, ("error, line " + std::to_string(linenum+1) + " : unexpected command after " + query[linenum][1] + "\n").c_str());
 					compileable = false;
 				}
-				loops.emplace_back(linenum);
+				loops.emplace_back(linenum+1);
 				continue;
 			}
 
-			if (line.find("spin") != std::string::npos) {
-				std::istringstream iss(line);
-				std::vector<std::string> subs;
-				std::string temp;
-				while (iss >> temp)
-					subs.emplace_back(temp);
-				if (subs[0] != "spin") {
-					Logger::LogMsg("error, line " + std::to_string(linenum) + " : expected 'spin', got " + subs[0]);
-					strcat(output, ("error, line " + std::to_string(linenum) + " : expected 'spin', got " + subs[0] + "\n").c_str());
-					compileable = false;
-				}
-
-				bool spinable = false;
-				for (auto spin : spiniterable) {
-					std::string temp = to_string(spin);
-					std::transform(temp.begin(), temp.end(), temp.begin(), tolower);
-					if (temp == subs[1] + " " + subs[2] + " " + subs[3]) {
-						spinable = true;
-						break;
-					}
-				}
-				if (!spinable) {
-					Logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbols after 'spin'");
-					strcat(output, ("error, line " + std::to_string(linenum) + " : unexpected symbols after 'spin'\n").c_str());
+			if (query[linenum][0] == "spin") {
+				if (query[linenum].size() > 4) {
+					Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : unexpected command after" + query[linenum][3]);
+					strcat(output, ("error, line " + std::to_string(linenum+1) + " : unexpected command after" + query[linenum][3] + "\n").c_str());
 					compileable = false;
 					continue;
 				}
-				if (subs.size() > 4) {
-					Logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbol after " + subs[3]);
-					strcat(output, ("error, line " + std::to_string(linenum) + " : unexpected symbol after " + subs[3] + "\n").c_str());
-					compileable = false;
+
+				bool spinable = false;
+				{
+					for (auto color : colors) 
+						if (color == query[linenum][1]) {
+							spinable = true;
+							break;
+						}
+					if (!spinable) {
+						Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : expected valid color, got " + query[linenum][1]);
+						strcat(output, ("error, line " + std::to_string(linenum+1) + " : expected valid color, got " + query[linenum][1] + "\n").c_str());
+						compileable = false;
+						continue;
+					}
+					if (query[linenum][2] != "to") {
+						Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : expected 'to', got " + query[linenum][2]);
+						strcat(output, ("error, line " + std::to_string(linenum+1) + " : expected 'to', got " + query[linenum][2] + "\n").c_str());
+						compileable = false;
+						continue;
+					}
+					if (query[linenum][3] != "right" && query[linenum][3] != "left") {
+						Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : expected valid side, got " + query[linenum][3]);
+						strcat(output, ("error, line " + std::to_string(linenum+1) + " : expected valid side, got " + query[linenum][3] + "\n").c_str());
+						compileable = false;
+						continue;
+					}
 				}
 				continue;
 			}
 
-			if (line == "end") {
+			if (query[linenum][0] == "end") {
 				if (loops.empty()) {
-					Logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbol " + line);
-					strcat(output, ("error, line " + std::to_string(linenum) + " : unexpected symbol " + line + "\n").c_str());
+					Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : unexpected 'end', no preceeding loops");
+					strcat(output, ("error, line " + std::to_string(linenum+1) + " : unexpected 'end', no preceeding loops\n").c_str());
 					compileable = false;
+					continue;
+				} 
+				else {
+					loops.pop_back();
+					continue;
 				}
-				loops.pop_back();
-				continue;
 			}
 
-			if (line.length() != 0) {
-				Logger::LogMsg("error, line " + std::to_string(linenum) + " : unexpected symbol " + line);
-				strcat(output, ("error, line " + std::to_string(linenum) + " : unexpected symbol " + line + "\n").c_str());
+			if (query[linenum][0].length() != 0) {
+				Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : unexpected command " + query[linenum][0]);
+				strcat(output, ("error, line " + std::to_string(linenum+1) + " : unexpected command " + query[linenum][0] + "\n").c_str());
 				compileable = false;
 			}
 		}
@@ -160,24 +170,14 @@ void Compiler::Compile() {
 			return;
 		}
 		
-		stream = std::istringstream(code);
-		linenum = 0;
-
 		Logger::LogMsg("Starting semantics analysis\n===================================");
 		strcat(output, "Starting semantics analysis\n");
 		
-		while (std::getline(stream, line)) {
-			linenum++;
-			if (line.find("times") != std::string::npos) {
-				std::istringstream iss(line);
-				std::vector<std::string> subs;
-				std::string temp;
-				while (iss >> temp)
-					subs.emplace_back(temp);
-
-				if (std::stoi(subs[0]) > 256 || std::stoi(subs[0]) < 1) {
-					Logger::LogMsg("error, line " + std::to_string(linenum) + " : integer out of bounds");
-					strcat(output, ("error, line " + std::to_string(linenum) + " : integer out of bounds\n").c_str());
+		for (int linenum = 0; linenum < query.size(); linenum++) {
+			if (query[linenum][1] == "times") {
+				if (std::stoi(query[linenum][0]) > 256 || std::stoi(query[linenum][0]) < 2) {
+					Logger::LogMsg("error, line " + std::to_string(linenum+1) + " : integer out of bounds");
+					strcat(output, ("error, line " + std::to_string(linenum+1) + " : integer out of bounds\n").c_str());
 					compileable = false;
 				}
 			}
@@ -189,7 +189,6 @@ void Compiler::Compile() {
 			return;
 		}
 
-		stream = std::istringstream(code);
 		std::vector<std::vector<spin>> loopqueue;
 		// std::vector<int> loops is empty and can be reused
 
@@ -197,31 +196,25 @@ void Compiler::Compile() {
 		strcat(output, "Starting translation\n");
 		
 
-		while (std::getline(stream, line)) {
-			if (line == "disassembled") {
+		for (int linenum = 0; linenum < query.size(); linenum++) {
+			if (query[linenum][0] == "disassembled") {
 				Controller::getInstance().Start();
 				trans += "Start();\n";
 				Controller::getInstance().Disassemble(200);
 				trans += "Disassemble();\n";
 			}
-			if (line == "assembled") {
+			else if (query[linenum][0] == "assembled") {
 				Controller::getInstance().Start();
 				trans += "Start();\n";
 			}	
 
-			if (line.find("times") != std::string::npos) {
-				std::istringstream iss(line);
-				std::vector<std::string> subs;
-				std::string temp;
-				while (iss >> temp)
-					subs.emplace_back(temp);
-
-				loops.emplace_back(std::stoi(subs[0]));
+			if (query[linenum][1] == "times") {
+				loops.emplace_back(std::stoi(query[linenum][0]));
 				loopqueue.emplace_back(std::vector<spin>());
 				continue;
 			}
 
-			if (line == "end") {
+			if (query[linenum][0] == "end") {
 				if (loops.size() == 1) {
 					for (int i = 0; i < loops[0]; i++)
 						std::transform(loopqueue[0].begin(), loopqueue[0].end(), std::back_inserter(Controller::getInstance().way), [](spin s) { return s; });
@@ -237,18 +230,12 @@ void Compiler::Compile() {
 				continue;
 			}
 
-			if (line.find("spin") != std::string::npos) {
-				std::istringstream iss(line);
-				std::vector<std::string> subs;
-				std::string temp;
-				while (iss >> temp)
-					subs.emplace_back(temp);
-				
+			if (query[linenum][0] == "spin") {
 				spin s;
 				for (auto spin : spiniterable) {
 					std::string temp = to_string(spin);
 					std::transform(temp.begin(), temp.end(), temp.begin(), tolower);
-					if (temp == subs[1] + " " + subs[2] + " " + subs[3]) {
+					if (temp == query[linenum][1] + " " + query[linenum][2] + " " + query[linenum][3]) {
 						s = spin;
 						break;
 					}

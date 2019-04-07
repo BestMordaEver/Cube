@@ -1,0 +1,17 @@
+not assembled
+1 time
+  spok green to left
+  spin grey to right
+  spin red left
+  spin yellow to somewhere
+end
+n times
+  spin white to right
+end
+5 times do
+  spin white to right
+end
+end
+256 times
+  hehe
+spin red to left

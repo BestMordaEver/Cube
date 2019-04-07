@@ -2,7 +2,7 @@
 #include<time.h>
 #include"spin.h"
 
-static class Logger {
+class Logger {
 public:
 	static void Start();
 	static void ButtonPress(int);
